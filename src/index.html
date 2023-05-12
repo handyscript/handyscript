@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../main.js"></script>
+    <script src="../state.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="root">
+        <handy>
+            <loop times="3" name="i">
+                <chunk><h1><put>a[i]</put></h1></chunk>
+            </loop> 
+        </handy>
+        <br>
+        <handy>
+        </handy>
+    </div>
+
+
+    
+    <script>
+        var [counter,setCounter] = state(true,"root")
+        var a = ["hi","hello","hmmm"]
+        
+    </script>
+</body>
+</html>
