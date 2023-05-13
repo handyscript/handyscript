@@ -1,32 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../main.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="../main.js"></script> -->
     <script src="../state.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
-</head>
-<body>
+    <style>
+        *{
+            transition: .4s;
+        }
+        [App]{
+            display: none;
+        }
+    </style>
+  </head>
 
-    <div id="root">
-        <handy>
-            <loop times="3" name="i">
-                <chunk><h1><put>a[i]</put></h1></chunk>
-            </loop> 
-        </handy>
-        <br>
-        <handy>
-        </handy>
+  <body onload="startAll()">
+
+
+<div id="App" App>
+    <div class=" shadow-md z-[40]">
+        <div class="container px-8 h-20 bg-white mx-auto">
+            <ul class="flex gap-2 h-full bg-red items-center">
+                <loop times="link().length" name="i">
+                    <if con="link()[i]==page()">
+                            <li class="cursor-pointer text-lg font-semibold p-2 border-b-4 border-b-blue-400"><put>link()[i]</put></li>
+                    </if>
+                    <if con="!(link()[i]==page())">
+                            <li onclick="setPage(link()[<put>i</put>])" class="cursor-pointer text-lg font-semibold p-2"><put>link()[i]</put></li>
+                    </if>
+                </loop>
+            </ul>
+        </div>
     </div>
 
-
+    <handy>
+        <chunk>
+            <if con="page()=='home'" >
+                <div class="container px-8 z-[-10] mx-auto h-[50vh] flex gap-8 flex-col justify-center ">
+                    <h1 class="text-6xl text-gray-700">
+                        wolcome to home page
+                    </h1>
+                    <p class="max-w-3xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus itaque sit, nam blanditiis quo accusamus eum veniam nesciunt dignissimos alias, odio quasi, adipisci eaque debitis maxime earum sunt! Tenetur, necessitatibus!</p>
+                    <button onclick="setPage('about')" class="w-fit px-4 py-2 bg-blue-500 rounded-xl text-white font-semibold">click me</button>
+                </div>
+            </if>
+            <if con="page()=='about'" >
+                <div class="container px-8 z-[-10] mx-auto h-[50vh] flex gap-8 flex-col justify-center ">
+                    <h1 class="text-6xl text-gray-700">
+                       about 
+                    </h1>
+                    <p class="max-w-3xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus itaque sit, nam blanditiis quo accusamus eum veniam nesciunt dignissimos alias, odio quasi, adipisci eaque debitis maxime earum sunt! Tenetur, necessitatibus!</p>
+                </div>
+            </if>
+            <if con="page()=='contact'" >
+                <div class="container px-8 z-[-10] mx-auto h-[50vh] flex gap-8 flex-col justify-center ">
+                    <h1 class="text-6xl text-gray-700">
+                       contact 
+                    </h1>
+                    <div class="flex flex-col gap-2">
+                    <label>name</label>
+                    <input class="max-w-lg p-2 border border-gray-500 rounded">
+                    <label>email</label>
+                    <input class="max-w-lg p-2 border border-gray-500 rounded">
+                    <label>message</label>
+                    <input class="max-w-lg p-2 border border-gray-500 rounded">
+                    </div>
+                </div>
+            </if>
+        </chunk>
+    </handy> 
     
-    <script>
-        var [counter,setCounter] = state(true,"root")
-        var a = ["hi","hello","hmmm"]
-        
-    </script>
-</body>
+    
+</div>
+
+<script>
+    const [link,setLinks] = state(["home","about","contact"],"App")
+    const [page,setPage] = state("home","App")
+
+    onChange("App",()=>{
+        alert("hello world")
+    })
+
+</script>
+
+
+
+
+
+  </body>
 </html>
+
+
+
+
+
+
+
+
