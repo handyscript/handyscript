@@ -12,6 +12,7 @@ function state(defaultValue,id) {
     iniEleVal[id]= document.getElementById(id)?.innerHTML;
     if(!(id in allSlices )){
         allSlices[id]=id
+        onChangeFuncs[id]=[]
     }
 
   let value = defaultValue;
@@ -23,6 +24,11 @@ function state(defaultValue,id) {
         value = newValue;
     }
     render(id)
+    if(id in onChangeFuncs){
+        onChangeFuncs[id].forEach(fun => {
+            fun()
+        });
+    }
     }
   return [getValue, setValue]; 
 }
@@ -63,12 +69,12 @@ function render(id) {
     }    
     }
 
-    console.log(ValHTML)
+    // console.log(ValHTML)
     ValHTML = ValHTML
     .replaceAll('<handy>', 'Ⓢ')
     .replaceAll('</handy>', 'Ⓔ')
 
-    console.log(ValHTML)
+    // console.log(ValHTML)
 
     let ifReg = /\<if[^\\>]+\>/g
     let ifs=ValHTML.match(ifReg)
@@ -89,7 +95,7 @@ function render(id) {
     let scripts = ValHTML.match(reg)
     let arr = ValHTML.split(reg)
     var result = "";
-    console.log(ValHTML)
+    // console.log(ValHTML)
     // console.log(scripts)
     // console.log(arr)
     for (let i = 0; i < scripts?.length; i++) {
