@@ -1,12 +1,12 @@
 const String = {
   /**
-   * The ucwords() method capitalizes the first letter of every word in a string.
+   * The capitalize() method capitalizes the first letter of every word in a string.
    * @param {string} str
    * @returns {string}
    * @example
-   * range("hello world") // output:"Hello World"
+   * capitalize("hello world") // output:"Hello World"
    */
-  ucwords: (str) => {
+  capitalize: (str) => {
     return str
       .split(" ")
       .map((word) => {
