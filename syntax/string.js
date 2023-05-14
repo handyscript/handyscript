@@ -10,8 +10,11 @@ const String = {
     return str
       .split(" ")
       .map((word) => {
-        return /^[A-Za-z]+$/.test(word) ? word[0].toUpperCase() + word.slice(1):word
+        return /^[A-Za-z]+$/.test(word)
+          ? word[0].toUpperCase() + word.slice(1)
+          : word;
       })
       .join(" ");
   },
 };
+export default String;
