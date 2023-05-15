@@ -163,3 +163,36 @@ function insideAtr(ele) {
     ele.innerHTML = ele.innerHTML.replaceAll(/{{{[^/}}}]+}}}/g,(f)=>" "+eval(f.slice(2,-2)))
 }
 
+/**
+ * 
+ * @param {html element} ele 
+ * you give this html element that have a loop and name  att on it and it will loop inside the array in the in att and return for each item in the array an element
+ *  
+ * @example 
+        <div loop='color' in="['red','blue']"><p -for='color' item></p></div> //  <div> <p>red</p> <p>blue</p> </div>
+ */
+
+function loopEle(ele) {
+    let _loop = ele.getAttribute("loop")
+    let _In = ele.getAttribute("in")
+    let array = window[_loop] = new Object(eval(` new Object(${_In})`))
+    result = ""
+    for (let i = 0; i < array.length; i++) {
+        let getTexts = ele.querySelectorAll("[item]")
+        getTexts.forEach((text) => {
+            if (text.getAttribute("-for")==_loop) {
+                if (text.getAttribute("item")) {
+                    text.innerHTML = eval("array[" + i + "]." + text.getAttribute("item"))
+                } else {
+                    text.innerHTML = eval("array[" + i + "]")
+                }
+            }
+
+        })
+        result += ele.innerHTML;
+        result = result.replaceAll("_i-"+_loop+"_", i)
+        result = result.replaceAll("_v-"+_loop+"_", array[i])
+    }
+
+    ele.innerHTML = result;
+}
