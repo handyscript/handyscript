@@ -77,7 +77,7 @@ as u sow <kbd>-for</kbd> is really handy when u r trying to put loop inside anot
   <li>20</li>
 </ul>
 
-what if u want to use a value inside an event element then use the <kbd>_(  )_</kbd>
+what if u want to use a value inside an event element then use the _(  )_
 
 ```html
     <ul loop="color" in="['red','blue','green']">
@@ -85,7 +85,7 @@ what if u want to use a value inside an event element then use the <kbd>_(  )_</
     </ul>
 ```
 ### result
-now will create a list of li each one if u click on it , it will alert the value of the item loop <kbd>_v-name_</kbd> , if u want the index u can get it by <kbd>__i-name__</kbd>
+now will create a list of li each one if u click on it , it will alert the value of the item loop _v-name_ , if u want the index u can get it by _i-name_
 
 
 
