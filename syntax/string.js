@@ -21,10 +21,10 @@ export function capitalize(str) {return str.split(" ").map((word) => {return wor
 export function elementTags(str) {return str.match(/<[a-zA-Z1-9]{1,}>/g) || [];}
 
 /**
- * The reverseString() method reverses a string.
+ * The reverse() method reverses a string.
  * @param {string} str
  * @returns {string}
  * @example
- * reverseString("Hello, world!") // output:"!dlrow ,olleH"
+ * reverse("Hello, world!") // output:"!dlrow ,olleH"
  */
-export function reverseString(str) {return str.split("").reverse().join("");}
+export function reverse(str) {return str.split("").reverse().join("");}
