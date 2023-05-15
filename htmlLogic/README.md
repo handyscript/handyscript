@@ -85,7 +85,7 @@ what if u want to use a value inside an event element then use the <kbd>_(  )_</
     </ul>
 ```
 ### result
-now will create a list of li each one if u click on it , it will alert the value of the item loop <kbd>_v-name_</kbd> , if u want the index u can get it by <kbd>_i-name_</kbd>
+now will create a list of li each one if u click on it , it will alert the value of the item loop <kbd>_v-name_</kbd> , if u want the index u can get it by <kbd>__i-name__</kbd>
 
 
 
