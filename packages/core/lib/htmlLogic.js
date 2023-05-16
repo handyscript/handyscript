@@ -8,17 +8,22 @@
  * this is string "<p>hello</p>"  // this is html element <p>hello</p>
  */
 
-function elementFromHtml(html) {
-    const template = document.createElement("template")
-    template.innerHTML = html.trim();
-    return template.content.firstElementChild;
-}
 
 
-
+var allDataElements = []
 document.body.onload = (() => {
 
+   /**
+    * this function is store all the elements of data , in a const of allDataElements
+    */ 
+    function getAllDataElements() {
+        allDataElements = Array.from(document.querySelectorAll('[data]'))
+        .map((eleData)=>elementFromHtml(eleData.outerHTML))
+    }
+    getAllDataElements();
     htmlLogic(document.body)
+})
+
 
     /**
      *  
@@ -44,20 +49,22 @@ document.body.onload = (() => {
                 if (child.getAttribute("-style")) {
                     styleAtr(child)
                 }
-                if (child.getAttribute("inside")==""|| child.getAttribute("inside")) {
+                if (child.getAttribute("inside") == "" || child.getAttribute("inside")) {
                     insideAtr(child)
+                }
+                if (child.localName.substr(-1) == ".") {
+                    getTemp(child)
+                }
+                if (child.getAttribute("text")) {
+                    textAtr(child)
                 }
             } catch (err) {
                 console.log(err)
-                child.innerHTML="<div style='background:#f003;color:#f00;padding:4px 10px;width:fit-content;border-radius:8px;'>"+err.message+"</div>"
+                child.innerHTML = "<div style='background:#f003;color:#f00;padding:4px 10px;width:fit-content;border-radius:8px;'>" + err.message + "</div>"
             }
             htmlLogic(child)
         })
     }
-
-})
-
-
 
 
 
@@ -75,18 +82,35 @@ document.body.onload = (() => {
 
 function dataAtr(ele) {
     if (ele.getAttribute("name")) {
-        window["__"+ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
-        let data = window["__"+ele.getAttribute("name")]
-        window[ele.getAttribute("name")] = (key)=>{
-            return data[key]
-        }
-        for (const key in data) {
-            if (Array.isArray(data[key])) {
-                ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", "[" + data[key].map(m => "'" + m + "'") + "]")
-            } else {
-                ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
-            }
+        function getInner(){
+            allDataElements.forEach((dataEle)=>{
+                if(dataEle.getAttribute("name")==ele.getAttribute("name")){
+                    ele.innerHTML=dataEle.innerHTML
+                }
+            })
 
+        }
+
+        let data = window[ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
+
+
+
+        window[ele.getAttribute("name")].set=function(item,value){
+            eval(`this.${item.split(".").join(".")} = ${JSON.stringify(value)}`)
+            ele.setAttribute('data',JSON.stringify(window[ele.getAttribute("name")]))
+            data=window[ele.getAttribute("name")]
+            getInner();
+            htmlLogic(ele);
+            replaceAll()
+        }
+
+        replaceAll()
+        function replaceAll() {
+            for (const key in data) {
+                if(key!="set"){
+                    ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
+                }
+            }
         }
     } else {
         let data = eval(` new Object(${ele.getAttribute("data")})`)
@@ -96,7 +120,7 @@ function dataAtr(ele) {
             } else {
                 ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
             }
-}
+        }
     }
 
 }
@@ -110,11 +134,27 @@ function dataAtr(ele) {
         codeAtr(<p code>1 + 1</p>) // <p>2</p>
  */
 function codeAtr(ele) {
-    let content = ele.innerHTML
-    let val= eval(content)
-    ele.innerHTML = val? val:val==0? 0 : ''
+    if (ele.getAttribute("code")) {
+        let val = eval(ele.getAttribute("code"))
+        ele.innerHTML = val ? val : val == 0 ? 0 : ''
+    } else {
+        let content = ele.innerHTML
+        let val = eval(content)
+        ele.innerHTML = val ? val : val == 0 ? 0 : ''
+    }
 }
 
+/**
+ * 
+ * @param {html element} ele 
+ * you give this html element that have a code att on it and it will render the content of the element as code
+ * @example 
+        codeAtr(<p text="hello"></p>) // <p>hello</p>
+ */
+function textAtr(ele) {
+    let content = ele.getAttribute("text")
+    ele.innerHTML = content
+}
 
 /**
  * 
@@ -144,7 +184,7 @@ function ifAtr(ele) {
 function styleAtr(ele) {
     let style = ele.getAttribute("-style")
     console.log(style)
-    Object.assign(ele.style,eval(`new Object(${style})`));
+    Object.assign(ele.style, eval(`new Object(${style})`));
 }
 
 /**
@@ -157,9 +197,9 @@ function styleAtr(ele) {
  */
 
 function insideAtr(ele) {
-    ele.innerHTML = ele.innerHTML.replaceAll("_(","{{{")
-                                .replaceAll(")_","}}}")
-    ele.innerHTML = ele.innerHTML.replaceAll(/{{{[^/}}}]+}}}/g,(f)=>" "+eval(f.slice(2,-2)))
+    ele.innerHTML = ele.innerHTML.replaceAll("_(", "{{{")
+        .replaceAll(")_", "}}}")
+    ele.innerHTML = ele.innerHTML.replaceAll(/{{{[^/}}}]+}}}/g, (f) => " " + eval(f.slice(2, -2)))
 }
 
 /**
@@ -179,7 +219,7 @@ function loopEle(ele) {
     for (let i = 0; i < array.length; i++) {
         let getTexts = ele.querySelectorAll("[item]")
         getTexts.forEach((text) => {
-            if (text.getAttribute("-for")==_loop) {
+            if (text.getAttribute("of") == _loop) {
                 if (text.getAttribute("item")) {
                     text.innerHTML = eval("array[" + i + "]." + text.getAttribute("item"))
                 } else {
@@ -189,9 +229,64 @@ function loopEle(ele) {
 
         })
         result += ele.innerHTML;
-        result = result.replaceAll("_i-"+_loop+"_", i)
-        result = result.replaceAll("_v-"+_loop+"_", array[i])
+        result = result.replaceAll("_i-" + _loop + "_", i)
+        result = result.replaceAll("_v-" + _loop + "_", array[i])
     }
 
     ele.innerHTML = result;
 }
+/**
+ * get all the tags of temp.create and hide them from
+ */
+
+let allTemps = Array.from(document.getElementsByTagName("temp.create"))
+allTemps.forEach((ele) => {
+    ele.style.display = 'none'
+})
+
+
+/**
+ * 
+ * @param {html element} ele 
+ * here u give this function a temp and it will replace it with the temp.create element , it pass data too
+ */
+
+
+function getTemp(ele) {
+    tempName = ele.localName.substr(0, ele.localName.length - 1);
+    let allTemps;
+    if (ele.getAttribute('from') == "handy-ui") {
+        allTemps = Array.from(myUi.children)
+    } else {
+        allTemps = Array.from(document.getElementsByTagName("temp.create"))
+    }
+    allTemps.forEach((temp) => {
+        if (temp.getAttribute("name") == tempName) {
+            let tempInnerHTML = elementFromHtml(temp.outerHTML)
+            let notAllowed = { class: "", data: "", from: "", name: "" }
+            ele.getAttributeNames().forEach(att => {
+                tempInnerHTML.querySelectorAll("[target]")?.forEach((target) => {
+                    let targetName = target.getAttribute("target")
+                        if (att.substr(0, targetName.length + 1) == targetName + ".") {
+                            if(att.substr(targetName.length + 1)=="class"){
+                                target.setAttribute(att.substr(targetName.length + 1),target.getAttribute("class")+" "+ ele.getAttribute(att))
+                            }else{
+                                target.setAttribute(att.substr(targetName.length + 1),ele.getAttribute(att))
+                            }
+                        }
+                })
+            })
+            ele.innerHTML = tempInnerHTML.innerHTML.replaceAll('_children_', ele.innerHTML)
+            dataAtr(ele)
+        }
+    })
+
+}
+
+
+
+
+
+
+
+
