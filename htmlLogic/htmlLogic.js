@@ -8,12 +8,6 @@
  * this is string "<p>hello</p>"  // this is html element <p>hello</p>
  */
 
-function elementFromHtml(html) {
-    const template = document.createElement("template")
-    template.innerHTML = html.trim();
-    return template.content.firstElementChild;
-}
-
 
 
 
@@ -47,6 +41,12 @@ document.body.onload = (() => {
                 }
                 if (child.getAttribute("inside")==""|| child.getAttribute("inside")) {
                     insideAtr(child)
+                }
+                if (child.localName.substr(-1)==".") {
+                    getTemp(child)
+                }
+                if (child.getAttribute("text")) {
+                    textAtr(child)
                 }
             } catch (err) {
                 console.log(err)
@@ -111,11 +111,27 @@ function dataAtr(ele) {
         codeAtr(<p code>1 + 1</p>) // <p>2</p>
  */
 function codeAtr(ele) {
-    let content = ele.innerHTML
-    let val= eval(content)
-    ele.innerHTML = val? val:val==0? 0 : ''
+    if(ele.getAttribute("code")){
+        let val= eval(ele.getAttribute("code"))
+        ele.innerHTML = val? val:val==0? 0 : ''
+    }else{
+        let content = ele.innerHTML
+        let val= eval(content)
+        ele.innerHTML = val? val:val==0? 0 : ''
+    }
 }
 
+/**
+ * 
+ * @param {html element} ele 
+ * you give this html element that have a code att on it and it will render the content of the element as code
+ * @example 
+        codeAtr(<p text="hello"></p>) // <p>hello</p>
+ */
+function textAtr(ele) {
+    let content = ele.getAttribute("text")
+    ele.innerHTML = content
+}
 
 /**
  * 
@@ -180,7 +196,7 @@ function loopEle(ele) {
     for (let i = 0; i < array.length; i++) {
         let getTexts = ele.querySelectorAll("[item]")
         getTexts.forEach((text) => {
-            if (text.getAttribute("-for")==_loop) {
+            if (text.getAttribute("of")==_loop) {
                 if (text.getAttribute("item")) {
                     text.innerHTML = eval("array[" + i + "]." + text.getAttribute("item"))
                 } else {
@@ -196,3 +212,56 @@ function loopEle(ele) {
 
     ele.innerHTML = result;
 }
+/**
+ * get all the tags of temp.create and hide them from
+ */
+
+let allTemps = Array.from(document.getElementsByTagName("temp.create"))
+allTemps.forEach((ele)=>{
+    ele.style.display='none'
+})
+
+
+/**
+ * 
+ * @param {html element} ele 
+ * here u give this function a temp and it will replace it with the temp.create element , it pass data too
+ */
+
+
+function getTemp(ele) {
+    tempName=ele.localName.substr(0,ele.localName.length-1);
+    let allTemps;
+    if (ele.getAttribute('from')=="handy-ui") {
+        allTemps = Array.from(myUi.children)
+    }else{
+        allTemps = Array.from(document.getElementsByTagName("temp.create"))
+    }
+    allTemps.forEach((temp)=>{
+        if(temp.getAttribute("name")==tempName){
+            let tempInnerHTML =  elementFromHtml(temp.outerHTML)
+            let notAllowed = {class:"",data:"",from:"",name:""}
+            ele.getAttributeNames().forEach(att=>{
+                if(!(att in notAllowed)){
+                    tempInnerHTML.querySelectorAll("[target]")?.forEach((target)=>{
+                    let targetName=target.getAttribute("target")
+                    if (att.substr(0,targetName.length+1)==targetName+".") {
+                        target.setAttribute(att.substr(targetName.length+1),ele.getAttribute(att))
+                    } 
+                  })
+                }
+            })
+            ele.innerHTML=tempInnerHTML.innerHTML.replaceAll('_children_',ele.innerHTML)
+            dataAtr(ele)
+        }
+    })
+    
+}
+
+
+
+
+
+
+
+
