@@ -10,10 +10,20 @@
 
 
 
-
+var allDataElements = []
 document.body.onload = (() => {
 
+   /**
+    * this function is store all the elements of data , in a const of allDataElements
+    */ 
+    function getAllDataElements() {
+        allDataElements = Array.from(document.querySelectorAll('[data]'))
+        .map((eleData)=>elementFromHtml(eleData.outerHTML))
+    }
+    getAllDataElements();
     htmlLogic(document.body)
+})
+
 
     /**
      * 
@@ -56,10 +66,6 @@ document.body.onload = (() => {
         })
     }
 
-})
-
-
-
 
 
 
@@ -76,18 +82,35 @@ document.body.onload = (() => {
 
 function dataAtr(ele) {
     if (ele.getAttribute("name")) {
-        window["__" + ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
-        let data = window["__" + ele.getAttribute("name")]
-        window[ele.getAttribute("name")] = (key) => {
-            return data[key]
-        }
-        for (const key in data) {
-            if (Array.isArray(data[key])) {
-                ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", "[" + data[key].map(m => "'" + m + "'") + "]")
-            } else {
-                ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
-            }
+        function getInner(){
+            allDataElements.forEach((dataEle)=>{
+                if(dataEle.getAttribute("name")==ele.getAttribute("name")){
+                    ele.innerHTML=dataEle.innerHTML
+                }
+            })
 
+        }
+
+        let data = window[ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
+
+
+
+        window[ele.getAttribute("name")].set=function(item,value){
+            eval(`this.${item.split(".").join(".")} = ${JSON.stringify(value)}`)
+            ele.setAttribute('data',JSON.stringify(window[ele.getAttribute("name")]))
+            data=window[ele.getAttribute("name")]
+            getInner();
+            htmlLogic(ele);
+            replaceAll()
+        }
+
+        replaceAll()
+        function replaceAll() {
+            for (const key in data) {
+                if(key!="set"){
+                    ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
+                }
+            }
         }
     } else {
         let data = eval(` new Object(${ele.getAttribute("data")})`)
