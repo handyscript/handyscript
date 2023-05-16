@@ -17,12 +17,12 @@ as u can see there is a name tag , u can use it for grabbing data like the follo
 </div>
 
 
-## loop / in / -for / item
+## loop / in / of / item
 
 you can use this <kbd>data</kbd> attribut inside any html element as name for the loop , the <kbd>in</kbd> attribut need to contain an array so the loop will go thro each item in the array , see the eximple .
 ```html
     <ul loop="color" in="['red','blue','green']">
-      <li -for="color" item></li>
+      <li of="color" item></li>
     </ul>
 ```
 ### result 
@@ -33,12 +33,12 @@ you can use this <kbd>data</kbd> attribut inside any html element as name for th
   <li>green</li>
 </ul>
 
-you can see that there is <kbd>-for</kbd> attribut as well as <kbd>item</kbd> , the <kbd>-for</kbd> attribut is telling the element to refrnce the loop name u can understand more in this example
+you can see that there is <kbd>-for</kbd> attribut as well as <kbd>item</kbd> , the <kbd>of</kbd> attribut is telling the element to refrnce the loop name u can understand more in this example
 ```html
     <div loop="y" in="['a','b']">
          <div loop="x" in="[0,1]">
-              <span -for="x" item></span>
-              <span -for="y" item></span>
+              <span item of="x" ></span>
+              <span item of="y" ></span>
          </div>
     </div>
 ```
@@ -65,8 +65,8 @@ as u sow <kbd>-for</kbd> is really handy when u r trying to put loop inside anot
 
 ```html
 <ul loop="persons" in="[{name:'zobair',age:20},{name:'yassin',age:20}]">
-  <li item="name"></li>
-  <li item="age"></li>
+  <li of='persons' item="name"></li>
+  <li of='persons' item="age"></li>
 </ul>
 ```
 ### result
