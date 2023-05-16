@@ -1,0 +1,3 @@
+# igbore all test files
+/*.test.*
+/test.*

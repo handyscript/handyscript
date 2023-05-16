@@ -3,8 +3,8 @@
 /**
  * 
  * @param {string} html 
- * @returns html element base on the string 
- * @example 
+ * @returns {HTMLElement}
+ * @example
  * this is string "<p>hello</p>"  // this is html element <p>hello</p>
  */
 
@@ -26,7 +26,7 @@ document.body.onload = (() => {
 
 
     /**
-     * 
+     *  
      * @param {html element } element 
      * it will start from the element u give her and go thro each child and implement the html logic on it
      */
