@@ -215,17 +215,3 @@ export default class Sort {
     }
 
 }
-
-
-// list of the used sort algorithms
-// bubbleSort
-// selectionSort
-// insertionSort
-// mergeSort
-// quickSort
-// heapSort
-// countingSort
-// shellSort
-// bucketSort
-// radixSort
-

@@ -1,5 +1,3 @@
-import { objloop }  from "./operateurs.js";
-
 /**
  * it returns a `HTMLelement` with the given `tag`, `props` and `children`
  * @param {string} tag // the tag of the element
@@ -14,7 +12,7 @@ export default function _(tag, props, ...children){
 
     // check if there are props
     if (props){
-        objloop(props, (key, value) => element[key] = value);
+        Object.keys(props).forEach(key => element[key] = props[key]);
     }
 
     // check for edge cases for the `tages` that can't have children
