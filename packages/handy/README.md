@@ -1,5 +1,10 @@
 <h1 align="center">Handy.js</h1>
-<p align="center">Handy.js is a collection of useful functions for JavaScript development.</p>
+<p align="center">A set of usefull javascript modules that makes the javascript devlopment context easier</p>
+<p align="center">
+<img alt="npm downloads" src="https://img.shields.io/npm/dw/@handy.js/handy?color=%2323fcba03&style=flat-square">
+<img alt="NPM LICENSE" src="https://img.shields.io/npm/l/@handy.js/handy?color=k&label=license&style=flat-square">
+<img alt="npm version" src="https://img.shields.io/npm/v/@handy.js/handy?color=00ffff&label=npm&style=flat-square">
+</p>
 
 ## Installation
 
@@ -8,8 +13,13 @@ You can install **Handy.js** using npm:
 ```shell
 npm install @handy.js/handy
 ```
+Alternatively, you can use the **CDN** script to include the `handy.min.js` in your HTML file
 
-Alternatively, you can download the `handy.min.js` file from the [dist](./dist/handy.min.js)  directory and include it in your HTML file:
+```html
+<script src="https://unpkg.com/browse/@handy.js/handy@1.0.0/dist/handy.min.cjs"></script>
+```
+
+Otherwise, you can download the `handy.min.js` file from the [dist](./dist/handy.min.cjs) directory and include it in your HTML file:
 
 ```html
 <script src="path/to/handy.min.js"></script>
