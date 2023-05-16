@@ -1,6 +1,6 @@
 {
   "name": "@handy.js/handy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "A set of usefull javascript modules that makes the js devlopment context easier",
   "main": "index.js",

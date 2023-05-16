@@ -13,7 +13,6 @@ You can install **Handy.js** using npm:
 ```shell
 npm install @handy.js/handy
 ```
-
 Alternatively, you can use the **CDN** script to include the `handy.min.js` in your HTML file
 
 ```html
