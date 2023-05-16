@@ -9,7 +9,7 @@ You can install **Handy.js** using npm:
 npm install @handy.js/handy
 ```
 
-Alternatively, you can download the `handy.min.js` file from the [dist](./dist/handy.min.js) directory and include it in your HTML file:
+Alternatively, you can download the `handy.min.js` file from the [dist](./dist/handy.min.js)  directory and include it in your HTML file:
 
 ```html
 <script src="path/to/handy.min.js"></script>
