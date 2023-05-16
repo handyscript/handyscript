@@ -39,10 +39,10 @@ document.body.onload = (() => {
                 if (child.getAttribute("-style")) {
                     styleAtr(child)
                 }
-                if (child.getAttribute("inside")==""|| child.getAttribute("inside")) {
+                if (child.getAttribute("inside") == "" || child.getAttribute("inside")) {
                     insideAtr(child)
                 }
-                if (child.localName.substr(-1)==".") {
+                if (child.localName.substr(-1) == ".") {
                     getTemp(child)
                 }
                 if (child.getAttribute("text")) {
@@ -50,7 +50,7 @@ document.body.onload = (() => {
                 }
             } catch (err) {
                 console.log(err)
-                child.innerHTML="<div style='background:#f003;color:#f00;padding:4px 10px;width:fit-content;border-radius:8px;'>"+err.message+"</div>"
+                child.innerHTML = "<div style='background:#f003;color:#f00;padding:4px 10px;width:fit-content;border-radius:8px;'>" + err.message + "</div>"
             }
             htmlLogic(child)
         })
@@ -76,9 +76,9 @@ document.body.onload = (() => {
 
 function dataAtr(ele) {
     if (ele.getAttribute("name")) {
-        window["__"+ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
-        let data = window["__"+ele.getAttribute("name")]
-        window[ele.getAttribute("name")] = (key)=>{
+        window["__" + ele.getAttribute("name")] = new Object(eval(` new Object(${ele.getAttribute("data")})`))
+        let data = window["__" + ele.getAttribute("name")]
+        window[ele.getAttribute("name")] = (key) => {
             return data[key]
         }
         for (const key in data) {
@@ -97,7 +97,7 @@ function dataAtr(ele) {
             } else {
                 ele.innerHTML = ele.innerHTML.replaceAll("_" + key + "_", data[key])
             }
-}
+        }
     }
 
 }
@@ -111,13 +111,13 @@ function dataAtr(ele) {
         codeAtr(<p code>1 + 1</p>) // <p>2</p>
  */
 function codeAtr(ele) {
-    if(ele.getAttribute("code")){
-        let val= eval(ele.getAttribute("code"))
-        ele.innerHTML = val? val:val==0? 0 : ''
-    }else{
+    if (ele.getAttribute("code")) {
+        let val = eval(ele.getAttribute("code"))
+        ele.innerHTML = val ? val : val == 0 ? 0 : ''
+    } else {
         let content = ele.innerHTML
-        let val= eval(content)
-        ele.innerHTML = val? val:val==0? 0 : ''
+        let val = eval(content)
+        ele.innerHTML = val ? val : val == 0 ? 0 : ''
     }
 }
 
@@ -161,7 +161,7 @@ function ifAtr(ele) {
 function styleAtr(ele) {
     let style = ele.getAttribute("-style")
     console.log(style)
-    Object.assign(ele.style,eval(`new Object(${style})`));
+    Object.assign(ele.style, eval(`new Object(${style})`));
 }
 
 /**
@@ -174,9 +174,9 @@ function styleAtr(ele) {
  */
 
 function insideAtr(ele) {
-    ele.innerHTML = ele.innerHTML.replaceAll("_(","{{{")
-                                .replaceAll(")_","}}}")
-    ele.innerHTML = ele.innerHTML.replaceAll(/{{{[^/}}}]+}}}/g,(f)=>" "+eval(f.slice(2,-2)))
+    ele.innerHTML = ele.innerHTML.replaceAll("_(", "{{{")
+        .replaceAll(")_", "}}}")
+    ele.innerHTML = ele.innerHTML.replaceAll(/{{{[^/}}}]+}}}/g, (f) => " " + eval(f.slice(2, -2)))
 }
 
 /**
@@ -196,7 +196,7 @@ function loopEle(ele) {
     for (let i = 0; i < array.length; i++) {
         let getTexts = ele.querySelectorAll("[item]")
         getTexts.forEach((text) => {
-            if (text.getAttribute("of")==_loop) {
+            if (text.getAttribute("of") == _loop) {
                 if (text.getAttribute("item")) {
                     text.innerHTML = eval("array[" + i + "]." + text.getAttribute("item"))
                 } else {
@@ -206,8 +206,8 @@ function loopEle(ele) {
 
         })
         result += ele.innerHTML;
-        result = result.replaceAll("_i-"+_loop+"_", i)
-        result = result.replaceAll("_v-"+_loop+"_", array[i])
+        result = result.replaceAll("_i-" + _loop + "_", i)
+        result = result.replaceAll("_v-" + _loop + "_", array[i])
     }
 
     ele.innerHTML = result;
@@ -217,8 +217,8 @@ function loopEle(ele) {
  */
 
 let allTemps = Array.from(document.getElementsByTagName("temp.create"))
-allTemps.forEach((ele)=>{
-    ele.style.display='none'
+allTemps.forEach((ele) => {
+    ele.style.display = 'none'
 })
 
 
@@ -230,32 +230,34 @@ allTemps.forEach((ele)=>{
 
 
 function getTemp(ele) {
-    tempName=ele.localName.substr(0,ele.localName.length-1);
+    tempName = ele.localName.substr(0, ele.localName.length - 1);
     let allTemps;
-    if (ele.getAttribute('from')=="handy-ui") {
+    if (ele.getAttribute('from') == "handy-ui") {
         allTemps = Array.from(myUi.children)
-    }else{
+    } else {
         allTemps = Array.from(document.getElementsByTagName("temp.create"))
     }
-    allTemps.forEach((temp)=>{
-        if(temp.getAttribute("name")==tempName){
-            let tempInnerHTML =  elementFromHtml(temp.outerHTML)
-            let notAllowed = {class:"",data:"",from:"",name:""}
-            ele.getAttributeNames().forEach(att=>{
-                if(!(att in notAllowed)){
-                    tempInnerHTML.querySelectorAll("[target]")?.forEach((target)=>{
-                    let targetName=target.getAttribute("target")
-                    if (att.substr(0,targetName.length+1)==targetName+".") {
-                        target.setAttribute(att.substr(targetName.length+1),ele.getAttribute(att))
-                    } 
-                  })
-                }
+    allTemps.forEach((temp) => {
+        if (temp.getAttribute("name") == tempName) {
+            let tempInnerHTML = elementFromHtml(temp.outerHTML)
+            let notAllowed = { class: "", data: "", from: "", name: "" }
+            ele.getAttributeNames().forEach(att => {
+                tempInnerHTML.querySelectorAll("[target]")?.forEach((target) => {
+                    let targetName = target.getAttribute("target")
+                        if (att.substr(0, targetName.length + 1) == targetName + ".") {
+                            if(att.substr(targetName.length + 1)=="class"){
+                                target.setAttribute(att.substr(targetName.length + 1),target.getAttribute("class")+" "+ ele.getAttribute(att))
+                            }else{
+                                target.setAttribute(att.substr(targetName.length + 1),ele.getAttribute(att))
+                            }
+                        }
+                })
             })
-            ele.innerHTML=tempInnerHTML.innerHTML.replaceAll('_children_',ele.innerHTML)
+            ele.innerHTML = tempInnerHTML.innerHTML.replaceAll('_children_', ele.innerHTML)
             dataAtr(ele)
         }
     })
-    
+
 }
 
 

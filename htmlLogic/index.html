@@ -10,21 +10,25 @@
 <body class="p-3">
 
 
-<button. from="handy-ui">hello</button.>
-<br>
-<input. 
-    div.loop="div"
-    div.in="[1,2,3,4]"
-    button.code="_v-div_ + 2"
-    >
-hello</input.>
+<card.
+    div.class="bg-red-300 flex flex-col gap-2 p-2"
+    button.button.class="hover:bg-black"
+
+>hello world</card.>
 
 
-<temp.create name="input">
-        <div target="div">
-            <button target="button">hello</button>
-        </div>
+<temp.create name='card'>
+    <div target="div">
+        <button. target="button"><input type="color" value="hi"></button.>
+    </div>
 </temp.create>
+
+
+<temp.create name="button" >
+        <button target="button" class="bg-white border rounded-lg py-1 hover:bg-gray-50 shadow-sm px-3 text-gray-700">_children_ hi</button>
+</temp.create>
+
+
 
 
 <script src="../handy-ui/core.js"></script>
