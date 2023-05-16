@@ -20,7 +20,7 @@ Alternatively, you can use the **CDN** script to include the `handy.min.js` in y
 <script src="https://unpkg.com/browse/@handy.js/handy@1.0.0/dist/handy.min.cjs"></script>
 ```
 
-Otherwise, you can download the `handy.min.js` file from the [dist](./dist/handy.min.cjs)directory and include it in your HTML file:
+Otherwise, you can download the `handy.min.js` file from the [dist](./dist/handy.min.cjs) directory and include it in your HTML file:
 
 ```html
 <script src="path/to/handy.min.js"></script>
