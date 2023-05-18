@@ -62,6 +62,37 @@ export default class HString extends String {
      * "<h1>Hello World!</h1>".innerTags() // output:["<h1>"]
      */
     innerTags() {return this.match(/<[a-zA-Z1-9]{1,}>/g) || [];}
+    /**
+     * @brief Find the indices of all occurrences of a target in a string.
+     * @param {string} target - The target string to find occurrences of.
+     * @returns {number[]} An array of indices representing the positions of the target in the string.
+     *
+     * @example
+     * const string = "Hello, how are you? I hope you are doing well.";
+     * const target = "you";
+     *
+     * const indices = string.findIndices(target);
+     * console.log(indices); // Output: [13, 28]
+     *
+     * @details
+     * This function is called on a string object and searches for all occurrences of the specified target within the string.
+     * It returns an array of indices representing the positions where the target is found.
+     *
+     * The search is case-insensitive due to the usage of the "gi" flags in the regular expression.
+     * If the target is not found in the string, an empty array will be returned.
+     */
+    findIndices(target) {
+        let regex = new RegExp(target, "gi");
+        let indices = [];
+        let match;
+
+        while ((match = regex.exec(this)) !== null) {
+            indices.push(match.index);
+        }
+        
+        return indices;
+    };
+
 
 }
 
