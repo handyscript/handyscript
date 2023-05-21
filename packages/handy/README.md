@@ -1,5 +1,14 @@
 <h1 align="center">Handy.js</h1>
-<p align="center">Handy.js is a collection of useful functions for JavaScript development.</p>
+
+<p align="center">
+A set of useful javascript modules that makes the javascript development context easier
+</p>
+
+<p align="center">
+<img alt="NPM DOWNLOADS" src="https://img.shields.io/npm/dw/@handy.js/handy?color=5319e7&style=flat-square">
+<img alt="NPM LICENSE" src="https://img.shields.io/npm/l/@handy.js/handy?color=k&label=license&style=flat-square">
+<img alt="NPM VERSION" src="https://img.shields.io/npm/v/@handy.js/handy?color=ff6905&label=npm&style=flat-square">
+</p>
 
 ## Installation
 
@@ -9,7 +18,16 @@ You can install **Handy.js** using npm:
 npm install @handy.js/handy
 ```
 
-Alternatively, you can download the `handy.min.js` file from the [dist](./dist/handy.min.js)  directory and include it in your HTML file:
+Alternatively, you can use the **CDN** script to include the `handy.min.js` in your HTML file
+
+```html
+<!-- VIA: jsdelivr CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@handy.js/handy@latest/dist/handy.min.js"></script>
+<!-- VIA: unpkg CDN -->
+<script src="https://unpkg.com/@handy.js/handy@latest/dist/handy.min.js"></script>
+```
+
+Otherwise, you can download the `handy.min.js` file from the [dist](./dist/handy.min.cjs) directory and include it in your HTML file, or [click here](https://cdn.jsdelivr.net/npm/@handy.js/handy@latest/dist/handy.min.cjs) to download it directly
 
 ```html
 <script src="path/to/handy.min.js"></script>
@@ -20,21 +38,26 @@ Alternatively, you can download the `handy.min.js` file from the [dist](./dist/h
 Once you have installed or included the **handy.min.js** file, you can start using the functions in your code.
 
 ```javascript
-// Import the handy-js module
-import { HArray, HMath, HString, HOperators } from "handy-js";
+// Import the @handy.js/handy to extend the prebuilt js modules
+import "@handy.js/handy";
+// explicitly use the HOperators:
+// 1
+import { HOperators } from "@handy.js/handy"
+// 2
+import { and, or, objloop } from "@handy.js/handy"
 
 // Array manipulation:
-const arr = new HArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 console.log(arr.chunk(3)); // [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]
 console.log(arr.shuffle()); // [3, 2, 5, 1, 4, 6, 7, 8, 10, 9]
 console.log(arr.shuffle().bubbleSort()); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // The Math Module:
-console.log(HMath.randomInt(1, 10)); // 7
-console.log(HMath.clamp(10, 1, 5)) // 5
+console.log(Math.randomInt(1, 10)); // 7
+console.log(Math.clamp(10, 1, 5)) // 5
 
 // string Manipulation:
-const str = new HString("hello world")
+const str = "hello world";
 console.log(str.toCapitalCase()); // "Hello World"
 
 // Operators:
@@ -49,41 +72,48 @@ console.log(str.toCapitalCase()); // "Hello World"
 ### Array manipulation
 
 ```javascript
-HArray.prototype.shuffle()
+Array.prototype.shuffle()
 ```
 
 Shuffles the elements of the array array and returns a new array.
 
 ```javascript
-HArray.prototype.chunk(size) // default: 1
+Array.prototype.chunk(size) // default: 1
 ```
 
 Splits the array array into chunks of size size and returns an array of arrays.
 
 ```javascript
-HArray.prototype.unique()
+Array.prototype.unique()
 ```
 
 Returns a new array with duplicate elements removed.
 
 ```javascript
-HArray.prototype.countBy(callback)
+Array.prototype.countBy(callback)
 ```
 
 Returns an object that counts the number of occurrences of each value in the array array, determined by the callback.
+
+```javascript
+Array.prototype.bubbleSort(item, sortalgo)
+```
+
+The `binarySearch` method searches an array for the specified item using the binary search algorithm. you can specify the sort algorithm to be used in sorting the array before searching
 
 > There is more to discover ✨
 
 ### Sort methods
 
-> It cover the most known/populare sort algorithms:
+> It cover the most known/popular sort algorithms:
 
 ```javascript
-HArray.prototype.bubbleSort()
+Array.prototype.binarySearch()
 ```
 
 Sorting the array using specific sort algorithms like : `bubbleSort`
-list of implemented sort algorithms
+
+### list of implemented sort algorithms
 
 - bubbleSort
 - insertionSort
@@ -91,29 +121,29 @@ list of implemented sort algorithms
 - mergeSort
 - quickSort
 - heapSort
-- countingSort
+- countingSort # ⚠ Only works with arrays of numbers
 - shellSort
 - bucketSort # accept a parameter for the number of buckets
-- radixSort # accept a parameter for the radix
+- radixSort # ⚠ Only works with arrays of numbers, Not implemented Yet
 
 > There is more to discover ✨
 
 ### Math
 
 ```javascript
-HMath.clamp(value, min = 1, max)
+Math.clamp(value, min = 1, max)
 ```
 
 Returns a value that is clamped between min and max.
 
 ```javascript
-HMath.lerp(start, end, t)
+Math.lerp(start, end, t)
 ```
 
 Returns a value between start and end that is determined by the value t, and the formula: `start * (1 - t) + end * t`.
 
 ```javascript
-HMath.map(value, inputMin, inputMax, outputMin, outputMax)
+Math.map(value, inputMin, inputMax, outputMin, outputMax)
 ```
 
 Maps the value from the range between inputMin and inputMax to the range between outputMin and outputMax.
@@ -123,7 +153,15 @@ Maps the value from the range between inputMin and inputMax to the range between
 ### String manipulation
 
 ```javascript
-HString.prototype.toCapitalCase()
+String.prototype.toCapitalCase()
 ```
 
 Capitalize the given string.
+
+```javascript
+String.prototype.indexesOf(target, startPosition=undefined)
+```
+
+Returns the positions of the all occurrence of a substring.
+
+> There is more to discover ✨
