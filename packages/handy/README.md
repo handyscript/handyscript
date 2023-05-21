@@ -17,6 +17,11 @@ You can install **Handy.js** using npm:
 ```shell
 npm install @handy.js/handy
 ```
+Alternatively, you can use the **CDN** script to include the `handy.min.js` in your HTML file
+
+```html
+<script src="https://unpkg.com/browse/@handy.js/handy@1.0.0/dist/handy.min.cjs"></script>
+```
 
 Alternatively, you can use the **CDN** script to include the `handy.min.js` in your HTML file
 
