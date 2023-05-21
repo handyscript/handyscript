@@ -21,12 +21,21 @@
   },
   "keywords": [
     "js",
+    "javascript",
     "modules",
+    "utils",
+    "utilities",
+    "utility",
+    "newjs",
     "handy",
     "handy.js",
     "handy-js"
   ],
   "author": "handy.js",
+  "links": {
+    "npm": "https://www.npmjs.com/package/@handy.js/handy",
+    "github": "https://github.com/handy-js/handy/tree/main/packages/handy"
+  },
   "license": "MIT",
   "devDependencies": {
     "rollup": "^2.79.1",
