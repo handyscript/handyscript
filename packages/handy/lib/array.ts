@@ -25,7 +25,6 @@ declare global {
   interface Array<T> {
     /**
      * The `shuffle()` method shuffles the elements in the given array.
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.shuffle() // [3, 5, 4, 1, 2]
@@ -37,7 +36,6 @@ declare global {
      * by default it will sort the array in ascending order.
      * @param {string} order
      * @this {Array} Time complexity: `O(n^2)`
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.bubbleSort() // [1, 2, 3, 4, 5]
@@ -49,7 +47,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `selectionSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.selectionSort() // [1, 2, 3, 4, 5]
@@ -61,7 +58,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `insertionSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.insertionSort() // [1, 2, 3, 4, 5]
@@ -73,7 +69,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `mergeSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.mergeSort() // [1, 2, 3, 4, 5]
@@ -85,7 +80,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `quickSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.quickSort() // [1, 2, 3, 4, 5]
@@ -97,7 +91,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `heapSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.heapSort() // [1, 2, 3, 4, 5]
@@ -109,7 +102,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `countingSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.countingSort() // [1, 2, 3, 4, 5]
@@ -122,7 +114,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `bucketSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.bucketSort() // [1, 2, 3, 4, 5]
@@ -136,7 +127,6 @@ declare global {
      * @param {number} radix // the radix base to be used wish sorting the array (default: 10)
      * @default radix = 10
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.radixSort() // [1, 2, 3, 4, 5]
@@ -148,7 +138,6 @@ declare global {
      * Sort the `array` in ascending or descending order using the `shellSort()`.
      * by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.shellSort() // [1, 2, 3, 4, 5]
@@ -159,7 +148,6 @@ declare global {
     /**
      * The `chunk()` method splits an array into chunks of the given size.
      * @param {number} size // the size of the chunk to be used wish splitting the array (default: 1)
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.chunk(2) // [[1, 2], [3, 4], [5]]
@@ -168,7 +156,6 @@ declare global {
 
     /**
      * the `compact()` method removes all falsy values from an array.
-     * @returns {Array}
      * @example
      * const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
      * arr.compact() // [1, 2, 3, "a", "s", 34]
@@ -177,7 +164,6 @@ declare global {
 
     /**
      * The `filterNullish()` method removes all nullish `null` values from an array.
-     * @returns {Array}
      * @example
      * const arr = [0, null, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
      * arr.filterNullish() // [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]
@@ -186,7 +172,6 @@ declare global {
 
     /**
      * The `unique()` method removes all duplicates from an array.
-     * @returns {Array}
      * @example
      * const arr = [1, 2, 3, 4, 5, 5, 5, 6]);
      * arr.unique() // [1, 2, 3, 4, 5, 6]
@@ -196,7 +181,6 @@ declare global {
     /**
      * The `countBy()` method counts the occurrences of each element in an array.
      * @param {CallableFunction} callback
-     * @returns {Object}
      * @example
      * HArray.countBy([1, 2, 3, 4, 5], x => x % 2 === 0 ? 'even' : 'odd') // { odd: 3, even: 2 }
      * @example
@@ -207,14 +191,13 @@ declare global {
 
     /**
      * The `binarySearch()` method searches an array for the specified item using the binary search algorithm.
-     * @param {any} item // the item to be searched for
+     * @param {any} target // the target to be searched for
      * @param {BinarySortAlgorithms | undefined} sortalgo the sort algorithm to be used in sorting the array before searching
-     * @returns {number} // the index of the item if found, otherwise -1
      * @example
      * const arr = [1, 2, 3, 4, 5]);
      * arr.binarySearch(3) // 2
      */
-    binarySearch(item: any, sortalgo?: BinarySortAlgorithms): any | -1;
+    binarySearch(target: any, sortalgo?: BinarySortAlgorithms): any | -1;
   }    
  
 }
@@ -227,7 +210,6 @@ declare global {
  * @param {number} start
  * @param {number} end
  * @param {number} step
- * @returns {Array[]}
  * @example
  * HArray.range(0, 5) // [0, 1, 2, 3, 4, 5]
  */
@@ -476,7 +458,7 @@ Array.prototype.countBy = function (callback){
     }, {});
 };
 
-Array.prototype.binarySearch = function (item: any, sortalgo:BinarySortAlgorithms | undefined){
+Array.prototype.binarySearch = function (target: any, sortalgo:BinarySortAlgorithms | undefined){
     if (this.length === 0) return -1;    
     // swith between the sort algorithms
     let sortedArray = [];
@@ -505,8 +487,8 @@ Array.prototype.binarySearch = function (item: any, sortalgo:BinarySortAlgorithm
     let end = sortedArray.length - 1;
     while (start <= end) {
         const mid = Math.floor((start + end) / 2);
-        if (sortedArray[mid] === item) return mid;
-        if (sortedArray[mid] < item) start = mid + 1;
+        if (sortedArray[mid] === target) return mid;
+        if (sortedArray[mid] < target) start = mid + 1;
         else end = mid - 1;
     }
     return -1;
