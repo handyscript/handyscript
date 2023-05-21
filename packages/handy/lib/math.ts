@@ -1,19 +1,15 @@
 //// MATH - HANDY-JS: MATH METHODS --------------------------------------------
 
+import { type } from "os";
+
 /**
- * @namespace HMath
- * @extends Math
- * @description
  * The `HMath` namespace contains usful math constants and methods.
  * @example
  * // 1
- * import { HMath } from "handy-js",
- * HMath.PI // output:3.141592653589793
- * // 2
- * import HMath from "handy-js/math",
- * HMath.PI // output:3.141592653589793
+ * import { HMath } from "@handy.js/handy",
+ * HMath.PHI // 1.618033... # golden ratio
  */
-const HMath  = {
+const HMath = {
     // Extends Math
     ...Math,
 
@@ -85,7 +81,7 @@ const HMath  = {
      */
     B : 1.456074948582689671399595351116543266074274800178127884495013673643948446868,
 
-    // ower own math methods
+    // our own math methods
     /**
      * it returns a random number between `min` and `max` exlusive
      * @method randomInt
@@ -95,7 +91,7 @@ const HMath  = {
      * @example
      * HMath.randomInt(1, 10) // 7
      */
-    randomInt(max, min = 0){ return Math.floor(Math.random() * (max - min + 1)) + min},
+    randomInt(max:number, min = 0){ return Math.floor(Math.random() * (max - min + 1)) + min},
 
     /**
      * it clamps the `value` between `min` and `max` in other words
@@ -108,7 +104,7 @@ const HMath  = {
      * @example
      * HMath.clamp(10, 1, 5) // 5
      */
-    clamp(value, min, max) { return Math.min(Math.max(value, min), max) },
+    clamp(value:number, min:number, max:number) { return Math.min(Math.max(value, min), max) },
 
     /**
      * the `lerp` or linear interpolation is a function that takes a start value `start`,
@@ -125,7 +121,7 @@ const HMath  = {
      * HMath.lerp(0, 100, 0.25) // 25
      * HMath.lerp(0, 100, 0.75) // 75
      */
-    lerp(start, end, t){ return start * (1 - t) + end * t },
+    lerp(start:number, end:number, t:number){ return start * (1 - t) + end * t },
 
     /**
      * it returns the value mapped from the input range to the output range
@@ -143,12 +139,15 @@ const HMath  = {
      * HMath.map(50, 0, 100, 0, 10) // 5
      * HMath.map(50, 0, 100, 0, 1000) // 500
      */
-    map(value, inputMin, inputMax, outputMin, outputMax){
+    map(value:number, inputMin:number, inputMax:number, outputMin:number, outputMax:number){
         const inputRange = inputMax - inputMin
         const outputRange = outputMax - outputMin
         const normalizedValue = (value - inputMin) / inputRange
         return outputMin + normalizedValue * outputRange
     }
-}
+};
 
-export default HMath
+Object.freeze(HMath); // freeze it to prevent changing its properties
+Object.seal(HMath); // seal it to prevent adding new properties
+
+export default HMath;
