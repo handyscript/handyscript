@@ -1,6 +1,7 @@
 {
   "name": "test",
   "version": "1.0.0",
+  "type": "module",
   "description": "testing the handy dandy js",
   "main": "index.js",
   "scripts": {

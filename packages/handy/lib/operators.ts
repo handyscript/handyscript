@@ -2,36 +2,32 @@
 
 /**
  * it returns true if all the arguments are true
- * @param  {...any} args
- * @returns {boolean}
+ * @param  {boolean[]} args
  * @example
  * and(true, true, true) // true
  */
-export function and(...args) {return args.every(arg => arg === true)}
+export function and(...args: boolean[]) {return args.every(arg => arg === true)}
 
 /**
  * it returns true if any of the arguments is true
- * @param  {...any} args
- * @returns {boolean}
+ * @param  {boolean[]} args
  * @example
  * or(true, false, false) // true
  */
-export function or(...args) {return args.some(arg => arg === true)}
+export function or(...args: boolean[]) {return args.some(arg => arg === true)}
 
 /**
  * it returns the opposite of the argument given
  * @param {any} arg
- * @returns {boolean}
  * @example
  * not(true) // false
  */
-export function not(arg) {return !arg}
+export function not(arg:any) {return !arg}
 
 /**
  * the `is` function is used to compare two values if they are truly equal
  * @param {any} value1
  * @param {any} value2
- * @returns {boolean}
  * @example
  * is(1, 1) // true
  * is("hello", "hi") // false
@@ -55,7 +51,7 @@ export function not(arg) {return !arg}
  * const reg2 = /hi/;
  * is(reg1, reg2) // false
  */
-export function is(value1, value2){
+export function is(value1: any, value2: any): boolean{
     switch (typeof value1) {
         // compare functions by their source code
         case 'function': return value1.toString() === value2.toString();
@@ -87,14 +83,14 @@ export function is(value1, value2){
 
 /**
  * loops through the given iterations and calls the callback function with the index ```i``` as argument
- * @param {number} iterations// the number of iterations to loop through
+ * @param {number} iterations// the number of iterations to loop through default is 1
  * @param {CallableFunction} cb // the function to call in each iteration with the `index` ```i``` as argument
- * @param {number} i // the starting index by default it's 0
+ * @param {number} index // the starting index by default it's 0
  * @param {number} step // the step to increment the index by default it's 1
  * @example
  * loop(5, i=>console.log(i)) // 0 1 2 3 4
  */
-export function loop(iterations, cb, i = 0, step = 1){ for (i; i < iterations; i+=step) { cb(i) } }
+export function loop(iterations = 1, cb:(index: number) => void, index = 0, step = 1){ for (index; index < iterations; index+=step) { cb(index) } }
 
 /**
  * loops through the given `object` and calls the `callback` function with the `key` as argument
@@ -106,16 +102,28 @@ export function loop(iterations, cb, i = 0, step = 1){ for (i; i < iterations; i
  * // name ahmed
  * // age 20
  */
-export function objloop(obj, cb){ for ( const key in obj ) { cb(key, obj[key]) } }
+// objloop function with typescript
+export function objloop<Obj extends object>(obj: Obj, cb: (key: keyof Obj, val: Obj[keyof Obj]) => void){ for ( const key in obj) { cb(key, obj[key]) } }
 
 /**
- * @deprecated use `objloop` instead
- * 
+ * The `keyloop` function loops through the given `object` and calls the `callback` function with the `key` as argument
+ * @param {object} obj // the object to loop through
+ * @param {CallableFunction} cb // the function to call in each iteration with the `key` as argument
+ * @example
+ * const obj = {name:"ahmed", age: 20};
+ * keyloop(obj, key => console.log(key)) // name
  */
-export function keyloop(obj, cb){ for ( const key in obj) { cb(key) } }
-export const print = console.log
+export function keyloop<Obj extends object>(obj: Obj, cb: (key: keyof Obj) => void){ for ( const key in obj) { cb(key) } }
 
-
+/**
+ * The `valloop` function loops through the given `object` and calls the `callback` function with the `value` as argument
+ * @param {object} obj // the object to loop through
+ * @param {CallableFunction} cb // the function to call in each iteration with the `value` as argument
+ * @example
+ * const obj = {name:"ahmed", age: 20};
+ * valloop(obj, val => console.log(val)) // ahmed
+ */
+export function valloop<Obj extends object>(obj: Obj, cb: (val: Obj[keyof Obj]) => void){ for ( const key in obj) { cb(obj[key]) } }
 
 
 /// ======================THE HOPERATORS CLASS: HANDY-JS: OPERATORS METHODS ======================
@@ -138,7 +146,6 @@ export default class HOperators {
      * it returns true if all the arguments are true
      * @memberof HOperators
      * @param  {...any} args
-     * @returns {boolean}
      * @example
      * HOperators.and(true, true, true) // true
      */
@@ -148,7 +155,6 @@ export default class HOperators {
      * it returns true if any of the arguments is true
      * @memberof HOperators
      * @param  {...any} args
-     * @returns {boolean}
      * @example
      * HOperators.or(true, false, false) // true
      */
@@ -158,7 +164,6 @@ export default class HOperators {
      * it returns the opposite of the argument given
      * @memberof HOperators
      * @param {any} arg
-     * @returns {boolean}
      * @example
      * HOperators.not(true) // false
      * HOperators.not(false) // true
@@ -170,7 +175,6 @@ export default class HOperators {
      * @memberof HOperators
      * @param {any} value1
      * @param {any} value2
-     * @returns {boolean}
      * @example
      * HOperators.is(1, 1) // true
      * HOperators.is("hello", "hi") // false
@@ -223,8 +227,24 @@ export default class HOperators {
     static objloop = objloop
 
     /**
-     * @deprecated use `HOperators.objloop()` instead
+     * The `keyloop` function loops through the given `object` and calls the `callback` function with the `key` as argument
+     * @param {object} obj // the object to loop through
+     * @param {CallableFunction} cb // the function to call in each iteration with the `key` as argument
+     * @example
+     * const obj = {name:"ahmed", age: 20};
+     * keyloop(obj, key => console.log(key)) // name
      */
     static keyloop = keyloop
-    static print = print
+
+    /**
+     * The `valloop` function loops through the given `object` and calls the `callback` function with the `value` as argument
+     * @memberof HOperators
+     * @param {object} obj // the object to loop through
+     * @param {CallableFunction} cb // the function to call in each iteration with the `value` as argument
+     * @example
+     * const obj = {name:"ahmed", age: 20};
+     * valloop(obj, val => console.log(val)) // ahmed
+     */
+    static valloop = valloop
+
 }
