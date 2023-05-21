@@ -2,8 +2,13 @@
   "name": "@handy.js/handy",
   "version": "1.0.1",
   "type": "module",
-  "description": "A set of usefull javascript modules that makes the js devlopment context easier",
-  "main": "index.js",
+  "description": "A set of useful modules that makes the javascript development context easier",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/handy-js/handy.git"
+  },
+  "main": "dist/handy.min.cjs",
+  "module": "dist/handy.min.js",
   "directories": {
     "lib": "lib"
   },
