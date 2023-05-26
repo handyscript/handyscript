@@ -9,5 +9,8 @@
   },
   "keywords": [],
   "author": "handy.js",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@handy.js/handy": "^2.0.1"
+  }
 }
