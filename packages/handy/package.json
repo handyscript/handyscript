@@ -1,25 +1,32 @@
 {
   "name": "@handy.js/handy",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
+  "author": "handy.js",
   "description": "A set of useful modules that makes the javascript development context easier",
+  "homepage": "https://github.com/handy-js/handy/tree/main/packages/handy#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/handy-js/handy.git"
+    "url": "git+https://github.com/handy-js/handy.git",
+    "directory": "packages/handy"
   },
+  "license": "MIT",
   "main": "dist/handy.min.cjs",
   "module": "dist/handy.min.js",
   "directories": {
     "lib": "lib"
   },
   "files": [
-    "dist"
+    "dist",
+    "lib",
+    "index.ts"
   ],
   "scripts": {
     "watch": "rollup -c rollup.config.js --config-dev -w",
     "build": "rollup -c rollup.config.js --config-prod"
   },
   "keywords": [
+    "es6",
     "js",
     "javascript",
     "modules",
@@ -29,14 +36,11 @@
     "newjs",
     "handy",
     "handy.js",
-    "handy-js"
+    "handy-js",
+    "var",
+    "let",
+    "const"
   ],
-  "author": "handy.js",
-  "links": {
-    "npm": "https://www.npmjs.com/package/@handy.js/handy",
-    "github": "https://github.com/handy-js/handy/tree/main/packages/handy"
-  },
-  "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
