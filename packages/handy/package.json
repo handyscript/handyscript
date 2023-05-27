@@ -22,6 +22,7 @@
     "index.ts"
   ],
   "scripts": {
+    "lint": "eslint . --ext .ts",
     "watch": "rollup -c rollup.config.js --config-dev -w",
     "build": "rollup -c rollup.config.js --config-prod"
   },
