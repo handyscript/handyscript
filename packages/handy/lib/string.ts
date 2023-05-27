@@ -38,9 +38,32 @@ declare global {
           * Returns the positions of the all occurrence of a substring.
           * @param {string} target — The substring to search for in the string
           * @param {number} startPosition — The index at which to begin searching the String object. If omitted, search starts at the beginning of the string.
-         */
+          */
         indexesOf(target: string, startPosition?: number): number[];
 
+        /**
+         * Returns a number indicating whether a reference string comes before or after or is the same as the given string in sort order.
+         * @param {string} target The string against which the referring string is comparing.
+         */
+        compare(target: string): number;
+
+        /**
+         * Returns true if the sequence of elements of searchString converted to a String 
+         * is the same as the corresponding elements of this object (converted to a String)
+         * starting at position. Otherwise returns false.
+         * @param {string} target The string against which the referring string is comparing.
+         * @param {number} position The index at which to begin searching the String object. If omitted, search starts at the beginning of the string.
+         */
+        equals(target: string, position?: number): boolean;
+
+        /**
+         * Returns true if the sequence of elements of searchString converted to a String
+         * is the same as the corresponding elements of this object (converted to a String) regardless of their casing,
+         * starting at position. Otherwise returns false.
+         * @param {string} target The string against which the referring string is comparing.
+         * @param {number} position The index at which to begin searching the String object. If omitted, search starts at the beginning of the string.
+         */
+        equalsIgnoreCase(target: string, position?: number, locales?: string | string[] | undefined): boolean;
     }
 }
 
@@ -75,5 +98,16 @@ String.prototype.indexesOf = function (target: string, startPosition?: number | 
     return indexes;
 };
 
+String.prototype.compare = function (target: string) {
+    return this.localeCompare(target);
+};
+
+String.prototype.equals = function (target: string, position: number = 0) {
+    return [...this].splice(position).join("") === [...target].splice(position).join("");
+};
+
+String.prototype.equalsIgnoreCase = function (target: string, position: number = 0, locales?: string | string[] | undefined) {
+    return [...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join("");
+};
 
 export default String;
