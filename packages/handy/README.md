@@ -46,9 +46,9 @@ Once you have installed or included the **handy.min.js** file, you can start usi
 ```javascript
 // Import the @handy.js/handy to extend the prebuilt js modules
 import "@handy.js/handy";
-// explicitly use the HOperators:
+// explicitly use the HOperators, HashMap
 // 1
-import { HOperators } from "@handy.js/handy"
+import { HOperators, HashMap } from "@handy.js/handy"
 // 2
 import { and, or, objloop } from "@handy.js/handy"
 
@@ -60,11 +60,20 @@ console.log(arr.shuffle().bubbleSort()); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 // The Math Module:
 console.log(Math.randomInt(1, 10)); // 7
-console.log(Math.clamp(10, 1, 5)) // 5
 
-// string Manipulation:
-const str = "hello world";
-console.log(str.toCapitalCase()); // "Hello World"
+// HashMap
+const obj = {
+    name: "John",
+    age: 20,
+    weight: 70,
+    height: 180,
+    isMarried: true,
+    isStudent: true,
+};
+
+const map = new HashMap(obj);
+
+console.log(map.getKeysByValue(true)); // ["isMarried","isStudent"]
 
 // Operators:
  const obj = { name:"ahmed", age: 20 };
@@ -84,25 +93,7 @@ Array.prototype.shuffle()
 Shuffles the elements of the array array and returns a new array.
 
 ```javascript
-Array.prototype.chunk(size) // default: 1
-```
-
-Splits the array array into chunks of size size and returns an array of arrays.
-
-```javascript
-Array.prototype.unique()
-```
-
-Returns a new array with duplicate elements removed.
-
-```javascript
-Array.prototype.countBy(callback)
-```
-
-Returns an object that counts the number of occurrences of each value in the array array, determined by the callback.
-
-```javascript
-Array.prototype.bubbleSort(item, sortalgo)
+Array.prototype.binarySearch(item, sortalgo)
 ```
 
 The `binarySearch` method searches an array for the specified item using the binary search algorithm. you can specify the sort algorithm to be used in sorting the array before searching
@@ -114,7 +105,7 @@ The `binarySearch` method searches an array for the specified item using the bin
 > It cover the most known/popular sort algorithms:
 
 ```javascript
-Array.prototype.binarySearch()
+Array.prototype.bubbleSort()
 ```
 
 Sorting the array using specific sort algorithms like : `bubbleSort`
@@ -142,18 +133,6 @@ Math.clamp(value, min = 1, max)
 
 Returns a value that is clamped between min and max.
 
-```javascript
-Math.lerp(start, end, t)
-```
-
-Returns a value between start and end that is determined by the value t, and the formula: `start * (1 - t) + end * t`.
-
-```javascript
-Math.map(value, inputMin, inputMax, outputMin, outputMax)
-```
-
-Maps the value from the range between inputMin and inputMax to the range between outputMin and outputMax.
-
 > There is more to discover ✨
 
 ### String manipulation
@@ -163,11 +142,5 @@ String.prototype.toCapitalCase()
 ```
 
 Capitalize the given string.
-
-```javascript
-String.prototype.indexesOf(target, startPosition=undefined)
-```
-
-Returns the positions of the all occurrence of a substring.
 
 > There is more to discover ✨
