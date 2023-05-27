@@ -24,86 +24,78 @@ declare global {
 
   interface Array<T> {
     /**
-     * The `shuffle()` method shuffles the elements in the given array.
+     * shuffles the elements in the given array.
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.shuffle() // [3, 5, 4, 1, 2]
      */
     shuffle(): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `bubbleSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order
-     * @this {Array} Time complexity: `O(n^2)`
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.bubbleSort() // [1, 2, 3, 4, 5]
      * arr.bubbleSort("desc") // [5, 4, 3, 2, 1]
      */
     bubbleSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `selectionSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.selectionSort() // [1, 2, 3, 4, 5]
      * arr.selectionSort("desc") // [5, 4, 3, 2, 1]
      */
     selectionSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `insertionSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.insertionSort() // [1, 2, 3, 4, 5]
      * arr.insertionSort("desc") // [5, 4, 3, 2, 1]
      */
     insertionSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `mergeSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.mergeSort() // [1, 2, 3, 4, 5]
      * arr.mergeSort("desc") // [5, 4, 3, 2, 1]
      */
     mergeSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `quickSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.quickSort() // [1, 2, 3, 4, 5]
      * arr.quickSort("desc") // [5, 4, 3, 2, 1]
      */
     quickSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `heapSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.heapSort() // [1, 2, 3, 4, 5]
      * arr.heapSort("desc") // [5, 4, 3, 2, 1]
      */
     heapSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `countingSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.countingSort() // [1, 2, 3, 4, 5]
      * arr.countingSort("desc") // [5, 4, 3, 2, 1]
      */
@@ -111,93 +103,98 @@ declare global {
 
 
     /**
-     * Sort the `array` in ascending or descending order using the `bucketSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.bucketSort() // [1, 2, 3, 4, 5]
      * arr.bucketSort(2,"desc") // [5, 4, 3, 2, 1]
      */
     bucketSort(order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `radixSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {number} radix // the radix base to be used wish sorting the array (default: 10)
      * @default radix = 10
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.radixSort() // [1, 2, 3, 4, 5]
      * arr.radixSort(10,"desc") // [5, 4, 3, 2, 1]
      */
     radixSort(radix?: number, order?: SortOrder): T[];
 
     /**
-     * Sort the `array` in ascending or descending order using the `shellSort()`.
-     * by default it will sort the array in ascending order.
+     * Sort or descending order using by default it will sort the array in ascending order.
      * @param {string} order // the order of the sorting: "asc" or "desc"
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.shellSort() // [1, 2, 3, 4, 5]
      * arr.shellSort("desc") // [5, 4, 3, 2, 1]
      */
     shellSort(order?: SortOrder): T[];
 
     /**
-     * The `chunk()` method splits an array into chunks of the given size.
+     * splits an array into chunks of the given size.
      * @param {number} size // the size of the chunk to be used wish splitting the array (default: 1)
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.chunk(2) // [[1, 2], [3, 4], [5]]
      */
     chunk(size?: number): T[][];
 
     /**
-     * the `compact()` method removes all falsy values from an array.
+     * removes all falsy values from an array.
      * @example
-     * const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
+     * const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
      * arr.compact() // [1, 2, 3, "a", "s", 34]
      */
     compact(): any[];
 
     /**
-     * The `filterNullish()` method removes all nullish `null` values from an array.
+     * removes all nullish `null` values from an array.
      * @example
-     * const arr = [0, null, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
+     * const arr = [0, null, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
      * arr.filterNullish() // [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]
      */
     filterNullish(): any[];
 
     /**
-     * The `unique()` method removes all duplicates from an array.
+     * removes all duplicates from an array.
      * @example
-     * const arr = [1, 2, 3, 4, 5, 5, 5, 6]);
+     * const arr = [1, 2, 3, 4, 5, 5, 5, 6];
      * arr.unique() // [1, 2, 3, 4, 5, 6]
      */
     unique(): T[];
 
     /**
-     * The `countBy()` method counts the occurrences of each element in an array.
+     * counts the occurrences of each element in an array.
      * @param {CallableFunction} callback
      * @example
-     * HArray.countBy([1, 2, 3, 4, 5], x => x % 2 === 0 ? 'even' : 'odd') // { odd: 3, even: 2 }
-     * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.countBy(x => x % 2 === 0 ? 'even' : 'odd') // { odd: 3, even: 2 }
      */
     countBy(callback: (item: any) => string): object;
 
     /**
-     * The `binarySearch()` method searches an array for the specified item using the binary search algorithm.
+     * searches an array for the specified item using the binary search algorithm.
      * @param {any} target // the target to be searched for
      * @param {BinarySortAlgorithms | undefined} sortalgo the sort algorithm to be used in sorting the array before searching
      * @example
-     * const arr = [1, 2, 3, 4, 5]);
+     * const arr = [1, 2, 3, 4, 5];
      * arr.binarySearch(3) // 2
      */
     binarySearch(target: any, sortalgo?: BinarySortAlgorithms): any | -1;
+
+    /**
+     * empties the array.
+     */
+    clear(): void;
+
+    /**
+     * return a true copy of the array.
+     */
+    copy(): T[];
   }    
  
 }
@@ -206,7 +203,7 @@ declare global {
 // arr.
 
 /**
- * The `range()` function creates an array of numbers in the given range.
+ * creates an array of numbers in the given range.
  * @param {number} start
  * @param {number} end
  * @param {number} step
@@ -492,6 +489,17 @@ Array.prototype.binarySearch = function (target: any, sortalgo:BinarySortAlgorit
         else end = mid - 1;
     }
     return -1;
+};
+
+Array.prototype.clear = function (){
+    if (this.length === 0) return this;
+    this.length = 0;
+    return this;
+};
+
+Array.prototype.copy = function (){
+    if (this.length === 0) return this;
+    return [...this];
 };
 
 export default Array;

@@ -1,6 +1,6 @@
 {
   "name": "@handy.js/handy",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "author": "handy.js",
   "description": "A set of useful modules that makes the javascript development context easier",
@@ -22,6 +22,7 @@
     "index.ts"
   ],
   "scripts": {
+    "lint": "eslint . --ext .ts",
     "watch": "rollup -c rollup.config.js --config-dev -w",
     "build": "rollup -c rollup.config.js --config-prod"
   },
