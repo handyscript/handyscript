@@ -289,6 +289,17 @@ Array.prototype.binarySearch = function (target, sortalgo) {
     }
     return -1;
 };
+Array.prototype.clear = function () {
+    if (this.length === 0)
+        return this;
+    this.length = 0;
+    return this;
+};
+Array.prototype.copy = function () {
+    if (this.length === 0)
+        return this;
+    return [...this];
+};
 
 String.prototype.toCapitalCase = function () {
     return this.split(" ").map((word) => { return word[0].toUpperCase() + word.slice(1); }).join(" ");
@@ -313,6 +324,15 @@ String.prototype.indexesOf = function (target, startPosition) {
         index = this.indexOf(target, index + 1);
     }
     return indexes;
+};
+String.prototype.compare = function (target) {
+    return this.localeCompare(target);
+};
+String.prototype.equals = function (target, position = 0) {
+    return [...this].splice(position).join("") === [...target].splice(position).join("");
+};
+String.prototype.equalsIgnoreCase = function (target, position = 0, locales) {
+    return [...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join("");
 };
 
 //// MATH - HANDY-JS: MATH METHODS --------------------------------------------
