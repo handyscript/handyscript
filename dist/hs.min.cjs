@@ -1,0 +1,1065 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+//// ------------------------------- HANDY ARRAYS © Handy-JS 5m/21d/23y -------------------------------
+Array.prototype.shuffle = function () {
+    if (this.length === 0)
+        return this;
+    for (let i = this.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this[i], this[j]] = [this[j], this[i]];
+    }
+    return this;
+};
+Array.prototype.bubbleSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    for (let i = 0; i < this.length; i++) {
+        for (let j = 0; j < this.length - i - 1; j++) {
+            if (order === "asc" ? this[j] > this[j + 1] : this[j] < this[j + 1]) {
+                [this[j], this[j + 1]] = [this[j + 1], this[j]];
+            }
+        }
+    }
+    return this;
+};
+Array.prototype.selectionSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    for (let i = 0; i < this.length; i++) {
+        let min = i;
+        for (let j = i + 1; j < this.length; j++) {
+            if (order === "asc" ? this[j] < this[min] : this[j] > this[min])
+                min = j;
+        }
+        if (min !== i)
+            [this[i], this[min]] = [this[min], this[i]];
+    }
+    return this;
+};
+Array.prototype.insertionSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    for (let i = 1; i < this.length; i++) {
+        let j = i - 1;
+        let temp = this[i];
+        while (j >= 0 && (order === "asc" ? this[j] > temp : this[j] < temp)) {
+            this[j + 1] = this[j];
+            j--;
+        }
+        this[j + 1] = temp;
+    }
+    return this;
+};
+Array.prototype.mergeSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    const merge = (left, right) => {
+        const result = [];
+        while (left.length && right.length) {
+            if (order === "asc" ? left[0] <= right[0] : left[0] >= right[0]) {
+                result.push(left.shift());
+            }
+            else {
+                result.push(right.shift());
+            }
+        }
+        while (left.length)
+            result.push(left.shift());
+        while (right.length)
+            result.push(right.shift());
+        return result;
+    };
+    if (this.length < 2)
+        return this;
+    const middle = Math.floor(this.length / 2);
+    const left = this.slice(0, middle);
+    const right = this.slice(middle, this.length);
+    return merge(left.mergeSort(order), right.mergeSort(order));
+};
+Array.prototype.quickSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    const partition = (arr, left, right) => {
+        const pivot = arr[Math.floor((right + left) / 2)];
+        let i = left;
+        let j = right;
+        while (i <= j) {
+            if (order === "asc") {
+                while (arr[i] < pivot)
+                    i++;
+                while (arr[j] > pivot)
+                    j--;
+            }
+            else {
+                while (arr[i] > pivot)
+                    i++;
+                while (arr[j] < pivot)
+                    j--;
+            }
+            if (i <= j) {
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+                i++;
+                j--;
+            }
+        }
+        return i;
+    };
+    let left = 0;
+    let right = this.length - 1;
+    let index;
+    if (this.length > 1) {
+        index = partition(this, left, right);
+        if (left < index - 1)
+            this.quickSort(order);
+        if (index < right)
+            this.quickSort(order);
+    }
+    return this;
+};
+Array.prototype.heapSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    const heapify = (arr, length, i) => {
+        let largest = i;
+        const left = i * 2 + 1;
+        const right = left + 1;
+        if (left < length && (order === "asc" ? arr[left] > arr[largest] : arr[left] < arr[largest]))
+            largest = left;
+        if (right < length && (order === "asc" ? arr[right] > arr[largest] : arr[right] < arr[largest]))
+            largest = right;
+        if (largest !== i) {
+            [arr[i], arr[largest]] = [arr[largest], arr[i]];
+            heapify(arr, length, largest);
+        }
+    };
+    const buildMaxHeap = (arr) => {
+        for (let i = Math.floor(arr.length / 2); i >= 0; i--)
+            heapify(arr, arr.length, i);
+        return arr;
+    };
+    buildMaxHeap(this);
+    for (let i = this.length - 1; i > 0; i--) {
+        [this[0], this[i]] = [this[i], this[0]];
+        heapify(this, i, 0);
+    }
+    return this;
+};
+// THIS: only support array of numbers
+Array.prototype.countingSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    if (!this.every(num => typeof num === "number"))
+        throw new Error("countingSort only support array of numbers");
+    const min = Math.min(...this);
+    const max = Math.max(...this);
+    const countBucket = new Array(max - min + 1).fill(0);
+    const start = order === "asc" ? 0 : countBucket.length - 1;
+    const step = order === "asc" ? 1 : -1;
+    for (let i = 0; i < this.length; i++)
+        countBucket[this[i] - min]++;
+    let index = start;
+    for (let i = 0; i < countBucket.length; i++) {
+        while (countBucket[i] > 0) {
+            this[index] = i + min;
+            index += step;
+            countBucket[i]--;
+        }
+    }
+    return this;
+};
+Array.prototype.bucketSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    const buckets = {};
+    for (const item of this) {
+        const key = item.toString();
+        if (!buckets[key]) {
+            buckets[key] = [];
+        }
+        buckets[key].push(item);
+    }
+    const sortedKeys = Object.keys(buckets).sort();
+    const sortedArray = [];
+    for (const key of sortedKeys) {
+        sortedArray.push(...buckets[key]);
+    }
+    return order === "asc" ? sortedArray : sortedArray.reverse();
+};
+// THIS: only support array of numbers
+// the radix sort is not working, it's frezzing the browser
+Array.prototype.radixSort = function (radix = 10, order = "asc") {
+    if (this.length === 0)
+        return this;
+    if (!this.every(num => typeof num === "number"))
+        throw new Error("radixSort only support array of numbers");
+    // TODO: fix radix sort
+    return this;
+};
+Array.prototype.shellSort = function (order = "asc") {
+    if (this.length === 0)
+        return this;
+    for (let gap = Math.floor(this.length / 2); gap > 0; gap = Math.floor(gap / 2)) {
+        for (let i = gap; i < this.length; i++) {
+            const temp = this[i];
+            let j;
+            for (j = i; j >= gap && (order === "asc" ? this[j - gap] > temp : this[j - gap] < temp); j -= gap) {
+                this[j] = this[j - gap];
+            }
+            this[j] = temp;
+        }
+    }
+    return this;
+};
+Array.prototype.chunk = function (size = 1) {
+    if (size < 1)
+        return this;
+    return this.slice(0, Math.ceil(this.length / size)).reduce((acc, _, i) => [...acc, this.slice(size * i, size * i + size)], []);
+};
+Array.prototype.compact = function () {
+    if (this.length === 0)
+        return this;
+    return this.filter(item => item);
+};
+Array.prototype.filterNullish = function () {
+    if (this.length === 0)
+        return this;
+    return this.filter(item => item != null);
+};
+Array.prototype.unique = function () {
+    if (this.length === 0)
+        return this;
+    return [...new Set(this)];
+};
+Array.prototype.countBy = function (callback) {
+    if (this.length === 0)
+        return this;
+    return this.reduce((acc, val) => {
+        const key = callback(val);
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+};
+Array.prototype.binarySearch = function (target, sortalgo) {
+    if (this.length === 0)
+        return -1;
+    // swith between the sort algorithms
+    let sortedArray = [];
+    switch (sortalgo) {
+        case 'bubble':
+            sortedArray = this.bubbleSort();
+            break;
+        case 'selection':
+            sortedArray = this.selectionSort();
+            break;
+        case 'insertion':
+            sortedArray = this.insertionSort();
+            break;
+        case 'merge':
+            sortedArray = this.mergeSort();
+            break;
+        case 'quick':
+            sortedArray = this.quickSort();
+            break;
+        case 'heap':
+            sortedArray = this.heapSort();
+            break;
+        case 'shell':
+            sortedArray = this.shellSort();
+            break;
+        case 'bucket':
+            sortedArray = this.bucketSort();
+            break;
+        default:
+            sortedArray = this.sort();
+            break;
+    }
+    // binary search
+    let start = 0;
+    let end = sortedArray.length - 1;
+    while (start <= end) {
+        const mid = Math.floor((start + end) / 2);
+        if (sortedArray[mid] === target)
+            return mid;
+        if (sortedArray[mid] < target)
+            start = mid + 1;
+        else
+            end = mid - 1;
+    }
+    return -1;
+};
+Array.prototype.clear = function () {
+    if (this.length === 0)
+        return this;
+    this.length = 0;
+    return this;
+};
+Array.prototype.copy = function () {
+    if (this.length === 0)
+        return this;
+    return [...this];
+};
+Array.prototype.sample = function (quantity = 1) {
+    if (this.length === 0)
+        return this;
+    if (quantity < 1)
+        return [];
+    if (quantity === 1)
+        return this[Math.randomInt(this.length)];
+    return this.sort(() => Math.random() - Math.random()).slice(0, quantity);
+};
+Array.prototype.count = function (target) {
+    if (this.length === 0)
+        return 0;
+    return this.filter(item => item === target).length;
+};
+Array.prototype.differ = function (other) {
+    if (this.length === 0)
+        return this;
+    return this.filter(item => !other.includes(item));
+};
+
+String.prototype.toCapitalCase = function () {
+    return this.split(" ").map((word) => { return word[0].toUpperCase() + word.slice(1); }).join(" ");
+};
+String.prototype.toLocaleCapitalCase = function (locales) {
+    return this.split(" ").map((word) => { return word[0].toLocaleUpperCase(locales) + word.slice(1); }).join(" ");
+};
+String.prototype.toCamelCase = function () {
+    return this.split(" ").map((word, index) => { return index === 0 ? word[0].toLowerCase() + word.slice(1) : word[0].toUpperCase() + word.slice(1); }).join("");
+};
+String.prototype.toLocaleCamelCase = function (locales) {
+    return this.split(" ").map((word, index) => { return index === 0 ? word[0].toLocaleLowerCase(locales) + word.slice(1) : word[0].toLocaleUpperCase(locales) + word.slice(1); }).join("");
+};
+String.prototype.reverse = function () {
+    return [...this].reverse().join("");
+};
+String.prototype.indexesOf = function (target, startPosition) {
+    let indexes = [];
+    let index = this.indexOf(target, startPosition);
+    while (index !== -1) {
+        indexes.push(index);
+        index = this.indexOf(target, index + 1);
+    }
+    return indexes;
+};
+String.prototype.compare = function (target) {
+    return this.localeCompare(target);
+};
+String.prototype.equals = function (target, position = 0) {
+    return [...this].splice(position).join("") === [...target].splice(position).join("");
+};
+String.prototype.equalsIgnoreCase = function (target, position = 0, locales) {
+    return [...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join("");
+};
+String.prototype.escape = function (isForAttribute = false) {
+    let str = this;
+    if (isForAttribute) {
+        str = str.replace(/"/g, "&quot;");
+    }
+    return str.replace(/[\n\r\t\v\f\b]/g, "").replace(/\s+/g, " ").replace(/[\u0000-\u001F]/g, "");
+};
+String.prototype.sample = function (wordCount = 0, separator = " ") {
+    let words = this.split(separator);
+    if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
+        return words.slice(0, Math.randomInt(this.length)).join(separator);
+    }
+    return words.slice(0, wordCount).join(separator);
+};
+String.prototype.size = function (separator = " ") {
+    return this.split(separator).length;
+};
+
+//// ------------------------------- HANDY MATH © Handy-JS 5m/21d/23y -------------------------------
+Object.assign(Math, {
+    A: 1.282427129100622636875342568869791727767688927325001192063740432988395529732,
+    B: 1.456074948582689671399595351116543266074274800178127884495013673643948446868,
+    G: 0.624329988543550870992936383100837235703606993625832517625695166735847239685,
+    K: 0.915965594177219015054603514932384110774149374281672134266498119621763019776,
+    TAU: 2 * Math.PI,
+    SQRT3: 1.73205080756887729352744634150587236694280525381038062805580697945193301690880,
+    PHI: 1.61803398874989484820458683436563811772030917980576286213544862270526046281890,
+    DELTA: 4.669201609102990671853203820466201617258185577475768632745651343004134330211,
+    GAMMA: 0.577215664901532860606512090082402431042159335939923598805767234884867726777,
+    ZETA3: 1.202056903159594285399738161511449990764986292340498881792271555341838205786,
+    THETA: 0.6434105463,
+    KAPPA: 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
+    randomInt(max, min = 0) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+    clamp(value, min, max) { return Math.min(Math.max(value, min), max); },
+    lerp(start, end, t) { return start * (1 - t) + end * t; },
+    map(value, inputMin, inputMax, outputMin, outputMax) {
+        const inputRange = inputMax - inputMin;
+        const outputRange = outputMax - outputMin;
+        const normalizedValue = (value - inputMin) / inputRange;
+        return outputMin + normalizedValue * outputRange;
+    }
+});
+
+//// ------------------------------- HANDY NUMBER © Handy-JS 6m/2d/23y -------------------------------
+Number.prototype.toHuman = function () {
+    const num = this.valueOf();
+    const si = [
+        { value: 1, symbol: "" },
+        { value: 1E3, symbol: "K" },
+        { value: 1E6, symbol: "M" },
+        { value: 1E9, symbol: "B" },
+        { value: 1E12, symbol: "T" },
+        { value: 1E15, symbol: "P" },
+        { value: 1E18, symbol: "E" },
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    let i;
+    for (i = si.length - 1; i > 0; i--)
+        if (num >= si[i].value)
+            break;
+    return (num / si[i].value).toFixed(2).replace(rx, "$1") + si[i].symbol;
+};
+Number.prototype.toReadable = function (separator = "-") {
+    const num = this.valueOf();
+    const rx = /(\d+)(\d{3})/;
+    return String(num).replace(/^\d+/, function (w) {
+        while (rx.test(w)) {
+            w = w.replace(rx, "$1" + separator + "$2");
+        }
+        return w;
+    });
+};
+
+//// ------------------------------- HANDY OPERATORS © Handy-JS 5m/21d/23y -------------------------------
+/**
+ * it returns true if all the arguments are true
+ * @param  {boolean[]} args
+ * @example
+ * and(true, true, true) // true
+ */
+function and(...args) { return args.every(arg => arg === true); }
+/**
+ * it returns true if any of the arguments is true
+ * @param  {boolean[]} args
+ * @example
+ * or(true, false, false) // true
+ */
+function or(...args) { return args.some(arg => arg === true); }
+/**
+ * it returns the opposite of the argument given
+ * @param {any} arg
+ * @example
+ * not(true) // false
+ */
+function not(arg) { return !arg; }
+/**
+ * the `is` function is used to compare two values if they are truly equal
+ * @param {any} value1
+ * @param {any} value2
+ * @example
+ * is(1, 1) // true
+ * is("hello", "hi") // false
+ * // Objects are compared by their keys recursively
+ * const obj1 = {name: "john", age: 20};
+ * const obj2 = {name: "john", age: 20};
+ * is(obj1, obj2) // true
+ *
+ * // Functions are compared by their source code
+ * const fn1 = () => console.log("hello");
+ * const fn2 = () => console.log("hi");
+ * is(fn1, fn2) // false
+ *
+ * // Dates are compared by their millisecond representation
+ * const date1 = new Date();
+ * const date2 = new Date(date1.getTime());
+ * is(date1, date2) // true
+ *
+ * // Regular expressions are compared by their source code
+ * const reg1 = /hello/;
+ * const reg2 = /hi/;
+ * is(reg1, reg2) // false
+ */
+function is(value1, value2) {
+    switch (typeof value1) {
+        // compare functions by their source code
+        case 'function': return value1.toString() === value2.toString();
+        // compare object by keys recursively
+        case 'object':
+            if (or(value1 === null, value2 === null)) {
+                return value1 === value2;
+            }
+            switch (value1.constructor) {
+                // compare dates by their millisecond representation
+                case Date: return value1.getTime() === value2.getTime();
+                // compare regular expressions by their source code
+                case RegExp: return value1.toString() === value2.toString();
+                default:
+                    if (not(is(value1.constructor, value2.constructor))) {
+                        return false;
+                    }
+                    const keys1 = Object.keys(value1);
+                    const keys2 = Object.keys(value2);
+                    if (not(is(keys1.length, keys2.length))) {
+                        return false;
+                    }
+                    return keys1.every(key => is(value1[key], value2[key]));
+            }
+        default: return value1 === value2;
+    }
+}
+/**
+ * loops through the given iterations and calls the callback function with the index ```i``` as argument
+ * @param {number} iterations// the number of iterations to loop through default is 1
+ * @param {CallableFunction} cb // the function to call in each iteration with the `index` ```i``` as argument
+ * @param {number} index // the starting index by default it's 0
+ * @param {number} step // the step to increment the index by default it's 1
+ * @example
+ * loop(5, i=>console.log(i)) // 0 1 2 3 4
+ */
+function loop(iterations = 1, cb, index = 0, step = 1) { for (index; index < iterations; index += step) {
+    cb(index);
+} }
+/**
+ * loops through the given `object` and calls the `callback` function with the `key` as argument
+ * @param {object} obj // the object to loop through
+ * @param {CallableFunction} cb // the function to call in each iteration with the `key` as argument
+ * @example
+ * const obj = {name:"ahmed", age: 20};
+ * objloop(obj, (key, val) => console.log(key, val))
+ * // name ahmed
+ * // age 20
+ */
+// objloop function with typescript
+function objloop(obj, cb) { for (const key in obj) {
+    cb(key, obj[key]);
+} }
+/**
+ * The `keyloop` function loops through the given `object` and calls the `callback` function with the `key` as argument
+ * @param {object} obj // the object to loop through
+ * @param {CallableFunction} cb // the function to call in each iteration with the `key` as argument
+ * @example
+ * const obj = {name:"ahmed", age: 20};
+ * keyloop(obj, key => console.log(key)) // name
+ */
+function keyloop(obj, cb) { for (const key in obj) {
+    cb(key);
+} }
+/**
+ * The `valloop` function loops through the given `object` and calls the `callback` function with the `value` as argument
+ * @param {object} obj // the object to loop through
+ * @param {CallableFunction} cb // the function to call in each iteration with the `value` as argument
+ * @example
+ * const obj = {name:"ahmed", age: 20};
+ * valloop(obj, val => console.log(val)) // ahmed
+ */
+function valloop(obj, cb) { for (const key in obj) {
+    cb(obj[key]);
+} }
+/// ======================THE HOPERATORS CLASS: HANDY-JS: OPERATORS METHODS ======================
+/**
+ * @namespace HOperators
+ * @description handy operators
+ * @example
+ * // 1
+ * import HOperators from 'handy-js'
+ * HOperators.and(true, true, true) // true
+ * HOperators.or(true, false, false) // true
+ * // 2
+ * import {and, or} from 'handy-js'
+ * and(true, true, true) // true
+ * or(true, false, false) // true
+ */
+class HOperators {
+    /**
+     * it returns true if all the arguments are true
+     * @memberof HOperators
+     * @param  {...any} args
+     * @example
+     * HOperators.and(true, true, true) // true
+     */
+    static and = and;
+    /**
+     * it returns true if any of the arguments is true
+     * @memberof HOperators
+     * @param  {...any} args
+     * @example
+     * HOperators.or(true, false, false) // true
+     */
+    static or = or;
+    /**
+     * it returns the opposite of the argument given
+     * @memberof HOperators
+     * @param {any} arg
+     * @example
+     * HOperators.not(true) // false
+     * HOperators.not(false) // true
+     */
+    static not = not;
+    /**
+     * This method is used to compare two values if they are truly equal
+     * @memberof HOperators
+     * @param {any} value1
+     * @param {any} value2
+     * @example
+     * HOperators.is(1, 1) // true
+     * HOperators.is("hello", "hi") // false
+     *
+     * // Objects are compared by their keys recursively
+     * const obj1 = {name: "john", age: 20};
+     * const obj2 = {name: "john", age: 20};
+     * HOperators.is(obj1, obj2) // true
+     *
+     * // Functions are compared by their source code
+     * const fn1 = () => console.log("hello");
+     * const fn2 = () => console.log("hi");
+     * HOperators.is(fn1, fn2) // false
+     *
+     * // Dates are compared by their millisecond representation
+     * const date1 = new Date();
+     * const date2 = new Date(date1.getTime());
+     * HOperators.is(date1, date2) // true
+     *
+     * // Regular expressions are compared by their source code
+     * const reg1 = /hello/;
+     * const reg2 = /hi/;
+     * HOperators.is(reg1, reg2) // false
+     */
+    static is = is;
+    /**
+     * loops through the given iterations and calls the callback function with the index ```i``` as argument
+     * @memberof HOperators
+     * @param {number} iterations// the number of iterations to loop through
+     * @param {CallableFunction} callback // the function to call in each iteration with the `index` ```i``` as argument
+     * @param {number} i // the starting index by default it's 0
+     * @param {number} step // the step to increment the index by default it's 1
+     * @example
+     * HOperators.loop(5, i=>console.log(i)) // 0 1 2 3 4
+     */
+    static loop = loop;
+    /**
+     * loops through the given `object` and calls the `callback` function with the `key` as argument
+     * @memberof HOperators
+     * @param {object} obj // the object to loop through
+     * @param {CallableFunction} callback // the function to call in each iteration with the `key` as argument
+     * @example
+     * const obj = {name:"ahmed", age: 20};
+     * HOperators.objloop(obj, (key, val) => console.log(key, val))
+     * // name ahmed # the keys
+     * // age 20 # the values
+     */
+    static objloop = objloop;
+    /**
+     * The `keyloop` function loops through the given `object` and calls the `callback` function with the `key` as argument
+     * @param {object} obj // the object to loop through
+     * @param {CallableFunction} cb // the function to call in each iteration with the `key` as argument
+     * @example
+     * const obj = {name:"ahmed", age: 20};
+     * keyloop(obj, key => console.log(key)) // name
+     */
+    static keyloop = keyloop;
+    /**
+     * The `valloop` function loops through the given `object` and calls the `callback` function with the `value` as argument
+     * @memberof HOperators
+     * @param {object} obj // the object to loop through
+     * @param {CallableFunction} cb // the function to call in each iteration with the `value` as argument
+     * @example
+     * const obj = {name:"ahmed", age: 20};
+     * valloop(obj, val => console.log(val)) // ahmed
+     */
+    static valloop = valloop;
+}
+
+//// ------------------------------- HANDY HASHMAP © Handy-JS 5m/27d/23y -------------------------------
+/**
+ * HashMap implementation in JavaScript
+ */
+class HashMap {
+    map = new Map();
+    constructor(obj) {
+        this.map = new Map();
+        if (obj) {
+            Object.keys(obj).forEach((key) => {
+                this.map.set(key, obj[key]);
+            });
+        }
+    }
+    /**
+     * Add a key-value pair to the HashMap
+     * @param key The key of the key-value pair
+     * @param value The value of the key-value pair
+     */
+    put(key, value) {
+        this.map.set(key, value);
+    }
+    /**
+     * Get the value associated with a key
+     * @param key The key whose value is to be returned
+     */
+    get(key) {
+        return this.map.get(key);
+    }
+    /**
+     * Get the value associated with a key or insert a new key-value pair if the key does not exist
+     * @param key The key whose value is to be updated
+     * @param value The value to be inserted if the key does not exist
+     */
+    upsert(key, value) {
+        if (this.contains(key)) {
+            this.map.set(key, value);
+        }
+        else {
+            this.put(key, value);
+        }
+    }
+    /**
+     * Update the value associated with a key
+     * @param key The key whose value is to be updated
+     * @param value The value to be updated
+     */
+    update(key, value) {
+        if (this.contains(key)) {
+            this.map.set(key, value);
+        }
+        else {
+            throw new Error(`Key ${key} does not exist`);
+        }
+    }
+    /**
+     * Remove a key-value pair from the HashMap
+     * @param key The key whose value is to be removed
+     */
+    remove(key) {
+        this.map.delete(key);
+    }
+    /**
+     * Check if the HashMap contains a given key
+     * @param key The key to be checked
+     */
+    contains(key) {
+        return this.map.has(key);
+    }
+    /**
+     * Get all the keys present in the HashMap
+     */
+    keys() {
+        return Array.from(this.map.keys());
+    }
+    /**
+     * Get all the values present in the HashMap
+     */
+    values() {
+        return Array.from(this.map.values());
+    }
+    /**
+     * Get the size of the HashMap
+     */
+    size() {
+        return this.map.size;
+    }
+    /**
+     * Clear the HashMap
+     */
+    clear() {
+        this.map.clear();
+    }
+    /**
+     * Check if the HashMap is empty
+     */
+    isEmpty() {
+        return this.map.size === 0;
+    }
+    /**
+     * Iterate over the HashMap
+     */
+    forEach(callback) {
+        for (const [key, value] of this.map) {
+            callback(value, key);
+        }
+    }
+    /**
+     * Filter the HashMap
+     */
+    filter(callback) {
+        const filtered = new HashMap();
+        this.forEach((value, key) => {
+            if (callback(value, key)) {
+                filtered.put(key, value);
+            }
+        });
+        return filtered;
+    }
+    /**
+     * Get the entries of the HashMap
+     */
+    entries() {
+        return Array.from(this.map.entries());
+    }
+    /**
+     * Convert the HashMap to an object
+     */
+    toObject() {
+        const obj = {};
+        this.forEach((value, key) => {
+            obj[key] = value;
+        });
+        return obj;
+    }
+    /**
+     * Convert the HashMap to an array
+     */
+    toArray() {
+        const arr = [];
+        this.forEach((value, key) => {
+            arr.push([key, value]);
+        });
+        return arr;
+    }
+    /**
+     * Convert the HashMap to a flat array
+     */
+    toFlatArray() {
+        const arr = [];
+        this.forEach((value, key) => {
+            arr.push(key);
+            arr.push(value);
+        });
+        return arr;
+    }
+    /**
+     * get the first key of the associated value
+     * @param value The value whose key is to be returned
+     */
+    getKeyByValue(value) {
+        for (const [key, val] of this.map) {
+            if (val === value) {
+                return key;
+            }
+        }
+        return null;
+    }
+    /**
+     * get all the keys of the associated value
+     * @param value The value whose keys are to be returned
+     */
+    getKeysByValue(value) {
+        const keys = [];
+        for (const [key, val] of this.map) {
+            if (val === value) {
+                keys.push(key);
+            }
+        }
+        return keys;
+    }
+    /**
+     * update the key of a value
+     * @param value The value whose key is to be updated
+     * @param newKey The new key to be updated
+     */
+    updateKeyByValue(value, newKey) {
+        const key = this.getKeyByValue(value);
+        if (key) {
+            this.remove(key);
+            this.put(newKey, value);
+        }
+    }
+}
+
+//// ------------------------------- HANDY MATRIX © Handy-JS 5m/28d/23y -------------------------------
+/**
+ * implementation of `matrix` operations in typescript/javascript
+ */
+class Matrix {
+    rows;
+    cols;
+    data;
+    constructor(data) {
+        if (Array.isArray(data)) {
+            // Copy the data array
+            this.data = [...data];
+            // Check if all rows have the same number of columns
+            const cols = data[0].length;
+            if (!data.every((row) => row.length === cols)) {
+                throw new Error("All rows must have the same number of columns.");
+            }
+            this.rows = data.length;
+            this.cols = cols;
+        }
+        else {
+            throw new Error("Invalid data format. Expecting an array of arrays.");
+        }
+    }
+    /**
+     * fill the matrix with zeros `0` based on the given `rows` and `columns`
+     */
+    static zeros(rows, cols) {
+        const data = new Array(rows)
+            .fill(0)
+            .map(() => new Array(cols).fill(0));
+        return new Matrix(data);
+    }
+    /**
+     * fill the matrix with ones `1` based on the given `rows` and `columns`
+     */
+    static ones(rows, cols) {
+        const data = new Array(rows)
+            .fill(0)
+            .map(() => new Array(cols).fill(1));
+        return new Matrix(data);
+    }
+    /**
+     * return a matrix with 1 along the `diagonal` and 0 elsewhere, based on the given `size`
+     */
+    static eye(size) {
+        const data = new Array(size).fill(0).map((_, i) => {
+            const row = new Array(size).fill(0);
+            row[i] = 1;
+            return row;
+        });
+        return new Matrix(data);
+    }
+    /**
+     * return a matrix with random values between `min` and `max` based on the given `rows` and `columns`
+     */
+    static random(rows, cols, max, min = 0) {
+        const data = new Array(rows)
+            .fill(0)
+            .map(() => new Array(cols).fill(0).map(() => Math.randomInt(max, min)));
+        return new Matrix(data);
+    }
+    /**
+     * add 2 matrices, `matrix1` + `matrix2`
+     */
+    static add(matrix1, matrix2) {
+        if (!Matrix.isSameSize(matrix1, matrix2)) {
+            throw new Error("Matrix dimensions must be the same for addition.");
+        }
+        const result = matrix1.data.map((row, i) => row.map((val, j) => val + matrix2.data[i][j]));
+        return new Matrix(result);
+    }
+    /**
+     * subtract 2 matrices, `matrix1` - `matrix2`
+     */
+    static subtract(matrix1, matrix2) {
+        if (!Matrix.isSameSize(matrix1, matrix2)) {
+            throw new Error("Matrix dimensions must be the same for subtraction.");
+        }
+        const result = matrix1.data.map((row, i) => row.map((val, j) => val - matrix2.data[i][j]));
+        return new Matrix(result);
+    }
+    /**
+     * multiply 2 matrices, `matrix1` * `matrix2`, complexity: `O(n^3)`
+     */
+    static multiply(matrix1, matrix2) {
+        if (matrix1.cols !== matrix2.rows) {
+            throw new Error("Number of columns in Matrix 1 must match the number of rows in Matrix 2 for multiplication.");
+        }
+        const result = new Array(matrix1.rows)
+            .fill(0)
+            .map(() => new Array(matrix2.cols).fill(0));
+        for (let i = 0; i < matrix1.rows; i++) {
+            for (let j = 0; j < matrix2.cols; j++) {
+                for (let k = 0; k < matrix1.cols; k++) {
+                    result[i][j] += matrix1.data[i][k] * matrix2.data[k][j];
+                }
+            }
+        }
+        return new Matrix(result);
+    }
+    /**
+     * multiply a matrix by a scalar, `matrix` * `scalar`
+     */
+    static scale(matrix, scalar) {
+        const result = matrix.data.map((row) => row.map((val) => val * scalar));
+        return new Matrix(result);
+    }
+    /**
+     * transpose a matrix by swapping rows and columns
+     * @param {Matrix} matrix - matrix to transpose
+     */
+    static transpose(matrix) {
+        const result = new Array(matrix.cols)
+            .fill(0)
+            .map(() => new Array(matrix.rows).fill(0));
+        for (let i = 0; i < matrix.rows; i++) {
+            for (let j = 0; j < matrix.cols; j++) {
+                result[j][i] = matrix.data[i][j];
+            }
+        }
+        return new Matrix(result);
+    }
+    /**
+     * compare tow matrices size
+     */
+    static isSameSize(matrix1, matrix2) {
+        return matrix1.rows === matrix2.rows && matrix1.cols === matrix2.cols;
+    }
+    /**
+     * check if the index of row and column is valid
+     */
+    static isValidIndex(matrix, rowIndex, colIndex) {
+        return (rowIndex >= 0 &&
+            rowIndex < matrix.rows &&
+            colIndex >= 0 &&
+            colIndex < matrix.cols);
+    }
+    /**
+     * return the size of the matrix
+     */
+    size() {
+        return { rows: this.rows, cols: this.cols };
+    }
+    /**
+     * return the shape of the matrix
+     */
+    shape() {
+        return [this.rows, this.cols];
+    }
+    /**
+     * get the value of the matrix at the given row (x-axis) and column (y-axis) (zero-indexed)
+     * @param row {number} The x-axis of the matrix
+     * @param col {number} The y-axis of the matrix
+     */
+    get(row, col) {
+        if (!Matrix.isValidIndex(this, row, col)) {
+            throw new Error("Invalid row or column index.");
+        }
+        return this.data[row][col];
+    }
+    /**
+     * set the value of the matrix at the given row (x-axis) and column (y-axis) (zero-indexed)
+     * @param row {number} The x-axis of the matrix
+     * @param col {number} The y-axis of the matrix
+     * @param value {number} The value to set at the given row and column
+     */
+    set(row, col, value) {
+        if (!Matrix.isValidIndex(this, row, col)) {
+            throw new Error("Invalid row or column index.");
+        }
+        this.data[row][col] = value;
+    }
+    /**
+     * convert the matrix to an array
+     */
+    toArray() {
+        return [...this.data];
+    }
+    /**
+     * convert the matrix to a flattened array
+     */
+    flatten() {
+        return this.data.flat();
+    }
+    /**
+     * make a copy of the matrix
+     */
+    clone() {
+        return new Matrix([...this.data]);
+    }
+    /**
+     * Print the matrix to the `console`
+     */
+    log() {
+        console.log(this.data.map((row) => row.join(" ")).join("\n"));
+    }
+}
+
+exports.HOperators = HOperators;
+exports.HashMap = HashMap;
+exports.Matrix = Matrix;
+//# sourceMappingURL=hs.min.cjs.map
