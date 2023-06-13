@@ -1,6 +1,0 @@
-# ignore node modules
-node_modules
-
-# igbore all test files
-/*.test.*
-/test.*
