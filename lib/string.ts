@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY STRING © Handy-JS 5m/21d/23y -------------------------------
+//// ------------------------------- HANDY STRING © HandyScript 5m/21d/23y -------------------------------
 declare global {
     interface String {
         /**

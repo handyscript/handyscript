@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY HASHMAP © Handy-JS 5m/27d/23y -------------------------------
+//// ------------------------------- HANDY HASHMAP © HandyScript 5m/27d/23y -------------------------------
 
 /**
  * HashMap implementation in JavaScript

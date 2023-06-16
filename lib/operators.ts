@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY OPERATORS © Handy-JS 5m/21d/23y -------------------------------
+//// ------------------------------- HANDY OPERATORS © HandyScript 5m/21d/23y -------------------------------
 
 /**
  * it returns true if all the arguments are true
@@ -126,18 +126,18 @@ export function keyloop<Obj extends object>(obj: Obj, cb: (key: keyof Obj) => vo
 export function valloop<Obj extends object>(obj: Obj, cb: (val: Obj[keyof Obj]) => void){ for ( const key in obj) { cb(obj[key]) } }
 
 
-/// ======================THE HOPERATORS CLASS: HANDY-JS: OPERATORS METHODS ======================
+/// ======================THE HOPERATORS CLASS: HandyScript: OPERATORS METHODS ======================
 
 /**
  * @namespace HOperators
  * @description handy operators
  * @example
  * // 1
- * import HOperators from 'handy-js'
+ * import HOperators from 'HandyScript'
  * HOperators.and(true, true, true) // true
  * HOperators.or(true, false, false) // true
  * // 2
- * import {and, or} from 'handy-js'
+ * import {and, or} from 'HandyScript'
  * and(true, true, true) // true
  * or(true, false, false) // true
  */

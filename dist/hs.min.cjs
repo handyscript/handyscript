@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-//// ------------------------------- HANDY ARRAYS © Handy-JS 5m/21d/23y -------------------------------
+//// ------------------------------- HANDY ARRAYS © HandyScript 5m/21d/23y -------------------------------
 Array.prototype.shuffle = function () {
     if (this.length === 0)
         return this;
@@ -371,7 +371,7 @@ String.prototype.size = function (separator = " ") {
     return this.split(separator).length;
 };
 
-//// ------------------------------- HANDY MATH © Handy-JS 5m/21d/23y -------------------------------
+//// ------------------------------- HANDY MATH © HandyScript 5m/21d/23y -------------------------------
 Object.assign(Math, {
     A: 1.282427129100622636875342568869791727767688927325001192063740432988395529732,
     B: 1.456074948582689671399595351116543266074274800178127884495013673643948446868,
@@ -396,7 +396,7 @@ Object.assign(Math, {
     }
 });
 
-//// ------------------------------- HANDY NUMBER © Handy-JS 6m/2d/23y -------------------------------
+//// ------------------------------- HANDY NUMBER © HandyScript 6m/2d/23y -------------------------------
 Number.prototype.toHuman = function () {
     const num = this.valueOf();
     const si = [
@@ -426,7 +426,7 @@ Number.prototype.toReadable = function (separator = "-") {
     });
 };
 
-//// ------------------------------- HANDY OPERATORS © Handy-JS 5m/21d/23y -------------------------------
+//// ------------------------------- HANDY OPERATORS © HandyScript 5m/21d/23y -------------------------------
 /**
  * it returns true if all the arguments are true
  * @param  {boolean[]} args
@@ -551,17 +551,17 @@ function keyloop(obj, cb) { for (const key in obj) {
 function valloop(obj, cb) { for (const key in obj) {
     cb(obj[key]);
 } }
-/// ======================THE HOPERATORS CLASS: HANDY-JS: OPERATORS METHODS ======================
+/// ======================THE HOPERATORS CLASS: HandyScript: OPERATORS METHODS ======================
 /**
  * @namespace HOperators
  * @description handy operators
  * @example
  * // 1
- * import HOperators from 'handy-js'
+ * import HOperators from 'HandyScript'
  * HOperators.and(true, true, true) // true
  * HOperators.or(true, false, false) // true
  * // 2
- * import {and, or} from 'handy-js'
+ * import {and, or} from 'HandyScript'
  * and(true, true, true) // true
  * or(true, false, false) // true
  */
@@ -665,7 +665,7 @@ class HOperators {
     static valloop = valloop;
 }
 
-//// ------------------------------- HANDY HASHMAP © Handy-JS 5m/27d/23y -------------------------------
+//// ------------------------------- HANDY HASHMAP © HandyScript 5m/27d/23y -------------------------------
 /**
  * HashMap implementation in JavaScript
  */
@@ -860,7 +860,7 @@ class HashMap {
     }
 }
 
-//// ------------------------------- HANDY MATRIX © Handy-JS 5m/28d/23y -------------------------------
+//// ------------------------------- HANDY MATRIX © HandyScript 5m/28d/23y -------------------------------
 /**
  * implementation of `matrix` operations in typescript/javascript
  */

@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY NUMBER © Handy-JS 6m/2d/23y -------------------------------
+//// ------------------------------- HANDY NUMBER © HandyScript 6m/2d/23y -------------------------------
 
 declare global {
     interface Number {
