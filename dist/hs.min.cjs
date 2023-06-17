@@ -426,6 +426,345 @@ Number.prototype.toReadable = function (separator = "-") {
     });
 };
 
+//// ------------------------------- HANDY HASHMAP © HandyScript 5m/27d/23y -------------------------------
+/**
+ * HashMap implementation in JavaScript
+ */
+class HashMap {
+    map = new Map();
+    constructor(obj) {
+        this.map = new Map();
+        if (obj) {
+            Object.keys(obj).forEach((key) => {
+                this.map.set(key, obj[key]);
+            });
+        }
+    }
+    /**
+     * Add a key-value pair to the HashMap
+     * @param key The key of the key-value pair
+     * @param value The value of the key-value pair
+     */
+    put(key, value) {
+        this.map.set(key, value);
+    }
+    /**
+     * Get the value associated with a key
+     * @param key The key whose value is to be returned
+     */
+    get(key) {
+        return this.map.get(key);
+    }
+    /**
+     * Get the value associated with a key or insert a new key-value pair if the key does not exist
+     * @param key The key whose value is to be updated
+     * @param value The value to be inserted if the key does not exist
+     */
+    upsert(key, value) {
+        if (this.contains(key)) {
+            this.map.set(key, value);
+        }
+        else {
+            this.put(key, value);
+        }
+    }
+    /**
+     * Update the value associated with a key
+     * @param key The key whose value is to be updated
+     * @param value The value to be updated
+     */
+    update(key, value) {
+        if (this.contains(key)) {
+            this.map.set(key, value);
+        }
+        else {
+            throw new Error(`Key ${key} does not exist`);
+        }
+    }
+    /**
+     * Remove a key-value pair from the HashMap
+     * @param key The key whose value is to be removed
+     */
+    remove(key) {
+        this.map.delete(key);
+    }
+    /**
+     * Check if the HashMap contains a given key
+     * @param key The key to be checked
+     */
+    contains(key) {
+        return this.map.has(key);
+    }
+    /**
+     * Get all the keys present in the HashMap
+     */
+    keys() {
+        return Array.from(this.map.keys());
+    }
+    /**
+     * Get all the values present in the HashMap
+     */
+    values() {
+        return Array.from(this.map.values());
+    }
+    /**
+     * Get the size of the HashMap
+     */
+    size() {
+        return this.map.size;
+    }
+    /**
+     * Clear the HashMap
+     */
+    clear() {
+        this.map.clear();
+    }
+    /**
+     * Check if the HashMap is empty
+     */
+    isEmpty() {
+        return this.map.size === 0;
+    }
+    /**
+     * Iterate over the HashMap
+     */
+    forEach(callback) {
+        for (const [key, value] of this.map) {
+            callback(value, key);
+        }
+    }
+    /**
+     * Filter the HashMap
+     */
+    filter(callback) {
+        const filtered = new HashMap();
+        this.forEach((value, key) => {
+            if (callback(value, key)) {
+                filtered.put(key, value);
+            }
+        });
+        return filtered;
+    }
+    /**
+     * Get the entries of the HashMap
+     */
+    entries() {
+        return Array.from(this.map.entries());
+    }
+    /**
+     * Convert the HashMap to an object
+     */
+    toObject() {
+        const obj = {};
+        this.forEach((value, key) => {
+            obj[key] = value;
+        });
+        return obj;
+    }
+    /**
+     * Convert the HashMap to an array
+     */
+    toArray() {
+        const arr = [];
+        this.forEach((value, key) => {
+            arr.push([key, value]);
+        });
+        return arr;
+    }
+    /**
+     * Convert the HashMap to a flat array
+     */
+    toFlatArray() {
+        const arr = [];
+        this.forEach((value, key) => {
+            arr.push(key);
+            arr.push(value);
+        });
+        return arr;
+    }
+    /**
+     * get the first key of the associated value
+     * @param value The value whose key is to be returned
+     */
+    getKeyByValue(value) {
+        for (const [key, val] of this.map) {
+            if (val === value) {
+                return key;
+            }
+        }
+        return null;
+    }
+    /**
+     * get all the keys of the associated value
+     * @param value The value whose keys are to be returned
+     */
+    getKeysByValue(value) {
+        const keys = [];
+        for (const [key, val] of this.map) {
+            if (val === value) {
+                keys.push(key);
+            }
+        }
+        return keys;
+    }
+    /**
+     * update the key of a value
+     * @param value The value whose key is to be updated
+     * @param newKey The new key to be updated
+     */
+    updateKeyByValue(value, newKey) {
+        const key = this.getKeyByValue(value);
+        if (key) {
+            this.remove(key);
+            this.put(newKey, value);
+        }
+    }
+}
+
+//// ------------------------------- HANDY JSON © HandyScript 6m/16d/23y -------------------------------
+Object.assign(JSON, {
+    isValid: (json) => {
+        try {
+            JSON.parse(json);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    },
+    flatten: (json) => {
+        const result = {}; // Type assertion to define result as Record<string, any>
+        const recurse = (cur, prop) => {
+            // useing switch instead of if-else for better performance
+            switch (true) {
+                case Object(cur) !== cur:
+                    result[prop] = cur;
+                    break;
+                case Array.isArray(cur):
+                    if (cur.length === 0)
+                        result[prop] = [];
+                    for (let i = 0; i < cur.length; i++) {
+                        recurse(cur[i], prop ? `${prop}.${i}` : `${i}`);
+                    }
+                    break;
+                default:
+                    let isEmpty = true;
+                    for (const p in cur) {
+                        isEmpty = false;
+                        recurse(cur[p], prop ? `${prop}.${p}` : p);
+                    }
+                    if (isEmpty)
+                        result[prop] = {};
+            }
+        };
+        recurse(json, "");
+        return result;
+    },
+    unflatten: (json) => {
+        if (Object(json) !== json || Array.isArray(json))
+            return json;
+        const result = {};
+        for (const key in json) {
+            const keys = key.split(".");
+            let cur = result;
+            for (let i = 0; i < keys.length - 1; i++) {
+                const key = keys[i];
+                cur[key] ??= Object(json) === json && !Array.isArray(json) ? {} : [];
+                cur = cur[key];
+            }
+            cur[keys[keys.length - 1]] = json[key];
+        }
+        return result[""];
+    },
+    merge: (json1, json2) => {
+        const result = JSON.parse(JSON.stringify(json1));
+        for (const key in json2) {
+            if (key in result && typeof result[key] === "object" && typeof json2[key] === "object") {
+                result[key] = JSON.merge(result[key], json2[key]);
+            }
+            else {
+                result[key] = json2[key];
+            }
+        }
+        return result;
+    },
+    filter: (json, condition) => {
+        if (Array.isArray(json)) {
+            const result = [];
+            for (const value of json) {
+                if (condition(value))
+                    result.push(value);
+            }
+            return result;
+        }
+        else {
+            const result = {};
+            for (const key in json) {
+                if (condition(json[key]))
+                    result[key] = json[key];
+            }
+            return result;
+        }
+    },
+    sort: (json, key, order = "asc") => {
+        json.sort((a, b) => {
+            if (a[key] > b[key])
+                return order === "asc" ? 1 : -1;
+            if (a[key] < b[key])
+                return order === "asc" ? -1 : 1;
+            return 0;
+        });
+    },
+    pluck: (json, key) => {
+        const result = [];
+        if (Array.isArray(json)) {
+            for (const value of json) {
+                result.push(value[key]);
+            }
+        }
+        else {
+            for (const value in json) {
+                result.push(json[value][key]);
+            }
+        }
+        return result;
+    },
+    transform: (json, mapping) => {
+        const result = {};
+        for (const key in mapping) {
+            result[key] = json[mapping[key]];
+        }
+        return result;
+    },
+    validateSchema: (json, schema) => {
+        for (const key in schema) {
+            if (!(key in json))
+                return false;
+            if (typeof schema[key] === "object" && typeof json[key] === "object") {
+                if (!JSON.validateSchema(json[key], schema[key]))
+                    return false;
+            }
+        }
+        return true;
+    },
+    query: (json, query) => {
+        const keys = query.split(".");
+        let result = json;
+        for (const key of keys) {
+            if (key in result) {
+                result = result[key];
+            }
+            else {
+                return null;
+            }
+        }
+        return result;
+    },
+    toHashmap: (json) => {
+        return new HashMap(json);
+    },
+});
+
 //// ------------------------------- HANDY OPERATORS © HandyScript 5m/21d/23y -------------------------------
 /**
  * it returns true if all the arguments are true
@@ -663,201 +1002,6 @@ class HOperators {
      * valloop(obj, val => console.log(val)) // ahmed
      */
     static valloop = valloop;
-}
-
-//// ------------------------------- HANDY HASHMAP © HandyScript 5m/27d/23y -------------------------------
-/**
- * HashMap implementation in JavaScript
- */
-class HashMap {
-    map = new Map();
-    constructor(obj) {
-        this.map = new Map();
-        if (obj) {
-            Object.keys(obj).forEach((key) => {
-                this.map.set(key, obj[key]);
-            });
-        }
-    }
-    /**
-     * Add a key-value pair to the HashMap
-     * @param key The key of the key-value pair
-     * @param value The value of the key-value pair
-     */
-    put(key, value) {
-        this.map.set(key, value);
-    }
-    /**
-     * Get the value associated with a key
-     * @param key The key whose value is to be returned
-     */
-    get(key) {
-        return this.map.get(key);
-    }
-    /**
-     * Get the value associated with a key or insert a new key-value pair if the key does not exist
-     * @param key The key whose value is to be updated
-     * @param value The value to be inserted if the key does not exist
-     */
-    upsert(key, value) {
-        if (this.contains(key)) {
-            this.map.set(key, value);
-        }
-        else {
-            this.put(key, value);
-        }
-    }
-    /**
-     * Update the value associated with a key
-     * @param key The key whose value is to be updated
-     * @param value The value to be updated
-     */
-    update(key, value) {
-        if (this.contains(key)) {
-            this.map.set(key, value);
-        }
-        else {
-            throw new Error(`Key ${key} does not exist`);
-        }
-    }
-    /**
-     * Remove a key-value pair from the HashMap
-     * @param key The key whose value is to be removed
-     */
-    remove(key) {
-        this.map.delete(key);
-    }
-    /**
-     * Check if the HashMap contains a given key
-     * @param key The key to be checked
-     */
-    contains(key) {
-        return this.map.has(key);
-    }
-    /**
-     * Get all the keys present in the HashMap
-     */
-    keys() {
-        return Array.from(this.map.keys());
-    }
-    /**
-     * Get all the values present in the HashMap
-     */
-    values() {
-        return Array.from(this.map.values());
-    }
-    /**
-     * Get the size of the HashMap
-     */
-    size() {
-        return this.map.size;
-    }
-    /**
-     * Clear the HashMap
-     */
-    clear() {
-        this.map.clear();
-    }
-    /**
-     * Check if the HashMap is empty
-     */
-    isEmpty() {
-        return this.map.size === 0;
-    }
-    /**
-     * Iterate over the HashMap
-     */
-    forEach(callback) {
-        for (const [key, value] of this.map) {
-            callback(value, key);
-        }
-    }
-    /**
-     * Filter the HashMap
-     */
-    filter(callback) {
-        const filtered = new HashMap();
-        this.forEach((value, key) => {
-            if (callback(value, key)) {
-                filtered.put(key, value);
-            }
-        });
-        return filtered;
-    }
-    /**
-     * Get the entries of the HashMap
-     */
-    entries() {
-        return Array.from(this.map.entries());
-    }
-    /**
-     * Convert the HashMap to an object
-     */
-    toObject() {
-        const obj = {};
-        this.forEach((value, key) => {
-            obj[key] = value;
-        });
-        return obj;
-    }
-    /**
-     * Convert the HashMap to an array
-     */
-    toArray() {
-        const arr = [];
-        this.forEach((value, key) => {
-            arr.push([key, value]);
-        });
-        return arr;
-    }
-    /**
-     * Convert the HashMap to a flat array
-     */
-    toFlatArray() {
-        const arr = [];
-        this.forEach((value, key) => {
-            arr.push(key);
-            arr.push(value);
-        });
-        return arr;
-    }
-    /**
-     * get the first key of the associated value
-     * @param value The value whose key is to be returned
-     */
-    getKeyByValue(value) {
-        for (const [key, val] of this.map) {
-            if (val === value) {
-                return key;
-            }
-        }
-        return null;
-    }
-    /**
-     * get all the keys of the associated value
-     * @param value The value whose keys are to be returned
-     */
-    getKeysByValue(value) {
-        const keys = [];
-        for (const [key, val] of this.map) {
-            if (val === value) {
-                keys.push(key);
-            }
-        }
-        return keys;
-    }
-    /**
-     * update the key of a value
-     * @param value The value whose key is to be updated
-     * @param newKey The new key to be updated
-     */
-    updateKeyByValue(value, newKey) {
-        const key = this.getKeyByValue(value);
-        if (key) {
-            this.remove(key);
-            this.put(newKey, value);
-        }
-    }
 }
 
 //// ------------------------------- HANDY MATRIX © HandyScript 5m/28d/23y -------------------------------
