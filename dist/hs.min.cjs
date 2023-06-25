@@ -385,7 +385,7 @@ Object.assign(Math, {
     ZETA3: 1.202056903159594285399738161511449990764986292340498881792271555341838205786,
     THETA: 0.6434105463,
     KAPPA: 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
-    randomInt(max, min = 0) { return Math.floor(Math.random() * (max - min + 1)) + min; },
+    randomInt(max = Number.MAX_SAFE_INTEGER, min = 0) { return Math.floor(Math.random() * (max - min + 1)) + min; },
     clamp(value, min, max) { return Math.min(Math.max(value, min), max); },
     lerp(start, end, t) { return start * (1 - t) + end * t; },
     map(value, inputMin, inputMax, outputMin, outputMax) {
@@ -736,16 +736,56 @@ Object.assign(JSON, {
         }
         return result;
     },
-    validateSchema: (json, schema) => {
-        for (const key in schema) {
-            if (!(key in json))
+    validateSchema: (data, schema) => {
+        const validateProperty = (value, propertySchema) => {
+            if (propertySchema.required && (value === undefined || value === null))
                 return false;
-            if (typeof schema[key] === "object" && typeof json[key] === "object") {
-                if (!JSON.validateSchema(json[key], schema[key]))
+            switch (propertySchema.type) {
+                case String:
+                    if (typeof value !== 'string')
+                        return false;
+                    break;
+                case Number:
+                    if (typeof value !== 'number')
+                        return false;
+                    break;
+                case Boolean:
+                    if (typeof value !== 'boolean')
+                        return false;
+                    break;
+                default:
+                    if (!(value instanceof propertySchema.type))
+                        return false;
+            }
+            if (propertySchema.regex && typeof value === 'string') {
+                const regex = new RegExp(propertySchema.regex);
+                if (!regex.test(value))
                     return false;
             }
+            if (propertySchema.properties)
+                return validateObject(value, propertySchema.properties);
+            return true;
+        };
+        const validateObject = (data, objectSchema) => {
+            for (const key in objectSchema) {
+                if (Object.prototype.hasOwnProperty.call(objectSchema, key)) {
+                    const propertySchema = objectSchema[key];
+                    if (!validateProperty(data[key], propertySchema))
+                        return false;
+                }
+            }
+            return true;
+        };
+        if (Array.isArray(schema)) {
+            if (!Array.isArray(data))
+                return false;
+            return data.every((item) => validateObject(item, schema[0]));
         }
-        return true;
+        else {
+            if (Array.isArray(data))
+                return false;
+            return validateObject(data, schema);
+        }
     },
     query: (json, query) => {
         const keys = query.split(".");
