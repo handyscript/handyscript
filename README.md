@@ -1,5 +1,5 @@
-<p align="center">
-<img height="200" alt="Handy Script Logo" src="assets/HSlogo.png"/>
+<p align="center" width="100%">
+<img width="100%" alt="Handy Script Cover" src="assets/HSCover.png"/>
 </p>
 
 <h1 align="center">Handy Script</h1>
@@ -183,5 +183,36 @@ Number.prototype.toHuman()
 ```
 
 Returns a string representation of a number in human readable format. like 1K, 1M, 1B, 1T, etc.
+
+> There is more to discover ✨
+
+### JSON manipulation
+
+```javascript
+var data = {
+    name: 'John Doe',
+    age: 30,
+    email: 'johndoe@example.com',
+    address: {
+        city: 'New York',
+        street: '123 Main St'
+    }
+};
+
+const schema = {
+    name: { type: String, required: true },
+    age: { type: Number },
+    email: { type: String, required: true },
+    address: {
+        type: Object,
+        properties: {
+            city: { type: String },
+            street: { type: String }
+        }
+    }
+};
+
+JSON.validateSchema(data, schema); // True
+```
 
 > There is more to discover ✨
