@@ -73,16 +73,11 @@ declare global{
 
         /**
          * returns a random number between `min` and `max` explicitly
-         * @param {number} max the maximum number
-         * @param {number} min the minimum number by default it's 0
          */
-        randomInt(max:number, min?:number):number
+        randomInt(max?:number, min?:number):number
 
         /**
          * clamps the `value` between `min` and `max` otherwise it returns the `min` or `max`
-         * @param {number} value the value to clamp
-         * @param {number} min the minimum value
-         * @param {number} max the maximum value
          * @example
          * HMath.clamp(10, 1, 5) // 5
          */
@@ -91,9 +86,6 @@ declare global{
         /**
          * returns a value between `start` and `end` based on the `t` value
          * The math formula is `start * (1 - t) + end * t`
-         * @param {number} start the start value
-         * @param {number} end the end value
-         * @param {number} t the t value
          * @example
          * HMath.lerp(0, 100, 0.5) // 50
          * HMath.lerp(0, 100, 0.25) // 25
@@ -134,7 +126,7 @@ Object.assign(Math, {
     THETA : 0.6434105463,
     KAPPA : 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
 
-    randomInt(max:number, min = 0){ return Math.floor(Math.random() * (max - min + 1)) + min},
+    randomInt(max = Number.MAX_SAFE_INTEGER, min = 0){ return Math.floor(Math.random() * (max - min + 1)) + min},
 
     clamp(value:number, min:number, max:number) { return Math.min(Math.max(value, min), max) },
 
