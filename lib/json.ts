@@ -4,6 +4,17 @@ import HashMap from "./hashmap";
 
 declare global{
 
+    type SchemaProperty<T = any> = {
+        type: StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor | T;
+        required?: boolean;
+        regex?: RegExp;
+        properties?: Schema<T>;
+    };
+      
+    type Schema<T = any> = {
+        [key: string]: SchemaProperty<T>;
+    };
+
     interface JSON{
         /**
          * Check if a JSON string is valid
@@ -49,7 +60,7 @@ declare global{
         /**
          * Validate a JSON object against a JSON schema
          */
-        validateSchema(json: object, schema: object): boolean;
+        validateSchema<T>(data: any, schema: Schema<T>): boolean;
 
         /**
          * Search a JSON object using a query string
@@ -190,14 +201,50 @@ Object.assign(JSON, {
         return result;
     },
 
-    validateSchema: (json: object, schema: object): boolean => {
-        for(const key in schema){
-            if(!(key in json)) return false;
-            if(typeof schema[key as keyof typeof schema] === "object" && typeof json[key as keyof typeof json] === "object"){
-                if(!JSON.validateSchema(json[key as keyof typeof json], schema[key as keyof typeof schema])) return false;
+    validateSchema: <T>(data: any, schema: Schema<T>): boolean => { 
+        const validateProperty = (value: any, propertySchema: any): boolean => {
+            if (propertySchema.required && (value === undefined || value === null)) return false;
+        
+            switch (propertySchema.type) {
+                case String:
+                    if (typeof value !== 'string') return false; break;
+                case Number:
+                    if (typeof value !== 'number') return false; break;
+                case Boolean:
+                    if (typeof value !== 'boolean') return false; break;
+                default:
+                    if (!(value instanceof propertySchema.type)) return false;
             }
+        
+            if (propertySchema.regex && typeof value === 'string') {
+                const regex = new RegExp(propertySchema.regex);
+                if (!regex.test(value)) return false;
+            }
+        
+            if (propertySchema.properties) return validateObject(value, propertySchema.properties);
+            return true;
+        };
+        
+        const validateObject = (data: any, objectSchema: any): boolean => {
+            for (const key in objectSchema) {
+                if (Object.prototype.hasOwnProperty.call(objectSchema, key)) {
+                    const propertySchema = objectSchema[key];
+            
+                    if (!validateProperty(data[key], propertySchema)) return false;
+                }
+            }
+        
+            return true;
+        };
+        
+        if (Array.isArray(schema)) {
+            if (!Array.isArray(data)) return false;
+            return data.every((item: any) => validateObject(item, schema[0]));
+        } else {
+            if (Array.isArray(data)) return false;
+            return validateObject(data, schema);
         }
-        return true;
+          
     },
 
     query: (json: object, query: string): any => {
