@@ -51,10 +51,7 @@ Once you have installed or included the **hs.min.js** file, you can start using 
 // Import the handyscript to extend the prebuilt js modules
 import "handyscript";
 // explicitly use the HOperators, HashMap
-// 1
-import { HOperators, HashMap } from "handyscript"
-// 2
-import { and, or, objloop } from "handyscript"
+import { HashMap } from "handyscript"
 
 // Array manipulation:
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -86,35 +83,29 @@ console.log(map.getKeysByValue(true)); // ["isMarried","isStudent"]
  // age 20
 ```
 
-## Functions
+## Functionalities
 
-### Array manipulation
+### [Array](https://github.com/handyscript/handyscript/blob/main/documentation/array.md)
+
+Shuffles the elements of the array array and returns a new array.
 
 ```javascript
 Array.prototype.shuffle()
 ```
 
-Shuffles the elements of the array array and returns a new array.
+The `binarySearch` method searches an array for the specified item using the binary search algorithm. you can specify the sort algorithm to be used in sorting the array before searching
 
 ```javascript
 Array.prototype.binarySearch(item, sortalgo)
 ```
 
-The `binarySearch` method searches an array for the specified item using the binary search algorithm. you can specify the sort algorithm to be used in sorting the array before searching
-
-> There is more to discover ✨
-
-### Sort methods
-
-> It cover the most known/popular sort algorithms:
+Sorting the array using specific sort algorithms like : `bubbleSort`
 
 ```javascript
 Array.prototype.bubbleSort()
 ```
 
-Sorting the array using specific sort algorithms like : `bubbleSort`
-
-### list of implemented sort algorithms
+### [list of implemented sort algorithms](https://github.com/handyscript/handyscript/blob/main/documentation/array.md#sort-algorithms)
 
 - bubbleSort
 - insertionSort
@@ -125,9 +116,11 @@ Sorting the array using specific sort algorithms like : `bubbleSort`
 - countingSort # ⚠ Only works with arrays of numbers
 - shellSort
 - bucketSort # accept a parameter for the number of buckets
-- radixSort # ⚠ Only works with arrays of numbers, Not implemented Yet
+- radixSort # ⚠ Only works with arrays of numbers
 
-> There is more to discover ✨
+> There is more to discover [here](https://github.com/handyscript/handyscript/blob/main/documentation/array.md) ✨
+
+<!-- > It cover the most known/popular sort algorithms: -->
 
 ### Matrix
 
@@ -159,34 +152,55 @@ matrixMulti.log();
 ### Math
 
 ```javascript
+// import the hole package:
+import "handyscript";
+// or import the target lib/module
+import "handyscript/lib/math";
+
 Math.clamp(value, min = 1, max)
+console.log(Math.randomInt(1, 10)); // 7
 ```
 
 Returns a value that is clamped between min and max.
 
 > There is more to discover ✨
 
-### String manipulation
+### String
 
 ```javascript
-String.prototype.toCapitalCase()
+// import the hole package:
+import "handyscript";
+// or import the target lib/module
+import "handyscript/lib/string";
+
+String.prototype.toCapitalCase(); // "Hello World" // capitalizes the first letter of every word in a string.
+String.prototype.toCamelCase();// "helloWorld": // capitalizes the first letter of every word starting with the second word in a string and removes all the spaces.
+String.prototype.reverse(); // reverse a string and string
+String.prototype.indexesOf(target, startPosition? = 0); // Returns the positions of the all occurrence of a substring.
+String.prototype.escape(isForAttribute? = false): string; // escape a string from all white spaces and all control characters (characters with a code point < U+0020).
 ```
 
-Capitalize the given string.
+Extends the builtin `String` module for more string manipulation
 
 > There is more to discover ✨
 
-### Number manipulation
+### Number
 
 ```javascript
-Number.prototype.toHuman()
+// import the hole package:
+import "handyscript";
+// or import the target lib/module
+import "handyscript/lib/number";
+
+Number.prototype.toHuman() // Returns a string representation of a number in human readable format. like 1K, 1M, 1B, 1T, etc.
+Number.prototype.toReadable(separator? = "-") // Returns a string representation of a number readable format. like 10-000, 1-000-000, 1-000-000-000, etc.
 ```
 
-Returns a string representation of a number in human readable format. like 1K, 1M, 1B, 1T, etc.
+Extends the prebuilt `Number` module for more number manipulation
 
 > There is more to discover ✨
 
-### JSON manipulation
+### [JSON manipulation](https://github.com/handyscript/handyscript/blob/main/documentation/array.md)
 
 ```javascript
 var data = {
@@ -215,4 +229,4 @@ const schema = {
 JSON.validateSchema(data, schema); // True
 ```
 
-> There is more to discover ✨
+> There is more to discover [Here](https://github.com/handyscript/handyscript/blob/main/documentation/json.md) ✨
