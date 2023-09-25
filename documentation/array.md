@@ -2,7 +2,7 @@
 
 This module contains extensions to the built-in `Array` object in TypeScript. It provides various sorting algorithms, array manipulation methods, and utility functions.
 
-**© HandyScript 5/21/23 - Last Update: 9/24/23**
+**© HandyScript Array 5/21/23 - Last Update: 9/24/23:**
 
 ## Table of Contents
 
@@ -50,7 +50,7 @@ Array.prototype.bubbleSort(this: ComparableData[], order?: SortOrder): Array<Com
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -73,7 +73,7 @@ Array.prototype.selectionSort(this: ComparableData[], order?: SortOrder): Array<
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
   
 **Returns:** The sorted array.
 
@@ -96,7 +96,7 @@ Array.prototype.insertionSort(this: ComparableData[], order?: SortOrder): Array<
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -119,7 +119,7 @@ Array.prototype.mergeSort(this: ComparableData[], order?: SortOrder): Array<Comp
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -142,7 +142,7 @@ Array.prototype.quickSort(this: ComparableData[], order?: SortOrder): Array<Comp
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -165,7 +165,7 @@ Array.prototype.heapSort(this: ComparableData[], order?: SortOrder): Array<Compa
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -212,7 +212,7 @@ Array.prototype.bucketSort(this: ComparableData[], order?: SortOrder): Array<Com
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
 
 **Returns:** The sorted array.
 
@@ -261,7 +261,7 @@ Array.prototype.shellSort(this: ComparableData[], order?: SortOrder): Array<Comp
 **Parameters:**
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
-- `this` - The array to sort, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
   
 **Returns:** The sorted array.
 
@@ -500,7 +500,7 @@ arr.differ([1, 2, 3, 4, 5]); // []
 ## Binary Search
 
 Searches for an element in a sorted array using the [Binary Search](https://www.programiz.com/dsa/binary-search) algorithm.
-> **⚠️ Note:** This method only works on sorted & [Comparable Data](#Comparable-data) arrays.
+> **⚠️ Note:** This method only works on sorted & [Comparable Data](#comparable-data) arrays.
 
 ```typescript
 Array.prototype.binarySearch(this: ComparableData[], target: ComparableData, sortalgo?: BinarySortAlgorithms): number;
@@ -508,9 +508,9 @@ Array.prototype.binarySearch(this: ComparableData[], target: ComparableData, sor
 
 **Parameters:**
 
-- `target` - The element to search for, should be type of [Comparable Data](#Comparable-data).
+- `target` - The element to search for, should be type of [Comparable Data](#comparable-data).
 - `sortalgo` - The sorting algorithm to use from [Binary Sort Algorithms](#binary-sort-algorithms) to sort the array before proceeding in the search process. Default is `Array.prototype.sort()`.
-- `this` -  The array to search in, must be an array of [Comparable Data](#Comparable-data) type.
+- `this` -  The array to search in, must be an array of [Comparable Data](#comparable-data) type.
   
 **Returns:** The index of the element if found, otherwise `-1`.
 
@@ -559,6 +559,6 @@ type BinarySortAlgorithms =
   | "shell";
 ```
 
-**© HandyScript 5/21/23**
+**© HandyScript Array 5/21/23:**
 
-This Markdown documentation includes sections for various sorting algorithms and array manipulation methods, along with their descriptions and TypeScript function signatures. The table of contents at the beginning of the document allows for easy navigation.
+This Markdown documentation includes sections for various sorting algorithms and array manipulation methods, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
