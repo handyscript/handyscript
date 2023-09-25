@@ -127,3 +127,9 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# testing
+# /test
+# /test/**/*
+# *.test.*
+# *.spec.*
