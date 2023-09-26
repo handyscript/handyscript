@@ -1,0 +1,16 @@
+{
+  "name": "handyscript_test_lab",
+  "version": "1.0.0",
+  "description": "Handy Script Test Lab",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc index.test.ts && node index.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "handyutility": "^1.0.0"
+  }
+}
