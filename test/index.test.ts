@@ -1,4 +1,7 @@
-import "handyscript";
+// import "handyscript";
+import "../lib/date";
+
+import Utils from "handyutility";
 
 type AddressSchema = {
   city: string;
@@ -13,12 +16,12 @@ type UserSchema = {
 };
 
 const data: UserSchema = {
-  name: 'John Doe',
+  name: "John Doe",
   age: 30,
-  email: 'johndoe@example.com',
+  email: "johndoe@example.com",
   address: {
-    city: 'New York',
-    street: '123 Main St'
+    city: "New York",
+    street: "123 Main St"
   }
 };
 
@@ -36,4 +39,9 @@ const schema: Schema<UserSchema> = {
 };
 
 const isValid = JSON.validateSchema(data, schema);
-console.log('Is valid:', isValid);
+console.log("Is valid:", isValid);
+console.log(new Date().daysInMonth());
+console.log(new Date().timestamp());
+
+console.log(Utils.operators.is(1, 1));
+

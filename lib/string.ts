@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY STRING © HandyScript 5m/21d/23y -------------------------------
+/// ------------------------------- HANDY STRING © HandyScript 5m/21d/23y -------------------------------
 declare global {
 	interface String {
 		/**
@@ -118,7 +118,7 @@ String.prototype.reverse = function () {
 };
 
 String.prototype.indexesOf = function (target: string, startPosition?: number | undefined) {
-  let indexes: number[] = [];
+  const indexes: number[] = [];
   let index = this.indexOf(target, startPosition);
   while (index !== -1) {
     indexes.push(index);
@@ -131,33 +131,27 @@ String.prototype.compare = function (target: string) {
   return this.localeCompare(target);
 };
 
-String.prototype.equals = function (target: string, position: number = 0) {
-  return (
-    [...this].splice(position).join("") ===
-		[...target].splice(position).join("")
-  );
+String.prototype.equals = function (target: string, position = 0) {
+  return ([...this].splice(position).join("") === [...target].splice(position).join(""));
 };
 
-String.prototype.equalsIgnoreCase = function (target: string, position: number = 0, locales?: string | string[] | undefined) {
-  return (
-    [...this.toLocaleLowerCase(locales)].splice(position).join("") ===
-		[...target.toLocaleLowerCase(locales)].splice(position).join("")
-  );
+String.prototype.equalsIgnoreCase = function (target: string, position = 0, locales?: string | string[] | undefined) {
+  return ([...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join(""));
 };
 
-String.prototype.escape = function (isForAttribute: boolean = false) {
-  let str = this;
+String.prototype.escape = function (isForAttribute = false) {
   if (isForAttribute) {
-    str = str.replace(/"/g, "&quot;");
+    this.replace(/"/g, "&quot;");
   }
-  return str
+  return this
     .replace(/[\n\r\t\v\f\b]/g, "")
     .replace(/\s+/g, " ")
+    // eslint-disable-next-line no-control-regex
     .replace(/[\u0000-\u001F]/g, "");
 };
 
-String.prototype.sample = function (wordCount: number = 0, separator: string | RegExp = " ") {
-  let words = this.split(separator);
+String.prototype.sample = function (wordCount = 0, separator: string | RegExp = " ") {
+  const words = this.split(separator);
   if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
     return words
       .slice(0, Math.randomInt(this.length))

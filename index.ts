@@ -3,12 +3,11 @@ import "./lib/string";
 import "./lib/math";
 import "./lib/number";
 import "./lib/json";
-import HOperators from "./lib/operators";
-import HashMap from "./lib/hashmap";
-import Matrix from "./lib/matrix";
+import "./lib/date";
+import HashMap from "./lib/hashmap.js";
+import Matrix from "./lib/matrix.js";
 
 export {
-    HOperators,
-    HashMap,
-    Matrix,
+  HashMap,
+  Matrix,
 };
