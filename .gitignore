@@ -129,6 +129,7 @@ out
 .pnp.*
 
 # testing
+/test/node_modules
 # /test
 # /test/**/*
 # *.test.*
