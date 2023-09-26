@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY MATRIX © HandyScript 5m/28d/23y -------------------------------
+/// ------------------------------- HANDY MATRIX © HandyScript 5m/28d/23y -------------------------------
 
 /**
  * implementation of `matrix` operations in typescript/javascript

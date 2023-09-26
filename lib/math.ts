@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
-//// ------------------------------- HANDY MATH © HandyScript 5m/21d/23y -------------------------------
+/// ------------------------------- HANDY MATH © HandyScript 5m/21d/23y -------------------------------
 
 declare global {
 	interface Math {

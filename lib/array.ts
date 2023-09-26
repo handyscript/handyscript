@@ -1,4 +1,9 @@
-//// ------------------------------- HANDY ARRAYS © HandyScript 5m/21d/23y -------------------------------
+/// ------------------------------- HANDY ARRAYS © HandyScript 5m/21d/23y -------------------------------
+/**
+ * This file contains extensions to the built-in Array object in TypeScript.
+ * It provides various sorting algorithms, array manipulation methods, and utility functions.
+ * @packageDocumentation
+ */
 
 declare global {
 	/**
@@ -24,125 +29,80 @@ declare global {
   /**
    * `ComparableData` is a type that represents the comparable data.
    */
-  type ComparableData<T> = T[] | readonly T[];
+  type ComparableData = number | string | boolean | Date;
 
 	interface Array<T> {
 		/**
-		 * shuffles the elements in the given array.
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.shuffle() // [3, 5, 4, 1, 2]
+		 * shuffles the elements in the given array in a random order.
 		 */
 		shuffle(): T[];
 
 		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.bubbleSort() // [1, 2, 3, 4, 5]
-		 * arr.bubbleSort("desc") // [5, 4, 3, 2, 1]
+		 * Sort the array using the [`Bubble Sort`](https://www.programiz.com/dsa/bubble-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
-		bubbleSort(order?: SortOrder): T[];
+		bubbleSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Selection Sort`](https://www.programiz.com/dsa/selection-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		selectionSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Insertion Sort`](https://www.programiz.com/dsa/insertion-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		insertionSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Merge Sort`](https://www.programiz.com/dsa/merge-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		mergeSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Quick Sort`](https://www.programiz.com/dsa/quick-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		quickSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Heap Sort`](https://www.programiz.com/dsa/heap-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		heapSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
+
+		/**
+		 * Sort the array using the [`Counting Sort`](https://www.programiz.com/dsa/counting-sort) algorithm.
+     **  @note it supports only numbers
+		 * @param {string} order the order of the sorting: "asc" or "desc"
+		 */
+		countingSort(this: number[], order?: SortOrder): number[];
+
+		/**
+		 * Sort the array using the [`Bucket Sort`](https://www.programiz.com/dsa/bucket-sort) algorithm.
+		 * @param {string} order // the order of the sorting: "asc" or "desc"
+		 */
+		bucketSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
 		 * Sort or descending order using by default it will sort the array in ascending order.
+     **  @note it supports only numbers
+		 * @param {number} radix // the radix base to be used wish sorting the array `(default: 10)`
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.selectionSort() // [1, 2, 3, 4, 5]
-		 * arr.selectionSort("desc") // [5, 4, 3, 2, 1]
 		 */
-		selectionSort(order?: SortOrder): T[];
+		radixSort(this: number[], radix?: number, order?: SortOrder): number[];
 
 		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
+		 * Sort the array using the [`Shell Sort`](https://www.programiz.com/dsa/shell-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.insertionSort() // [1, 2, 3, 4, 5]
-		 * arr.insertionSort("desc") // [5, 4, 3, 2, 1]
 		 */
-		insertionSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.mergeSort() // [1, 2, 3, 4, 5]
-		 * arr.mergeSort("desc") // [5, 4, 3, 2, 1]
-		 */
-		mergeSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.quickSort() // [1, 2, 3, 4, 5]
-		 * arr.quickSort("desc") // [5, 4, 3, 2, 1]
-		 */
-		quickSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.heapSort() // [1, 2, 3, 4, 5]
-		 * arr.heapSort("desc") // [5, 4, 3, 2, 1]
-		 */
-		heapSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.countingSort() // [1, 2, 3, 4, 5]
-		 * arr.countingSort("desc") // [5, 4, 3, 2, 1]
-		 */
-		countingSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.bucketSort() // [1, 2, 3, 4, 5]
-		 * arr.bucketSort(2,"desc") // [5, 4, 3, 2, 1]
-		 */
-		bucketSort(order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {number} radix // the radix base to be used wish sorting the array (default: 10)
-		 * @default radix = 10
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.radixSort() // [1, 2, 3, 4, 5]
-		 * arr.radixSort(10,"desc") // [5, 4, 3, 2, 1]
-		 */
-		radixSort(radix?: number, order?: SortOrder): T[];
-
-		/**
-		 * Sort or descending order using by default it will sort the array in ascending order.
-		 * @param {string} order // the order of the sorting: "asc" or "desc"
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.shellSort() // [1, 2, 3, 4, 5]
-		 * arr.shellSort("desc") // [5, 4, 3, 2, 1]
-		 */
-		shellSort(order?: SortOrder): T[];
+		shellSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
 		 * splits an array into chunks of the given size.
-		 * @param {number} size // the size of the chunk to be used wish splitting the array (default: 1)
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.chunk(2) // [[1, 2], [3, 4], [5]]
+		 * @param {number} size // the size of the chunk to be used wish splitting the array `(default: 1)`
 		 */
 		chunk(size?: number): T[][];
 
@@ -152,21 +112,15 @@ declare global {
 		 * const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
 		 * arr.compact() // [1, 2, 3, "a", "s", 34]
 		 */
-		compact(): unknown[];
+		compact(): T[];
 
 		/**
 		 * removes all nullish `null` values from an array.
-		 * @example
-		 * const arr = [0, null, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
-		 * arr.filterNullish() // [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34]
 		 */
-		filterNullish(): unknown[];
+		filterNullish(): T[];
 
 		/**
 		 * removes all duplicates from an array.
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5, 5, 5, 6];
-		 * arr.unique() // [1, 2, 3, 4, 5, 6]
 		 */
 		unique(): T[];
 
@@ -177,17 +131,14 @@ declare global {
 		 * const arr = [1, 2, 3, 4, 5];
 		 * arr.countBy(x => x % 2 === 0 ? 'even' : 'odd') // { odd: 3, even: 2 }
 		 */
-		countBy(callback: (item: unknown) => string): object;
+		countBy(callback: (item: T) => string): Record<string, number>;
 
 		/**
-		 * searches an array for the specified item using the binary search algorithm.
+		 * searches an array for the specified item using the binary search algorithm and returns its index. otherwise, returns -1.
 		 * @param {T} target // the target to be searched for
 		 * @param {BinarySortAlgorithms | undefined} sortalgo the sort algorithm to be used in sorting the array before searching
-		 * @example
-		 * const arr = [1, 2, 3, 4, 5];
-		 * arr.binarySearch(3) // 2
 		 */
-		binarySearch<T>(target: T, sortalgo?: BinarySortAlgorithms): number;
+		binarySearch(this: ComparableData[], target: ComparableData, sortalgo?: BinarySortAlgorithms): number;
 
 		/**
 		 * empties the array.
@@ -207,27 +158,19 @@ declare global {
 
 		/**
 		 * count the occurrences of a value in an array.
-		 * @param {unknown} target the target to be searched for
+		 * @param {T} target the target to be searched for
 		 */
-		count(target: unknown): number;
+		count<T>(target: T): number;
 
 		/**
 		 * return the difference between two arrays in a new array.
 		 */
-		differ(other: unknown[]): T[];
+		differ(other: unknown[]): unknown[];
 	}
 }
 
-// const arr = [1, 2, 3, 4, 5];
-// arr.
-
 /**
  * creates an array of numbers in the given range.
- * @param {number} start
- * @param {number} end
- * @param {number} step
- * @example
- * HArray.range(0, 5) // [0, 1, 2, 3, 4, 5]
  */
 export function range(end: number, start = 0, step = 1) {
   const length = Math.floor((end - start) / step) + 1;
@@ -244,12 +187,19 @@ Array.prototype.shuffle = function () {
   return this;
 };
 
-Array.prototype.bubbleSort = function (order: SortOrder = "asc") {
+Array.prototype.bubbleSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("bubbleSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
   for (let i = 0; i < this.length; i++) {
     for (let j = 0; j < this.length - i - 1; j++) {
-      if (order === "asc" ? this[j] > this[j + 1] : this[j] < this[j + 1]) {
+      const a = this[j] as ComparableData; // Type assertion to ensure that a is not null or undefined
+      const b = this[j + 1] as ComparableData; // Type assertion to ensure that b is not null or undefined
+
+      if (a !== undefined && b !== undefined && (order === "asc" ? a > b : a < b)) {
         [this[j], this[j + 1]] = [this[j + 1], this[j]];
       }
     }
@@ -257,8 +207,12 @@ Array.prototype.bubbleSort = function (order: SortOrder = "asc") {
   return this;
 };
 
-Array.prototype.selectionSort = function (order: SortOrder = "asc") {
+Array.prototype.selectionSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("selectionSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
   for (let i = 0; i < this.length; i++) {
     let min = i;
@@ -270,8 +224,12 @@ Array.prototype.selectionSort = function (order: SortOrder = "asc") {
   return this;
 };
 
-Array.prototype.insertionSort = function (order: SortOrder = "asc") {
+Array.prototype.insertionSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("insertionSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
   for (let i = 1; i < this.length; i++) {
     let j = i - 1;
@@ -285,34 +243,42 @@ Array.prototype.insertionSort = function (order: SortOrder = "asc") {
   return this;
 };
 
-Array.prototype.mergeSort = function <T>(order: SortOrder = "asc"): T[] {
+Array.prototype.mergeSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("mergeSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
-  const merge = (left: T[], right: T[]): T[] => {
-    const result: T[] = [];
+  const merge = (left: ComparableData[], right: ComparableData[]): ComparableData[] => {
+    const result: ComparableData[] = [];
     while (left.length && right.length) {
       if (order === "asc" ? left[0] <= right[0] : left[0] >= right[0]) {
-        result.push(left.shift() as T);
+        result.push(left.shift() as ComparableData);
       } else {
-        result.push(right.shift() as T);
+        result.push(right.shift() as ComparableData);
       }
     }
-    while (left.length) result.push(left.shift() as T);
-    while (right.length) result.push(right.shift() as T);
+    while (left.length) result.push(left.shift() as ComparableData);
+    while (right.length) result.push(right.shift() as ComparableData);
     return result;
   };
 
-  if (this.length < 2) return this.slice() as T[];
+  if (this.length < 2) return this.slice() as ComparableData[];
   const middle = Math.floor(this.length / 2);
-  const left = this.slice(0, middle) as T[];
-  const right = this.slice(middle, this.length) as T[];
+  const left = this.slice(0, middle) as ComparableData[];
+  const right = this.slice(middle, this.length) as ComparableData[];
   return merge(left.mergeSort(order), right.mergeSort(order));
 };
 
-Array.prototype.quickSort = function <T>(order: SortOrder = "asc"): T[] {
+Array.prototype.quickSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("quickSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
-  const partition = (arr: T[], left: number, right: number): number => {
+  const partition = (arr: ComparableData[], left: number, right: number): number => {
     const pivot = arr[Math.floor((right + left) / 2)];
     let i = left;
     let j = right;
@@ -333,7 +299,7 @@ Array.prototype.quickSort = function <T>(order: SortOrder = "asc"): T[] {
     return i;
   };
 
-  const quickSortRecursion = (arr: T[], left: number, right: number) => {
+  const quickSortRecursion = (arr: ComparableData[], left: number, right: number) => {
     if (left < right) {
       const index = partition(arr, left, right);
       if (left < index - 1) quickSortRecursion(arr, left, index - 1);
@@ -345,10 +311,14 @@ Array.prototype.quickSort = function <T>(order: SortOrder = "asc"): T[] {
   return this;
 };
 
-Array.prototype.heapSort = function <T>(order: SortOrder = "asc"): T[] {
+Array.prototype.heapSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("heapSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
-  const heapify = (arr: T[], length: number, i: number) => {
+  const heapify = (arr: ComparableData[], length: number, i: number) => {
     let largest = i;
     const left = i * 2 + 1;
     const right = left + 1;
@@ -368,7 +338,7 @@ Array.prototype.heapSort = function <T>(order: SortOrder = "asc"): T[] {
     }
   };
 
-  const buildMaxHeap = (arr: T[]) => {
+  const buildMaxHeap = (arr: ComparableData[]) => {
     for (let i = Math.floor(arr.length / 2); i >= 0; i--) heapify(arr, arr.length, i);
     return arr;
   };
@@ -382,10 +352,11 @@ Array.prototype.heapSort = function <T>(order: SortOrder = "asc"): T[] {
 };
 
 // THIS: only support array of numbers
-Array.prototype.countingSort = function (this: number[], order: SortOrder = "asc") {
+Array.prototype.countingSort = function (this: number[], order: SortOrder = "asc"): number[] {
   if (this.length === 0) return this;
-  if (!this.every((num) => typeof num === "number"))
+  if (!this.every((num) => typeof num === "number")){
     throw new Error("countingSort only support array of numbers");
+  }
 
   const min = Math.min(...this);
   const max = Math.max(...this);
@@ -404,10 +375,10 @@ Array.prototype.countingSort = function (this: number[], order: SortOrder = "asc
   return this;
 };
 
-Array.prototype.bucketSort = function (order: SortOrder = "asc") {
+Array.prototype.bucketSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
 
-  const buckets: { [key: string]: unknown[] } = {};
+  const buckets: { [key: string]: ComparableData[] } = {};
 
   for (const item of this) {
     const key = item.toString();
@@ -420,7 +391,7 @@ Array.prototype.bucketSort = function (order: SortOrder = "asc") {
   }
 
   const sortedKeys = Object.keys(buckets).sort();
-  const sortedArray: unknown[] = [];
+  const sortedArray: ComparableData[] = [];
 
   for (const key of sortedKeys) {
     sortedArray.push(...buckets[key]);
@@ -475,8 +446,12 @@ Array.prototype.radixSort = function (this: number[], radix = 10, order: SortOrd
 };
 
 
-Array.prototype.shellSort = function (order: SortOrder = "asc") {
+Array.prototype.shellSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
   if (this.length === 0) return this;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("shellSort only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
   for (
     let gap = Math.floor(this.length / 2);
@@ -484,14 +459,9 @@ Array.prototype.shellSort = function (order: SortOrder = "asc") {
     gap = Math.floor(gap / 2)
   ) {
     for (let i = gap; i < this.length; i++) {
-      const temp = this[i];
+      const temp: ComparableData = this[i];
       let j;
-      for (
-        j = i;
-        j >= gap &&
-				(order === "asc" ? this[j - gap] > temp : this[j - gap] < temp);
-        j -= gap
-      ) {
+      for (j = i; j >= gap && (order === "asc" ? this[j - gap] > temp : this[j - gap] < temp); j -= gap) {
         this[j] = this[j - gap];
       }
       this[j] = temp;
@@ -520,6 +490,8 @@ Array.prototype.filterNullish = function () {
 
 Array.prototype.unique = function () {
   if (this.length === 0) return this;
+  // check if the array is array of strings
+  if (this.every((item) => typeof item === "string")) return [...new Set(this.map((item) => item.toLowerCase()))];
   return [...new Set(this)];
 };
 
@@ -532,11 +504,15 @@ Array.prototype.countBy = function (callback) {
   }, {});
 };
 
-Array.prototype.binarySearch = function <T>(target: T, sortalgo?: BinarySortAlgorithms): number {
+Array.prototype.binarySearch = function (this: ComparableData[], target: ComparableData, sortalgo?: BinarySortAlgorithms): number{
   if (this.length === 0) return -1;
+  // check if the array is array of `ComparableData`
+  if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
+    throw new Error("binarySearch only support array of `ComparableData`: number, string, boolean, Date");
+  }
 
   // Switch between the sort algorithms
-  let sortedArray: T[] = [];
+  let sortedArray: ComparableData[] = [];
 
   switch (sortalgo) {
     case "bubble":
@@ -567,16 +543,16 @@ Array.prototype.binarySearch = function <T>(target: T, sortalgo?: BinarySortAlgo
       if (!this.every((num) => typeof num === "number")) {
         throw new Error("Counting Algorithm supports only arrays of numbers");
       }
-      sortedArray = this.countingSort() as T[]; // Add type assertion here
+      sortedArray = this.map(num => num as number).countingSort();
       break;
     case "radix":
       if (!this.every((num) => typeof num === "number")) {
         throw new Error("Radix Algorithm supports only arrays of numbers");
       }
-      sortedArray = this.radixSort() as T[]; // Add type assertion here
+      sortedArray = this.map(num => num as number).radixSort();
       break;
     default:
-      sortedArray = this.sort() as T[]; // Add type assertion here
+      sortedArray = this.sort() as ComparableData[]; // Add type assertion here
       break;
   }
 
@@ -615,12 +591,11 @@ Array.prototype.copy = function () {
 
 Array.prototype.sample = function (quantity = 1) {
   if (this.length === 0) return this;
-  if (quantity < 1) return [];
-  if (quantity === 1) return this[Math.randomInt(this.length)];
+  if (quantity <= 1 || quantity > this.length) return this[Math.randomInt(this.length)];
   return this.sort(() => Math.random() - Math.random()).slice(0, quantity);
 };
 
-Array.prototype.count = function (target: unknown) {
+Array.prototype.count = function <T>(target: T) {
   if (this.length === 0) return 0;
   return this.filter((item) => item === target).length;
 };

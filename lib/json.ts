@@ -1,23 +1,22 @@
-//// ------------------------------- HANDY JSON © HandyScript 6m/16d/23y -------------------------------
+/// ------------------------------- HANDY JSON © HandyScript 6m/16d/23y -------------------------------
 
-import HashMap from "./hashmap";
+import HashMap from "./hashmap.js";
 
 declare global {
-	type SchemaProperty<T = any> = {
-		type:
-			| StringConstructor
-			| NumberConstructor
-			| BooleanConstructor
-			| ObjectConstructor
-			| T;
-		required?: boolean;
-		regex?: RegExp;
-		properties?: Schema<T>;
-	};
+  type SchemaProperty = {
+    type: StringConstructor | NumberConstructor | BooleanConstructor | typeof Object;
+    required?: boolean;
+    regex?: RegExp;
+    properties?: SchemaProperty;
+  };
 
-	type Schema<T = any> = {
-		[key: string]: SchemaProperty<T>;
-	};
+  type Schema<T> = {[key in keyof T]: SchemaProperty | [SchemaProperty]} | [SchemaProperty] | SchemaProperty;
+
+  type JsonValue = string | number | boolean | null;
+  type JsonData = JsonValue | JsonObject | JsonArray;
+  type JsonArray = Array<JsonData>;
+  type JsonObject = { [key: string]: JsonData};
+  type FlattenedObject = { [key: string]: JsonValue | JsonObject };
 
 	interface JSON {
 		/**
@@ -28,46 +27,43 @@ declare global {
 		/**
 		 * the flatten function takes a JSON object and returns a new object with all the keys flattened.
 		 */
-		flatten(json: object): object;
+		flatten(json: JsonObject, prefix: string): FlattenedObject;
 
 		/**
 		 * the unflatten function takes a JSON object with flattened keys and returns a new object with unflattened keys.
 		 */
-		unflatten(json: object): object;
+		unflatten(json: FlattenedObject): JsonObject;
 
 		/**
 		 * the merge function takes two JSON objects and returns a new object with the keys merged.
 		 * If the same key exists in both objects, the value of the second object will be used.
 		 */
-		merge(json1: object, json2: object): object;
+		merge(...jsonData: JsonObject[]): JsonObject;
 
 		/**
 		 * the filter function takes a JSON object and a condition function and returns a new object with the keys that satisfy the condition.
 		 */
-		filter(
-			json: object | any[],
-			condition: (value: any) => boolean
-		): object | any[];
+		filter(json: JsonObject, condition: (value: JsonValue) => boolean): JsonObject;
 
 		/**
 		 * Sort a JSON array by a key in ascending or descending order
 		 */
-		sort(json: object[], key: string, order?: SortOrder): void;
+		sort(json: JsonObject[], key: string, order?: SortOrder): JsonObject;
 
 		/**
 		 * Return an array of values of a key in a JSON object
 		 */
-		pluck(json: object | any[], key: string): any[];
+		pluck(json: JsonObject[], key: string): JsonData[];
 
 		/**
 		 * Transform a JSON object using a mapping object
 		 */
-		transform(json: object, mapping: object): object;
+		transform(json: JsonObject, mapping: JsonObject): JsonObject;
 
 		/**
 		 * Validate a JSON object against a JSON schema
 		 */
-		validateSchema<T>(data: any, schema: Schema<T>): boolean;
+		validateSchema<T>(data: JsonData, schema: Schema<T>): boolean;
 
 		/**
 		 * Search a JSON object using a query string
@@ -83,207 +79,211 @@ declare global {
 		 *
 		 * JSON.query(json, "cars[0].name") // { "name": "Ford" }
 		 */
-		query(json: object, query: string): any;
+		query(json: JsonObject, query: string): JsonData;
 
 		/**
 		 * Convert a JSON object to a HashMap
 		 */
-		toHashmap(json: object): HashMap;
+		toHashmap(json: JsonObject): HashMap;
 	}
 }
 
 Object.assign(JSON, {
-	isValid: (json: string): boolean => {
-		try {
-			JSON.parse(json);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	},
+  isValid: (json: string): boolean => {
+    try {
+      JSON.parse(json);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
 
-	flatten: (json: object): object => {
-		const result: Record<string, any> = {}; // Type assertion to define result as Record<string, any>
+  flatten: (json: JsonObject, prefix = ""): FlattenedObject => {
+    const result: FlattenedObject = {};
+    
+    for (const key in json) {
+      if (Object.prototype.hasOwnProperty.call(json, key)) {
+        const newKey = prefix ? `${prefix}.${key}` : key;
 
-		const recurse = (cur: any, prop: string): void => {
-			// useing switch instead of if-else for better performance
-			switch (true) {
-				case Object(cur) !== cur:
-					result[prop] = cur;
-					break;
+        if (typeof json[key] === "object" && !Array.isArray(json[key])) {
+          // If the value is a nested object, recursively flatten it
+          const nested = JSON.flatten(json[key] as JsonObject, newKey);
+          Object.assign(result, nested);
+        } else {
+          // Otherwise, add the key-value pair to the result
+          result[newKey] = json[key] as JsonValue;
+        }
+      }
+    }
+    return result;
+  },
 
-				case Array.isArray(cur):
-					if (cur.length === 0) result[prop] = [];
-					for (let i = 0; i < cur.length; i++) {
-						recurse(cur[i], prop ? `${prop}.${i}` : `${i}`);
-					}
-					break;
+  unflatten: (json: FlattenedObject): JsonObject => {
+    if (Object(json) !== json || Array.isArray(json)) return json;
 
-				default:
-					let isEmpty = true;
-					for (const p in cur) {
-						isEmpty = false;
-						recurse(cur[p], prop ? `${prop}.${p}` : p);
-					}
-					if (isEmpty) result[prop] = {};
-			}
-		};
+    const result: JsonObject = {};
 
-		recurse(json, "");
-		return result;
-	},
+    for (const key in json) {
+      const keys = key.split(".");
+      let cur = result;
 
-	unflatten: (json: object): object => {
-		if (Object(json) !== json || Array.isArray(json)) return json;
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        cur[key] ??= Object(json) === json && !Array.isArray(json) ? {} : [];
+        cur = cur[key] as JsonObject;
+      }
 
-		const result: Record<string, any> = {};
+      if (typeof json[key as keyof typeof json] === "object") {
+        cur[keys[keys.length - 1]] = JSON.unflatten(json[key as keyof typeof json] as FlattenedObject) as JsonObject;
+      } else {
+        cur[keys[keys.length - 1]] = json[key as keyof typeof json];
+      }
+    }
+    return result; 
+  },
 
-		for (const key in json) {
-			const keys = key.split(".");
-			let cur = result;
-			for (let i = 0; i < keys.length - 1; i++) {
-				const key = keys[i];
-				cur[key] ??= Object(json) === json && !Array.isArray(json) ? {} : [];
-				cur = cur[key];
-			}
-			cur[keys[keys.length - 1]] = json[key as keyof typeof json];
-		}
+  merge: (...jsonData: JsonObject[]): JsonObject => {
+    const result: JsonObject = {};
+    
+    for (const json of jsonData) {
+      for (const key in json) {
+        if (Object.prototype.hasOwnProperty.call(json, key)) {
+          const value = json[key];
 
-		return result[""];
-	},
+          if (typeof value === "object" && !Array.isArray(value)) {
+            // If the value is an object, merge it recursively
+            result[key] = JSON.merge(result[key] as JsonObject || {}, value as JsonObject) as JsonObject;
+          } else {
+            // Otherwise, assign the value
+            result[key] = value;
+          }
+        }
+      }
+    }
+    return result;
+  },
 
-	merge: (json1: object, json2: object): object => {
-		const result = JSON.parse(JSON.stringify(json1));
-		for (const key in json2) {
-			if (
-				key in result &&
-				typeof result[key] === "object" &&
-				typeof json2[key as keyof typeof json2] === "object"
-			) {
-				result[key] = JSON.merge(result[key], json2[key as keyof typeof json2]);
-			} else {
-				result[key] = json2[key as keyof typeof json2];
-			}
-		}
-		return result;
-	},
 
-	filter: (json: object | any[], condition: (value: any) => boolean): object | any[] => {
-		if (Array.isArray(json)) {
-			const result: any[] = [];
-			for (const value of json) {
-				if (condition(value)) result.push(value);
-			}
-			return result;
-		} else {
-			const result: Record<string, any> = {};
-			for (const key in json) {
-				if (condition(json[key as keyof typeof json]))
-					result[key as keyof typeof result] = json[key as keyof typeof json];
-			}
-			return result;
-		}
-	},
 
-	sort: (json: object[], key: string, order: SortOrder = "asc"): void => {
-		json.sort((a, b) => {
-			if (a[key as keyof typeof a] > b[key as keyof typeof b])
-				return order === "asc" ? 1 : -1;
-			if (a[key as keyof typeof a] < b[key as keyof typeof b])
-				return order === "asc" ? -1 : 1;
-			return 0;
-		});
-	},
+  filter: (json: JsonObject, condition: (value: JsonValue) => boolean): JsonObject => {
+    const result: JsonObject = {};
+    
+    for (const key in json) {
+      if (Object.prototype.hasOwnProperty.call(json, key)){
+        const value = json[key];
 
-	pluck: (json: object | any[], key: string): any[] => {
-		const result: any[] = [];
-		if (Array.isArray(json)) {
-			for (const value of json) {
-				result.push(value[key as keyof typeof value]);
-			}
-		} else {
-			for (const value in json) {
-				result.push(json[value as keyof typeof json][key as keyof typeof json]);
-			}
-		}
-		return result;
-	},
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // If the value is an object, apply the filter recursively
+          const nested = JSON.filter(value as JsonObject, condition);
+          if (Object.keys(nested).length > 0) {
+            result[key] = nested;
+          }
+        } else if (condition(value as JsonValue)) {
+          // If the condition is satisfied, add the key-value pair to the filtered object
+          result[key] = value;
+        }
+      }
+    }
+    return result;
+  },
 
-	transform: (json: object, mapping: object): object => {
-		const result: Record<string, any> = {};
-		for (const key in mapping) {
-			result[key as keyof typeof result] =
-				json[mapping[key as keyof typeof mapping] as keyof typeof json];
-		}
-		return result;
-	},
+  sort: (json: JsonObject[], key: string, order: SortOrder = "asc"): JsonObject[] => {
+    return json.sort((a, b) => {
+      const valueA = a[key] as JsonValue;
+      const valueB = b[key] as JsonValue;
 
-	validateSchema: <T>(data: any, schema: Schema<T>): boolean => {
-		const validateProperty = (value: any, propertySchema: any): boolean => {
-			if (propertySchema.required && (value === undefined || value === null))
-				return false;
+      if ((valueA === valueB) || ((!valueA || valueA === null) && (!valueB || valueB === null))) return 0;
 
-			switch (propertySchema.type) {
-				case String:
-					if (typeof value !== "string") return false;
-					break;
-				case Number:
-					if (typeof value !== "number") return false;
-					break;
-				case Boolean:
-					if (typeof value !== "boolean") return false;
-					break;
-				default:
-					if (!(value instanceof propertySchema.type)) return false;
-			}
+      if (!valueA || valueA === null) return order === "asc" ? 1 : -1;
+      if (!valueB || valueB === null) return order === "asc" ? -1 : 1;
 
-			if (propertySchema.regex && typeof value === "string") {
-				const regex = new RegExp(propertySchema.regex);
-				if (!regex.test(value)) return false;
-			}
+      if (order === "asc") {
+        return valueA < valueB ? -1 : 1;
+      } else {
+        return valueA > valueB ? -1 : 1;
+      }
+    });
+  },
 
-			if (propertySchema.properties)
-				return validateObject(value, propertySchema.properties);
-			return true;
-		};
+  pluck: (json: JsonObject[], key: string): JsonData[] => {
+    const result: JsonData[] = [];
+    if (Array.isArray(json)) {
+      for (const value of json) {
+        result.push(value[key as keyof typeof value] as JsonObject);
+      }
+    } else {
+      for (const value in json as JsonObject) {
+        result.push(json[value as keyof typeof json][key as keyof typeof json]);
+      }
+    }
+    return result;
+  },
 
-		const validateObject = (data: any, objectSchema: any): boolean => {
-			for (const key in objectSchema) {
-				if (Object.prototype.hasOwnProperty.call(objectSchema, key)) {
-					const propertySchema = objectSchema[key];
+  transform: (json: JsonObject, mapping: JsonObject): JsonObject => {
+    const result: JsonObject = {};
+    for (const key in mapping) {
+      result[key as keyof typeof result] = json[mapping[key as keyof typeof mapping] as keyof typeof json];
+    }
+    return result;
+  },
 
-					if (!validateProperty(data[key], propertySchema)) return false;
-				}
-			}
+  validateSchema: <T>(data: JsonData, schema: Schema<T>): boolean => {
+    function validateObject(data: JsonObject, objectSchema: SchemaProperty): boolean {
+      for (const key in objectSchema) {
+        if (Object.prototype.hasOwnProperty.call(objectSchema, key)) {
+          const propertySchema = objectSchema[key as keyof typeof objectSchema] as SchemaProperty;
 
-			return true;
-		};
+          if (!validateProperty(data[key as keyof typeof data] as JsonValue, propertySchema)) return false;
+        }
+      }
 
-		if (Array.isArray(schema)) {
-			if (!Array.isArray(data)) return false;
-			return data.every((item: any) => validateObject(item, schema[0]));
-		} else {
-			if (Array.isArray(data)) return false;
-			return validateObject(data, schema);
-		}
-	},
+      return true;
+    }
 
-	query: (json: object, query: string): any => {
-		const keys = query.split(".");
-		let result: any = json;
-		for (const key of keys) {
-			if (key in result) {
-				result = result[key as keyof typeof result];
-			} else {
-				return null;
-			}
-		}
-		return result;
-	},
+    function validateProperty(value: JsonData, propertySchema: SchemaProperty): boolean {
+      if (propertySchema.required && (value === undefined || value === null)) return false;
 
-	toHashmap: (json: object): HashMap => {
-		return new HashMap(json);
-	},
+      if (propertySchema.type === String && typeof value !== "string") return false;
+      if (propertySchema.type === Number && typeof value !== "number") return false;
+      if (propertySchema.type === Boolean && typeof value !== "boolean") return false;
+
+      if (propertySchema.type === Object && propertySchema.properties) {
+        if (!validateObject(value as JsonObject, propertySchema.properties)) return false;
+      }
+
+      if (propertySchema.regex && typeof value === "string") {
+        const regex = new RegExp(propertySchema.regex);
+        if (!regex.test(value)) return false;
+      }
+
+      return true;
+    }
+
+    if (Array.isArray(schema)) {
+      if (!Array.isArray(data)) return false;
+      return data.every((item) => validateObject(item as JsonObject, schema[0] as SchemaProperty));
+    } else {
+      if (Array.isArray(data)) return false;
+      return validateObject(data as JsonObject, schema as unknown as SchemaProperty);
+    }
+  },
+
+  query: (json: JsonObject, query: string): JsonData => {
+    const keys = query.split(".");
+    let result: JsonObject = json;
+    for (const key of keys) {
+      if (key in result) {
+        result = result[key as keyof typeof result] as JsonObject;
+      } else {
+        return null;
+      }
+    }
+    return result;
+  },
+
+  toHashmap: (json: JsonObject): HashMap => {
+    return new HashMap(json);
+  },
 });
 
 export default JSON;
