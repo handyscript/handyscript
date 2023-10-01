@@ -6,7 +6,7 @@ declare global {
     /**
      * Retutn a deep clone of the object.
      */
-    clone<T>(obj: T): T;
+    clone(obj: Record<string, unknown>): Record<string, unknown>;
 
     /**
      * Returns a new object with the properties of the passed objects.
@@ -31,18 +31,27 @@ declare global {
      * })
      */
     forProperties<Obj extends object>(o: Obj, callback: (key: keyof Obj, value: Obj[keyof Obj]) => void): void;
+
+    /**
+     * drop an entry from an object
+     * @param obj The object to drop the entry from.
+     * @param key The key of the entry to drop.
+     * @example
+     * Object.dropEntry({a:1, b:2}, "a") // output: {b:2}
+     */
+    dropEntry(obj: object, key: string): object;
   }
 }
 
-Object.clone = function <T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
+Object.prototype.clone = function (obj: Record<string, unknown>): Record<string, unknown> {
+  return JSON.parse(JSON.stringify(obj)) as Record<string, unknown>;
 };
 
-Object.merge = function (...objects: object[]): object {
+Object.prototype.merge = function (...objects: object[]): object {
   return Object.assign({}, ...objects);
 };
 
-Object.deepMerge = function (target: Record<string, unknown>, ...sources: Record<string, unknown>[]): Record<string, unknown> {
+Object.prototype.deepMerge = function (target: Record<string, unknown>, ...sources: Record<string, unknown>[]): Record<string, unknown> {
   if (sources.length < 2) {
     throw new Error("At least two sources must be provided for merging.");
   }
@@ -69,12 +78,18 @@ Object.deepMerge = function (target: Record<string, unknown>, ...sources: Record
   return targetMerge;
 };
 
-Object.forProperties = function <Obj extends object>(o: Obj, callback: (key: keyof Obj, value: Obj[keyof Obj]) => void): void {
+Object.prototype.forProperties = function <Obj extends object>(o: Obj, callback: (key: keyof Obj, value: Obj[keyof Obj]) => void): void {
   for (const key in o) {
     if (Object.prototype.hasOwnProperty.call(o, key)) {
       callback(key, o[key]);
     }
   }
+};
+
+Object.prototype.dropEntry = function (obj: Record<string, unknown>, key: string): Record<string, unknown> {
+  const result = Object.clone(obj);
+  delete result[key];
+  return result;
 };
 
 export default Object;
