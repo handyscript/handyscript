@@ -4,7 +4,7 @@
   "type": "module",
   "author": "handyscript",
   "description": "A set of useful modules that makes the javascript development context easier",
-  "homepage": "https://github.com/handyscript/handyscript#readme",
+  "homepage": "https://github.com/handyscript/handyscript/wiki",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/handyscript/handyscript.git"
@@ -23,9 +23,7 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "JStest": "node test/index.js",
-    "TStest": "tsc test/index.ts",
-    "test": "npm run lint && npm run JStest && npm run TStest",
+    "test": "npm run lint && tsc test/index.test.ts --noEmit && node test/index.test.cjs", 
     "watch": "rollup -c rollup.config.js --config-dev -w",
     "build": "rollup -c rollup.config.js --config-prod"
   },
@@ -88,6 +86,7 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^1.5.0"
+    "axios": "^1.5.0",
+    "handyutility": "^1.0.1"
   }
 }
