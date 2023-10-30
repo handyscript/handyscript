@@ -559,6 +559,6 @@ type BinarySortAlgorithms =
   | "shell";
 ```
 
-**© HandyScript Array 5/21/23:**
+<p align="center"><b>© HandyScript Array 5/21/23</b></p>
 
 This Markdown documentation includes sections for various sorting algorithms and array manipulation methods, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
