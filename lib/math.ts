@@ -4,29 +4,27 @@
 declare global {
 	interface Math {
 		/**
-		 * The Tau constant, equal to 2 * PI.
+		 * The Tau constant, equal to 2 * PI. -> `Τ = 2π`
 		 */
 		TAU: number;
 
 		/**
-		 * The square root of `3`. approximately `1.732`.
+		 * The square root of `3`. approximately `1.732`. -> `√3 = 1.73205080...`.
 		 */
 		SQRT3: number;
 
 		/**
-		 * The Golden ratio constant, approximately `1.618`.
+		 * The Golden ratio constant, approximately `1.618`. -> `Φ = (√5 + 1)/2 = 1.6180339887...`
 		 */
 		PHI: number;
 
 		/**
-		 * The Golomb-Dickman constant, approximately `0.624`.
-		 * Math Formula: `G = 1 - G`
+		 * The Golomb-Dickman constant, approximately `0.624`. -> `λ = 1 - G`
 		 */
 		G: number;
 
 		/**
-		 * The Feigenbaum constant, approximately `4.669`.
-		 * Math Formula: `delta = 1 - alpha`
+		 * The Feigenbaum constant, approximately `4.669`. -> `Δ = 1- α`
 		 */
 		DELTA: number;
 

@@ -1,14 +1,15 @@
-/// ------------------------------- HANDY DATE © HandyScript 9m/17d/23y -------------------------------
 import axios from "axios";
 
 declare global {
-  interface Date{
+  interface DateConstructor {
     /**
      * Returns the accurate date based on the current timezone
      *@param timeZone The timezone to use like: `America/New_York`
      */
     timestamp(timeZone?: string): Promise<Date>;
+  }
 
+  interface Date {
     /**
      * Returns the number of days in the month
      */
@@ -17,12 +18,12 @@ declare global {
      * Returns the number of days in the year
      */
     daysInYear(): number;
-
   }
 }
 
-Date.prototype.timestamp = async function (timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone): Promise<Date> {
-  return new Date((await axios.get(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${timeZone}`)).data.fulldate);
+Date.timestamp = async function (timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone): Promise<Date> {
+  const { data } = await axios.get(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${timeZone}`);
+  return new Date(data.fulldate);
 };
 
 Date.prototype.daysInMonth = function () {
@@ -34,3 +35,4 @@ Date.prototype.daysInYear = function () {
 };
 
 export default Date;
+// END: be15d9bcejpp

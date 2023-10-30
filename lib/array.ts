@@ -38,50 +38,50 @@ declare global {
 		shuffle(): T[];
 
 		/**
-		 * Sort the array using the [`Bubble Sort`](https://www.programiz.com/dsa/bubble-sort) algorithm.
+		 * Sort the array using the [`Bubble Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#bubble-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		bubbleSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Selection Sort`](https://www.programiz.com/dsa/selection-sort) algorithm.
+		 * Sort the array using the [`Selection Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#selection-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		selectionSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Insertion Sort`](https://www.programiz.com/dsa/insertion-sort) algorithm.
+		 * Sort the array using the [`Insertion Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#insertion-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		insertionSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Merge Sort`](https://www.programiz.com/dsa/merge-sort) algorithm.
+		 * Sort the array using the [`Merge Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#merge-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		mergeSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Quick Sort`](https://www.programiz.com/dsa/quick-sort) algorithm.
+		 * Sort the array using the [`Quick Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#quick-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		quickSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Heap Sort`](https://www.programiz.com/dsa/heap-sort) algorithm.
+		 * Sort the array using the [`Heap Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#heap-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		heapSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
 
 		/**
-		 * Sort the array using the [`Counting Sort`](https://www.programiz.com/dsa/counting-sort) algorithm.
+		 * Sort the array using the [`Counting Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#counting-sort) algorithm.
      **  @note it supports only numbers
 		 * @param {string} order the order of the sorting: "asc" or "desc"
 		 */
 		countingSort(this: number[], order?: SortOrder): number[];
 
 		/**
-		 * Sort the array using the [`Bucket Sort`](https://www.programiz.com/dsa/bucket-sort) algorithm.
+		 * Sort the array using the [`Bucket Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#bucket-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		bucketSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
@@ -95,7 +95,7 @@ declare global {
 		radixSort(this: number[], radix?: number, order?: SortOrder): number[];
 
 		/**
-		 * Sort the array using the [`Shell Sort`](https://www.programiz.com/dsa/shell-sort) algorithm.
+		 * Sort the array using the [`Shell Sort`](https://github.com/handyscript/handyscript/wiki/Handy-Script-Array-Documentation#shell-sort) algorithm.
 		 * @param {string} order // the order of the sorting: "asc" or "desc"
 		 */
 		shellSort(this: ComparableData[], order?: SortOrder): Array<ComparableData>;
