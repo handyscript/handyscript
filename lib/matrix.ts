@@ -200,7 +200,9 @@ export default class Matrix {
     if (!Matrix.isValidIndex(this, row, col)) {
       throw new Error("Invalid row or column index.");
     }
-    this.data[row][col] = value;
+    // avoid Prototype-Pollution assisgnment
+    this.data[row] = [...this.data[row].slice(0, col), value, ...this.data[row].slice(col + 1)];
+    // this.data[row][col] = value;
   }
 
   /**
