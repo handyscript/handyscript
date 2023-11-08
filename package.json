@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "test": "npm run lint && tsc test/index.test.ts --noEmit && node test/index.test.cjs", 
+    "test": "npm run lint && tsc test/index.test.ts --noEmit && node test/index.test.cjs",
     "watch": "rollup -c rollup.config.js --config-dev -w",
     "build": "rollup -c rollup.config.js --config-prod"
   },
@@ -74,6 +74,7 @@
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/rollup-win32-x64-msvc": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
