@@ -22,17 +22,16 @@ declare global {
 }
 
 Date.timestamp = async function (timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone): Promise<Date> {
-  const { data } = await axios.get(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${timeZone}`);
-  return new Date(data.fulldate);
+	const { data } = await axios.get(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${timeZone}`);
+	return new Date(data.fulldate);
 };
 
 Date.prototype.daysInMonth = function () {
-  return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate();
+	return new Date(this.getFullYear(), this.getMonth() + 1, 0).getDate();
 };
 
 Date.prototype.daysInYear = function () {
-  return new Date(this.getFullYear(), 12, 0).getDate();
+	return new Date(this.getFullYear(), 12, 0).getDate();
 };
 
 export default Date;
-// END: be15d9bcejpp

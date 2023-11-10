@@ -134,3 +134,6 @@ out
 # /test/**/*
 # *.test.*
 # *.spec.*
+
+# build
+/dist
