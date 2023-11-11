@@ -12,6 +12,13 @@
   "license": "MIT",
   "main": "dist/hs.min.cjs",
   "module": "dist/hs.min.js",
+  "typings": "dist/hs.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/hs.min.js",
+      "require": "./dist/hs.min.cjs"
+    }
+  },
   "directories": {
     "lib": "lib"
   },
@@ -24,8 +31,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "test": "npm run lint && tsc test/index.test.ts --noEmit && node test/index.test.cjs",
-    "watch": "rollup -c rollup.config.js --config-dev -w",
-    "build": "rollup -c rollup.config.js --config-prod"
+    "build": "tsc && webpack",
+    "watch": "tsc && webpack --watch"
   },
   "keywords": [
     "package",
@@ -70,25 +77,22 @@
     "const"
   ],
   "devDependencies": {
-    "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.2.1",
-    "@rollup/rollup-win32-x64-msvc": "^4.3.0",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.49.0",
-    "rollup": "^4.1.4",
-    "rollup-plugin-typescript2": "^0.36.0",
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "publishConfig": {
     "access": "public",
     "@vvhybe:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
-    "axios": "^1.5.0",
+    "axios": "^1.6.1",
     "handyutility": "^1.0.1"
   }
 }

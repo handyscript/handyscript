@@ -8,6 +8,6 @@ import HashMap from "./lib/hashmap.js";
 import Matrix from "./lib/matrix.js";
 
 export {
-  HashMap,
-  Matrix,
+	HashMap,
+	Matrix,
 };

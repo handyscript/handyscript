@@ -44,52 +44,52 @@ declare global {
 }
 
 Object.prototype.clone = function (obj: Record<string, unknown>): Record<string, unknown> {
-  return JSON.parse(JSON.stringify(obj)) as Record<string, unknown>;
+	return JSON.parse(JSON.stringify(obj)) as Record<string, unknown>;
 };
 
 Object.prototype.merge = function (...objects: object[]): object {
-  return Object.assign({}, ...objects);
+	return Object.assign({}, ...objects);
 };
 
 Object.prototype.deepMerge = function (target: Record<string, unknown>, ...sources: Record<string, unknown>[]): Record<string, unknown> {
-  if (sources.length < 2) {
-    throw new Error("At least two sources must be provided for merging.");
-  }
+	if (sources.length < 2) {
+		throw new Error("At least two sources must be provided for merging.");
+	}
 
-  const targetMerge = Object.clone(target);
+	const targetMerge = Object.clone(target);
 
-  for (let i = 0; i < sources.length; i++) {
-    const source = sources[i];
+	for (let i = 0; i < sources.length; i++) {
+		const source = sources[i];
 
-    for (const key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        if (typeof source[key] === "object" && source[key] !== null) {
-          if (!targetMerge[key]) {
-            targetMerge[key] = Array.isArray(source[key]) ? [] : {};
-          }
-          targetMerge[key] = Object.deepMerge(targetMerge[key] as Record<string, unknown>, source[key] as Record<string, unknown>); // Recursively merge objects
-        } else {
-          targetMerge[key] = source[key];
-        }
-      }
-    }
-  }
+		for (const key in source) {
+			if (Object.prototype.hasOwnProperty.call(source, key)) {
+				if (typeof source[key] === "object" && source[key] !== null) {
+					if (!targetMerge[key]) {
+						targetMerge[key] = Array.isArray(source[key]) ? [] : {};
+					}
+					targetMerge[key] = Object.deepMerge(targetMerge[key] as Record<string, unknown>, source[key] as Record<string, unknown>); // Recursively merge objects
+				} else {
+					targetMerge[key] = source[key];
+				}
+			}
+		}
+	}
 
-  return targetMerge;
+	return targetMerge;
 };
 
 Object.prototype.forProperties = function <Obj extends object>(o: Obj, callback: (key: keyof Obj, value: Obj[keyof Obj]) => void): void {
-  for (const key in o) {
-    if (Object.prototype.hasOwnProperty.call(o, key)) {
-      callback(key, o[key]);
-    }
-  }
+	for (const key in o) {
+		if (Object.prototype.hasOwnProperty.call(o, key)) {
+			callback(key, o[key]);
+		}
+	}
 };
 
 Object.prototype.dropEntry = function (obj: Record<string, unknown>, key: string): Record<string, unknown> {
-  const result = Object.clone(obj);
-  delete result[key];
-  return result;
+	const result = Object.clone(obj);
+	delete result[key];
+	return result;
 };
 
 export default Object;

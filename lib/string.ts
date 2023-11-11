@@ -86,82 +86,82 @@ declare global {
 }
 
 String.prototype.toCapitalCase = function () {
-  return this.split(" ").map((word: string) => {
-    return word[0].toUpperCase() + word.slice(1);
-  })
-    .join(" ");
+	return this.split(" ").map((word: string) => {
+		return word[0].toUpperCase() + word.slice(1);
+	})
+		.join(" ");
 };
 
 String.prototype.toLocaleCapitalCase = function (locales?: string | string[] | undefined) {
-  return this.split(" ").map((word: string) => {
-    return word[0].toLocaleUpperCase(locales) + word.slice(1);
-  })
-    .join(" ");
+	return this.split(" ").map((word: string) => {
+		return word[0].toLocaleUpperCase(locales) + word.slice(1);
+	})
+		.join(" ");
 };
 
 String.prototype.toCamelCase = function () {
-  return this.split(" ").map((word: string, index: number) => {
-    return index === 0 ? word[0].toLowerCase() + word.slice(1) : word[0].toUpperCase() + word.slice(1);
-  })
-    .join("");
+	return this.split(" ").map((word: string, index: number) => {
+		return index === 0 ? word[0].toLowerCase() + word.slice(1) : word[0].toUpperCase() + word.slice(1);
+	})
+		.join("");
 };
 
 String.prototype.toLocaleCamelCase = function (locales?: string | string[] | undefined) {
-  return this.split(" ").map((word: string, index: number) => {
-    return index === 0 ? word[0].toLocaleLowerCase(locales) + word.slice(1) : word[0].toLocaleUpperCase(locales) + word.slice(1);
-  })
-    .join("");
+	return this.split(" ").map((word: string, index: number) => {
+		return index === 0 ? word[0].toLocaleLowerCase(locales) + word.slice(1) : word[0].toLocaleUpperCase(locales) + word.slice(1);
+	})
+		.join("");
 };
 
 String.prototype.reverse = function () {
-  return [...this].reverse().join("");
+	return [...this].reverse().join("");
 };
 
 String.prototype.indexesOf = function (target: string, startPosition?: number | undefined) {
-  const indexes: number[] = [];
-  let index = this.indexOf(target, startPosition);
-  while (index !== -1) {
-    indexes.push(index);
-    index = this.indexOf(target, index + 1);
-  }
-  return indexes;
+	const indexes: number[] = [];
+	let index = this.indexOf(target, startPosition);
+	while (index !== -1) {
+		indexes.push(index);
+		index = this.indexOf(target, index + 1);
+	}
+	return indexes;
 };
 
 String.prototype.compare = function (target: string) {
-  return this.localeCompare(target);
+	return this.localeCompare(target);
 };
 
 String.prototype.equals = function (target: string, position = 0) {
-  return ([...this].splice(position).join("") === [...target].splice(position).join(""));
+	return ([...this].splice(position).join("") === [...target].splice(position).join(""));
 };
 
 String.prototype.equalsIgnoreCase = function (target: string, position = 0, locales?: string | string[] | undefined) {
-  return ([...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join(""));
+	return ([...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join(""));
 };
 
 String.prototype.escape = function (isForAttribute = false) {
-  if (isForAttribute) {
-    this.replace(/"/g, "&quot;");
-  }
-  return this
-    .replace(/[\n\r\t\v\f\b]/g, "")
-    .replace(/\s+/g, " ")
-    // eslint-disable-next-line no-control-regex
-    .replace(/[\u0000-\u001F]/g, "");
+	if (isForAttribute) {
+		this.replace(/"/g, "&quot;");
+	}
+	return this
+		.replace(/[\n\r\t\v\f\b]/g, "")
+		.replace(/\s+/g, " ")
+	// eslint-disable-next-line no-control-regex
+		.replace(/[\u0000-\u001F]/g, "");
 };
 
 String.prototype.sample = function (wordCount = 0, separator: string | RegExp = " ") {
-  const words = this.split(separator);
-  if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
-    return words
-      .slice(0, Math.randomInt(this.length))
-      .join(separator as string);
-  }
-  return words.slice(0, wordCount).join(separator as string);
+	const words = this.split(separator);
+	if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
+		return words
+			.slice(0, Math.randomInt(this.length))
+			.join(separator as string);
+	}
+	return words.slice(0, wordCount).join(separator as string);
 };
 
 String.prototype.size = function (separator: string | RegExp = " ") {
-  return this.split(separator).length;
+	return this.split(separator).length;
 };
 
 export default String;

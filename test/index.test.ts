@@ -24,4 +24,3 @@ import "../dist/hs.min.cjs";
 console.log((async () => await Date.timestamp())());
 // console.log(new Date().daysInMonth());
 // console.log(new Date().timestamp());
-

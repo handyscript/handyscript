@@ -1,5 +1,5 @@
 <p align="center" width="100%">
-<img width="100%" alt="Handy Script Cover" src="assets/HSCover.png"/>
+<img width="100%" alt="Handy Script Cover" src="static/assets/HSCover.png"/>
 </p>
 
 <h1 align="center">Handy Script</h1>
