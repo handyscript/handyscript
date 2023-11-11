@@ -1,9 +1,9 @@
-import "./lib/array";
-import "./lib/string";
-import "./lib/math";
-import "./lib/number";
-import "./lib/json";
-import "./lib/date";
+import "./lib/array.js";
+import "./lib/string.js";
+import "./lib/math.js";
+import "./lib/number.js";
+import "./lib/json.js";
+import "./lib/date.js";
 import HashMap from "./lib/hashmap.js";
 import Matrix from "./lib/matrix.js";
 
