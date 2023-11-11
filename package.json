@@ -10,13 +10,13 @@
     "url": "git+https://github.com/handyscript/handyscript.git"
   },
   "license": "MIT",
-  "main": "dist/hs.min.cjs",
-  "module": "dist/hs.min.js",
-  "typings": "dist/hs.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/hs.min.js",
-      "require": "./dist/hs.min.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
   },
   "directories": {
