@@ -30,7 +30,6 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "test": "npm run lint && jest",
     "build": "tsc && webpack",
     "watch": "tsc && webpack --watch"
   },

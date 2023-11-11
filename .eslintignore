@@ -1,2 +1,4 @@
 # build folder
 /dist
+
+# "test": "npm run lint && jest",
