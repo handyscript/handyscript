@@ -1,6 +1,6 @@
 /// ------------------------------- HANDY JSON © HandyScript 6m/16d/23y -------------------------------
 
-import HashMap from "./hashmap.js";
+import HashMap from "./hashmap";
 
 declare global {
   type SchemaProperty = {
