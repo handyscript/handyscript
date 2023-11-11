@@ -10,7 +10,7 @@ export default {
 			{
 				test: /\.ts?$/,
 				use: "ts-loader",
-				exclude: /node_modules/,
+				exclude: ["/node_modules/", "/dist/", "/test/", "/jest.config.js"]
 			},
 		],
 	},
