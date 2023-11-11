@@ -1,6 +1,6 @@
 {
   "name": "handyscript",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "type": "module",
   "author": "handyscript",
   "description": "A set of useful modules that makes the javascript development context easier",
