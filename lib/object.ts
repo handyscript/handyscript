@@ -52,11 +52,11 @@ Object.prototype.merge = function (...objects: object[]): object {
 };
 
 Object.prototype.deepMerge = function (target: Record<string, unknown>, ...sources: Record<string, unknown>[]): Record<string, unknown> {
-	if (sources.length < 2) {
-		throw new Error("At least two sources must be provided for merging.");
+	if (sources.length < 1) {
+		throw new Error("At least one source must be provided for merging.");
 	}
 
-	const targetMerge = Object.clone(target);
+	const targetMerge = { ...target }; // Use spread operator for shallow copy
 
 	for (let i = 0; i < sources.length; i++) {
 		const source = sources[i];
