@@ -480,6 +480,6 @@ hashmap.updateKeyByValue(2, 'e');
 console.log(hashmap); // Hashmap { a: 1, e: 2, c: 3, d: 2 }
 ```
 
-**© HandyScript HashMap 5/27/23:**
+<p align="center"><b>© HandyScript HashMap 5/27/23</b></p>
 
 This Markdown documentation is detailed and extensive to use the `HashMap` module to its full potential, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.

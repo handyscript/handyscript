@@ -1,5 +1,5 @@
 <p align="center" width="100%">
-<img width="100%" alt="Handy Script Cover" src="assets/HSCover.png"/>
+<img width="100%" alt="Handy Script Cover" src="static/assets/HSCover.png"/>
 </p>
 
 <h1 align="center">Handy Script</h1>
@@ -85,6 +85,8 @@ console.log(map.getKeysByValue(true)); // ["isMarried","isStudent"]
 
 ## Functionalities
 
+check our detailed wiki documentation [here](https://github.com/handyscript/handyscript/wiki/)
+
 ### [Array](https://github.com/handyscript/handyscript/blob/main/documentation/array.md)
 
 Shuffles the elements of the array array and returns a new array.
@@ -115,7 +117,7 @@ Array.prototype.bubbleSort()
 - heapSort
 - countingSort # ⚠ Only works with arrays of numbers
 - shellSort
-- bucketSort # accept a parameter for the number of buckets
+- bucketSor
 - radixSort # ⚠ Only works with arrays of numbers
 
 > There is more to discover [here](https://github.com/handyscript/handyscript/blob/main/documentation/array.md) ✨

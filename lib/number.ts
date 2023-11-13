@@ -1,4 +1,4 @@
-//// ------------------------------- HANDY NUMBER © HandyScript 6m/2d/23y -------------------------------
+/// ------------------------------- HANDY NUMBER © HandyScript 6m/2d/23y -------------------------------
 
 declare global {
 	interface Number {
@@ -32,7 +32,7 @@ Number.prototype.toHuman = function (): string {
 	return (num / si[i].value).toFixed(2).replace(rx, "$1") + si[i].symbol;
 };
 
-Number.prototype.toReadable = function (separator: string = "-"): string {
+Number.prototype.toReadable = function (separator = "-"): string {
 	const num = this.valueOf();
 	const rx = /(\d+)(\d{3})/;
 	return String(num).replace(/^\d+/, function (w) {

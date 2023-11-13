@@ -1,0 +1,13 @@
+# build folder
+/dist
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+/test
+**/*.test.*
+
+# configs
+**/*.config.*

@@ -1,32 +1,30 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
-//// ------------------------------- HANDY MATH © HandyScript 5m/21d/23y -------------------------------
+/// ------------------------------- HANDY MATH © HandyScript 5m/21d/23y -------------------------------
 
 declare global {
 	interface Math {
 		/**
-		 * The Tau constant, equal to 2 * PI.
+		 * The Tau constant, equal to 2 * PI. -> `Τ = 2π`
 		 */
 		TAU: number;
 
 		/**
-		 * The square root of `3`. approximately `1.732`.
+		 * The square root of `3`. approximately `1.732`. -> `√3 = 1.73205080...`.
 		 */
 		SQRT3: number;
 
 		/**
-		 * The Golden ratio constant, approximately `1.618`.
+		 * The Golden ratio constant, approximately `1.618`. -> `Φ = (√5 + 1)/2 = 1.6180339887...`
 		 */
 		PHI: number;
 
 		/**
-		 * The Golomb-Dickman constant, approximately `0.624`.
-		 * Math Formula: `G = 1 - G`
+		 * The Golomb-Dickman constant, approximately `0.624`. -> `λ = 1 - G`
 		 */
 		G: number;
 
 		/**
-		 * The Feigenbaum constant, approximately `4.669`.
-		 * Math Formula: `delta = 1 - alpha`
+		 * The Feigenbaum constant, approximately `4.669`. -> `Δ = 1- α`
 		 */
 		DELTA: number;
 
@@ -119,37 +117,37 @@ declare global {
 }
 
 Object.assign(Math, {
-  A: 1.282427129100622636875342568869791727767688927325001192063740432988395529732,
-  B: 1.456074948582689671399595351116543266074274800178127884495013673643948446868,
-  G: 0.624329988543550870992936383100837235703606993625832517625695166735847239685,
-  K: 0.915965594177219015054603514932384110774149374281672134266498119621763019776,
-  TAU: 2 * Math.PI, // 2 * PI
-  SQRT3: 1.7320508075688772935274463415058723669428052538103806280558069794519330169088, // square root of 3
-  PHI: 1.6180339887498948482045868343656381177203091798057628621354486227052604628189, // golden ratio
-  DELTA: 4.669201609102990671853203820466201617258185577475768632745651343004134330211,
-  GAMMA: 0.577215664901532860606512090082402431042159335939923598805767234884867726777,
-  ZETA3: 1.202056903159594285399738161511449990764986292340498881792271555341838205786,
-  THETA: 0.6434105463,
-  KAPPA: 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
+	A: 1.282427129100622636875342568869791727767688927325001192063740432988395529732,
+	B: 1.456074948582689671399595351116543266074274800178127884495013673643948446868,
+	G: 0.624329988543550870992936383100837235703606993625832517625695166735847239685,
+	K: 0.915965594177219015054603514932384110774149374281672134266498119621763019776,
+	TAU: 2 * Math.PI, // 2 * PI
+	SQRT3: 1.7320508075688772935274463415058723669428052538103806280558069794519330169088, // square root of 3
+	PHI: 1.6180339887498948482045868343656381177203091798057628621354486227052604628189, // golden ratio
+	DELTA: 4.669201609102990671853203820466201617258185577475768632745651343004134330211,
+	GAMMA: 0.577215664901532860606512090082402431042159335939923598805767234884867726777,
+	ZETA3: 1.202056903159594285399738161511449990764986292340498881792271555341838205786,
+	THETA: 0.6434105463,
+	KAPPA: 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
 
-  randomInt(max = Number.MAX_SAFE_INTEGER, min = 0) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  },
+	randomInt(max = Number.MAX_SAFE_INTEGER, min = 0) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	},
 
-  clamp(value: number, min: number, max: number) {
-    return Math.min(Math.max(value, min), max);
-  },
+	clamp(value: number, min: number, max: number) {
+		return Math.min(Math.max(value, min), max);
+	},
 
-  lerp(start: number, end: number, t: number) {
-    return start * (1 - t) + end * t;
-  },
+	lerp(start: number, end: number, t: number) {
+		return start * (1 - t) + end * t;
+	},
 
-  map(value: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number) {
-    const inputRange = inputMax - inputMin;
-    const outputRange = outputMax - outputMin;
-    const normalizedValue = (value - inputMin) / inputRange;
-    return outputMin + normalizedValue * outputRange;
-  },
+	map(value: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number) {
+		const inputRange = inputMax - inputMin;
+		const outputRange = outputMax - outputMin;
+		const normalizedValue = (value - inputMin) / inputRange;
+		return outputMin + normalizedValue * outputRange;
+	},
 });
 
 export default Math;
