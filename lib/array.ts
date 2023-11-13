@@ -567,14 +567,14 @@ Array.prototype.copy = function () {
 
 Array.prototype.sample = function (quantity = 1): Array<unknown> {
 	if (this.length === 0) return this;
-	const result: unknown[] = [this[Math.randomInt(this.length)]];
+	const result: unknown[] = [this[Math.randomInt(this.length-1)]];
 
-	if (quantity > 1){
-		for (let i = 0; i < quantity; i++) {
-			result.push(this[Math.randomInt(this.length)]);
-		}
+	if (quantity < 1) return result;
+
+	for (let i = 0; i < quantity-1; i++) {
+		result.push(this[Math.randomInt(this.length-1)]);
 	}
-
+	
 	return result;
 };
 

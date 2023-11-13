@@ -237,13 +237,22 @@ describe("Array methods", () => {
 	describe("sample", () => {
 		it("should return a random element from the array by default", () => {
 			const sample = arr.sample();
-			expect(arr).toContain(sample);
+			sample.forEach((item) => {
+				expect(arr).toContain(item);
+			});
 		});
 
 		it("should return an array of random elements from the array when quantity is specified", () => {
 			const quantity = 3;
 			const sample = arr.sample(quantity);
 			expect(sample.length).toEqual(quantity);
+			sample.forEach((item) => {
+				expect(arr).toContain(item);
+			});
+		});
+
+		it("should return a random element from the array when quantity is negative (-x)", () => {
+			const sample = arr.sample(-3);
 			sample.forEach((item) => {
 				expect(arr).toContain(item);
 			});
