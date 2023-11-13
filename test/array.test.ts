@@ -54,13 +54,13 @@ describe("Array methods", () => {
 
 	describe("mergeSort", () => {
 		it("should sort the array in ascending order by default", () => {
-			arr.mergeSort();
-			expect(arr).toEqual([1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]);
+			const sortedArr = arr.mergeSort();
+			expect(sortedArr).toEqual([1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]);
 		});
 
 		it("should sort the array in descending order when order is 'desc'", () => {
-			arr.mergeSort("desc");
-			expect(arr).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
+			const sortedArrDesc = arr.mergeSort("desc");
+			expect(sortedArrDesc).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
 		});
 	});
 
@@ -90,27 +90,25 @@ describe("Array methods", () => {
 
 	describe("countingSort", () => {
 		it("should sort the array in ascending order by default", () => {
-			const arr = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
 			const sortedArr = arr.countingSort();
 			expect(sortedArr).toEqual([1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]);
 		});
 
 		it("should sort the array in descending order when order is 'desc'", () => {
-			const arr = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
-			const sortedArr = arr.countingSort("desc");
-			expect(sortedArr).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
+			const sortedArrDesc = arr.countingSort("desc");
+			expect(sortedArrDesc).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
 		});
 	});
 
 	describe("bucketSort", () => {
 		it("should sort the array in ascending order by default", () => {
-			arr.bucketSort();
-			expect(arr).toEqual([1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]);
+			const sortedArr = arr.bucketSort();
+			expect(sortedArr).toEqual([1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]);
 		});
 
 		it("should sort the array in descending order when order is 'desc'", () => {
-			arr.bucketSort("desc");
-			expect(arr).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
+			const sortedArrDesc = arr.bucketSort("desc");
+			expect(sortedArrDesc).toEqual([9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]);
 		});
 	});
 
@@ -243,8 +241,9 @@ describe("Array methods", () => {
 		});
 
 		it("should return an array of random elements from the array when quantity is specified", () => {
-			const sample = arr.sample(3);
-			expect(sample.length).toEqual(3);
+			const quantity = 3;
+			const sample = arr.sample(quantity);
+			expect(sample.length).toEqual(quantity);
 			sample.forEach((item) => {
 				expect(arr).toContain(item);
 			});

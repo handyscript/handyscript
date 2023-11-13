@@ -222,10 +222,10 @@ Array.prototype.insertionSort = function (this: ComparableData[], order: SortOrd
 };
 
 Array.prototype.mergeSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
-	if (this.length === 0) return this;
-	// check if the array is array of `ComparableData`
-	if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)){
-		throw new Error("mergeSort only support array of `ComparableData`: number, string, boolean, Date");
+	if (this.length <= 1) return this.slice() as ComparableData[];
+
+	if (!this.every((item) => typeof item === "number" || typeof item === "string" || typeof item === "boolean" || item instanceof Date)) {
+		throw new Error("mergeSort only supports arrays of ComparableData: number, string, boolean, Date");
 	}
 
 	const merge = (left: ComparableData[], right: ComparableData[]): ComparableData[] => {
@@ -242,10 +242,10 @@ Array.prototype.mergeSort = function (this: ComparableData[], order: SortOrder =
 		return result;
 	};
 
-	if (this.length < 2) return this.slice() as ComparableData[];
 	const middle = Math.floor(this.length / 2);
 	const left = this.slice(0, middle) as ComparableData[];
 	const right = this.slice(middle, this.length) as ComparableData[];
+
 	return merge(left.mergeSort(order), right.mergeSort(order));
 };
 
@@ -332,25 +332,23 @@ Array.prototype.heapSort = function (this: ComparableData[], order: SortOrder = 
 // THIS: only support array of numbers
 Array.prototype.countingSort = function (this: number[], order: SortOrder = "asc"): number[] {
 	if (this.length === 0) return this;
-	if (!this.every((num) => typeof num === "number")){
-		throw new Error("countingSort only support array of numbers");
+	if (!this.every((num) => typeof num === "number")) {
+		throw new Error("countingSort only supports arrays of numbers");
 	}
 
 	const min = Math.min(...this);
 	const max = Math.max(...this);
 	const countBucket = new Array(max - min + 1).fill(0);
-	const start = order === "asc" ? 0 : countBucket.length - 1;
-	const step = order === "asc" ? 1 : -1;
 	for (let i = 0; i < this.length; i++) countBucket[this[i] - min]++;
-	let index = start;
+
+	const result: number[] = [];
 	for (let i = 0; i < countBucket.length; i++) {
-		while (countBucket[i] > 0) {
-			this[index] = i + min;
-			index += step;
-			countBucket[i]--;
+		for (let j = 0; j < countBucket[i]; j++) {
+			result.push(i + min);
 		}
 	}
-	return this;
+
+	return order === "asc" ? result : result.reverse();
 };
 
 Array.prototype.bucketSort = function (this: ComparableData[], order: SortOrder = "asc"): Array<ComparableData> {
@@ -567,12 +565,16 @@ Array.prototype.copy = function () {
 	return [...this];
 };
 
-Array.prototype.sample = function (quantity = 1) : Array<unknown> {
+Array.prototype.sample = function (quantity = 1): Array<unknown> {
 	if (this.length === 0) return this;
-	const result: unknown[] = [];
-	for (let i = 0; i < quantity; i++) {
-		result.push(this[Math.randomInt(this.length)]);
+	const result: unknown[] = [this[Math.randomInt(this.length)]];
+
+	if (quantity > 1){
+		for (let i = 0; i < quantity; i++) {
+			result.push(this[Math.randomInt(this.length)]);
+		}
 	}
+
 	return result;
 };
 
