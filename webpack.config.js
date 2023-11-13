@@ -1,4 +1,4 @@
-import webpackBrowserConfig from "./webpack/browser.conf.js";
-import webpackServerConfig from "./webpack/node.conf.js";
+import webpackBrowserConfig from "./webpack/browser.config.cjs";
+import webpackServerConfig from "./webpack/node.config.cjs";
 
 export default [webpackServerConfig, webpackBrowserConfig];
