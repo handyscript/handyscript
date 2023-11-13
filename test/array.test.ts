@@ -171,7 +171,7 @@ describe("Array methods", () => {
 
 	describe("compact", () => {
 		it("should remove all falsy values from the array", () => {
-			const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
+			const arr = [0, 1, false, 2, "", 3, "a", NaN, "s", 34];
 			const compactedArr = arr.compact();
 			expect(compactedArr).toEqual([1, 2, 3, "a", "s", 34]);
 		});
@@ -179,9 +179,9 @@ describe("Array methods", () => {
 
 	describe("filterNullish", () => {
 		it("should remove all nullish values from the array", () => {
-			const arr = [null, undefined, 1, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
+			const arr = [null, undefined, 1, 2, "", 3, "a", NaN, "s", 34];
 			const filteredArr = arr.filterNullish();
-			expect(filteredArr).toEqual([1, 2, "", 3, "a", "e" * 23, NaN, "s", 34]);
+			expect(filteredArr).toEqual([1, 2, "", 3, "a", NaN, "s", 34]);
 		});
 	});
 
