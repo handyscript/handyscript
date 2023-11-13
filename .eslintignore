@@ -1,4 +1,13 @@
 # build folder
 /dist
 
-# "test": "npm run lint && jest",
+# dependencies
+/node_modules
+
+# testing
+/coverage
+/test
+**/*.test.*
+
+# configs
+**/*.config.*
