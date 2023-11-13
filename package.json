@@ -10,13 +10,13 @@
     "url": "git+https://github.com/handyscript/handyscript.git"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "dist/hs.min.cjs",
+  "module": "dist/hs.min.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "import": "./dist/hs.min.js",
+      "require": "./dist/hs.min.cjs"
     }
   },
   "directories": {
@@ -24,15 +24,15 @@
   },
   "files": [
     "dist",
-    "lib",
     "index.ts",
-    "README.md"
+    "README.md",
+    "SECURITY.md"
   ],
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
     "test": "npm run lint && jest",
     "build": "webpack",
-    "watch": "tsc && webpack --watch"
+    "watch": "webpack --watch"
   },
   "keywords": [
     "package",
