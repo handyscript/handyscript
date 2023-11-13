@@ -64,7 +64,7 @@ export default class Matrix {
 	public static random(rows: number, cols: number, max: number, min = 0): Matrix {
 		const data: number[][] = new Array(rows)
 			.fill(0)
-			.map(() => new Array(cols).fill(0).map(() => Math.randomInt(max, min)));
+			.map(() => new Array(cols).fill(0).map(() => Math.random() * (max - min) + min));
 		return new Matrix(data);
 	}
 
@@ -101,7 +101,7 @@ export default class Matrix {
    */
 	public static multiply(matrix1: Matrix, matrix2: Matrix): Matrix {
 		if (matrix1.cols !== matrix2.rows) {
-			throw new Error("Number of columns in Matrix 1 must match the number of rows in Matrix 2 for multiplication.");
+			throw new Error("Matrix dimensions must be the same for multiplication.");
 		}
 
 		const result: number[][] = new Array(matrix1.rows)
