@@ -1,4 +1,7 @@
 /// ------------------------------- HANDY STRING © HandyScript 5m/21d/23y -------------------------------
+
+import "./math";
+
 declare global {
 	interface String {
 		/**
@@ -25,7 +28,7 @@ declare global {
 		 * capitalizes the first letter of every word in a string and removes all the spaces according to any locale-specific case mappings in effect at the time.
 		 * @param {string | string[]} [locales] A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the locales argument, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation) page.
 		 * @example
-		 * "ßver ßee".toLocaleCamelCase() // output:"SSverSSee"
+		 * "ßver ßee".toLocaleCamelCase() // output:"ßverSSee"
 		 */
 		toLocaleCamelCase(locales?: string | string[] | undefined): string;
 
@@ -48,28 +51,10 @@ declare global {
 		compare(target: string): number;
 
 		/**
-		 * Returns true if the sequence of elements of searchString converted to a String
-		 * is the same as the corresponding elements of this object (converted to a String)
-		 * starting at position. Otherwise returns false.
-		 * @param {string} target The string against which the referring string is comparing.
-		 * @param {number} position The index at which to begin searching the String object. If omitted, search starts at the beginning of the string.
+		 * escape a string from all white spaces and all control characters (characters with a `code point < U+0020`).
+		 * @param {boolean} [isForHTML] If true, escape the string for use in HTML attribute.
 		 */
-		equals(target: string, position?: number): boolean;
-
-		/**
-		 * Returns true if the sequence of elements of searchString converted to a String
-		 * is the same as the corresponding elements of this object (converted to a String) regardless of their casing,
-		 * starting at position. Otherwise returns false.
-		 * @param {string} target The string against which the referring string is comparing.
-		 * @param {number} position The index at which to begin searching the String object. If omitted, search starts at the beginning of the string.
-		 */
-		equalsIgnoreCase( target: string, position?: number, locales?: string | string[] | undefined ): boolean;
-
-		/**
-		 * escape a string from all white spaces and all control characters (characters with a code point < U+0020).
-		 * @param {boolean} [isForAttribute] If true, escape the string for use in HTML attribute.
-		 */
-		escape(isForAttribute?: boolean): string;
+		escape(isForHTML?: boolean): string;
 
 		/**
 		 * return a sample of words from a string.
@@ -85,39 +70,35 @@ declare global {
 	}
 }
 
-String.prototype.toCapitalCase = function () {
+String.prototype.toCapitalCase = function (this: string) {
 	return this.split(" ").map((word: string) => {
-		return word[0].toUpperCase() + word.slice(1);
-	})
-		.join(" ");
+		return word[0].toUpperCase() + word.slice(1).toLowerCase();
+	}).join(" ");
 };
 
-String.prototype.toLocaleCapitalCase = function (locales?: string | string[] | undefined) {
+String.prototype.toLocaleCapitalCase = function (this: string, locales?: string | string[] | undefined) {
 	return this.split(" ").map((word: string) => {
-		return word[0].toLocaleUpperCase(locales) + word.slice(1);
-	})
-		.join(" ");
+		return word[0].toLocaleUpperCase(locales) + word.slice(1).toLocaleLowerCase(locales);
+	}).join(" ");
 };
 
-String.prototype.toCamelCase = function () {
+String.prototype.toCamelCase = function (this: string) {
 	return this.split(" ").map((word: string, index: number) => {
 		return index === 0 ? word[0].toLowerCase() + word.slice(1) : word[0].toUpperCase() + word.slice(1);
-	})
-		.join("");
+	}).join("");
 };
 
-String.prototype.toLocaleCamelCase = function (locales?: string | string[] | undefined) {
+String.prototype.toLocaleCamelCase = function (this: string, locales?: string | string[] | undefined) {
 	return this.split(" ").map((word: string, index: number) => {
 		return index === 0 ? word[0].toLocaleLowerCase(locales) + word.slice(1) : word[0].toLocaleUpperCase(locales) + word.slice(1);
-	})
-		.join("");
+	}).join("");
 };
 
-String.prototype.reverse = function () {
+String.prototype.reverse = function (this: string) {
 	return [...this].reverse().join("");
 };
 
-String.prototype.indexesOf = function (target: string, startPosition?: number | undefined) {
+String.prototype.indexesOf = function (this: string, target: string, startPosition?: number | undefined) {
 	const indexes: number[] = [];
 	let index = this.indexOf(target, startPosition);
 	while (index !== -1) {
@@ -127,40 +108,29 @@ String.prototype.indexesOf = function (target: string, startPosition?: number | 
 	return indexes;
 };
 
-String.prototype.compare = function (target: string) {
+String.prototype.compare = function (this: string, target: string) {
 	return this.localeCompare(target);
 };
 
-String.prototype.equals = function (target: string, position = 0) {
-	return ([...this].splice(position).join("") === [...target].splice(position).join(""));
-};
-
-String.prototype.equalsIgnoreCase = function (target: string, position = 0, locales?: string | string[] | undefined) {
-	return ([...this.toLocaleLowerCase(locales)].splice(position).join("") === [...target.toLocaleLowerCase(locales)].splice(position).join(""));
-};
-
-String.prototype.escape = function (isForAttribute = false) {
-	if (isForAttribute) {
-		this.replace(/"/g, "&quot;");
-	}
-	return this
-		.replace(/[\n\r\t\v\f\b]/g, "")
+String.prototype.escape = function (this: string, isForHTML = false) {
+	if (isForHTML) this.replace(/"/g, "&quot;");
+	this.replace(/[\n\r\t\v\f\b]/g, "")
 		.replace(/\s+/g, " ")
 	// eslint-disable-next-line no-control-regex
 		.replace(/[\u0000-\u001F]/g, "");
+
+	return this;
 };
 
-String.prototype.sample = function (wordCount = 0, separator: string | RegExp = " ") {
+String.prototype.sample = function (this: string, wordCount = 0, separator: string | RegExp = " ") {
 	const words = this.split(separator);
 	if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
-		return words
-			.slice(0, Math.randomInt(this.length))
-			.join(separator as string);
+		return words.slice(0, Math.randomInt(this.length)).join(separator as string);
 	}
 	return words.slice(0, wordCount).join(separator as string);
 };
 
-String.prototype.size = function (separator: string | RegExp = " ") {
+String.prototype.size = function (this: string, separator: string | RegExp = " ") {
 	return this.split(separator).length;
 };
 
