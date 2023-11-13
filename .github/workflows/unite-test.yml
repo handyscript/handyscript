@@ -1,0 +1,22 @@
+# JEST GITHUB ACTION
+name: JEST CI TEST
+run-name: ${{ github.actor }} is testing Handy Script modules
+on: [push]
+jobs:
+  handyscript-modules-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test
