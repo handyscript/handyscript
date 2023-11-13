@@ -34,6 +34,7 @@ module.exports = {
   },
 	output: {
 		filename: "hs.min.cjs",
+		library: 'handyscript',
 		path: path.join(__dirname, "../", "dist"),
 	},
 	plugins: [
