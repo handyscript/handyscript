@@ -1,17 +1,24 @@
 {
   "name": "handyscript",
-  "version": "1.3.0",
+  "version": "1.4.2",
   "type": "module",
   "author": "handyscript",
   "description": "A set of useful modules that makes the javascript development context easier",
-  "homepage": "https://github.com/handyscript/handyscript#readme",
+  "homepage": "https://github.com/handyscript/handyscript/wiki",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/handyscript/handyscript.git"
   },
   "license": "MIT",
-  "main": "dist/hs.min.cjs",
-  "module": "dist/hs.min.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "directories": {
     "lib": "lib"
   },
@@ -22,12 +29,10 @@
     "README.md"
   ],
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "JStest": "node test/index.js",
-    "TStest": "tsc test/index.ts",
-    "test": "npm run lint && npm run JStest && npm run TStest",
-    "watch": "rollup -c rollup.config.js --config-dev -w",
-    "build": "rollup -c rollup.config.js --config-prod"
+    "lint": "eslint . --ext .ts --fix",
+    "test": "npm run lint && jest",
+    "build": "webpack",
+    "watch": "tsc && webpack --watch"
   },
   "keywords": [
     "package",
@@ -72,22 +77,28 @@
     "const"
   ],
   "devDependencies": {
-    "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.2.1",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.49.0",
-    "rollup": "^3.29.2",
-    "rollup-plugin-typescript2": "^0.35.0",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^8.53.0",
+    "jest": "^29.7.0",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-jest": "^29.1.1",
+    "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "@vvhybe:registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
-    "axios": "^1.5.0"
+    "axios": "^1.6.1",
+    "handyutility": "^1.0.1"
   }
 }
