@@ -1,14 +1,20 @@
+import type {Config} from 'jest';
+
 // jest coniguration file
-export default {
+const config: Config = {
 	preset: "ts-jest",
 	testEnvironment: "node",
 	testMatch: ["**/test/**/*.test.ts"],
+	verbose: true, // show all tests
 	collectCoverage: true,
+	// collect coverage from all files except test files
 	collectCoverageFrom: [
-		"src/**/*.ts",
-		"!src/**/*.d.ts",
-		"!src/**/index.ts",
-		"!src/**/test/**",
+		"**/*.ts",
+		"!**/*.d.ts",
+		"!/index.ts",
+		"!**/test/**",
+		"!**/*.test.*",
+		"!**/*.config.*",
 	],
 	coverageDirectory: "coverage",
 	coverageReporters: ["text", "html"],
@@ -19,5 +25,9 @@ export default {
 			lines: 80,
 		},
 	},
-	ignorePatterns: ["dist", "node_modules"],
+	testPathIgnorePatterns: ["/node_modules/", "/dist/", "/coverage/"],
+	modulePathIgnorePatterns: ["/node_modules/", "/dist/", "/coverage/"],
+	watchPathIgnorePatterns: ["/node_modules/", "/dist/", "/coverage/"],
 };
+
+export default config;
