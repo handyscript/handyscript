@@ -113,21 +113,25 @@ String.prototype.compare = function (this: string, target: string) {
 };
 
 String.prototype.escape = function (this: string, isForHTML = false) {
-	if (isForHTML) this.replace(/"/g, "&quot;");
-	this.replace(/[\n\r\t\v\f\b]/g, "")
+	let escapedString = isForHTML ? this.replace(/"/g, "&quot;") : this;
+
+	escapedString = escapedString
+		.replace(/[\n\r\t\v\f\b]/g, "")
 		.replace(/\s+/g, " ")
 	// eslint-disable-next-line no-control-regex
 		.replace(/[\u0000-\u001F]/g, "");
 
-	return this;
+	return escapedString;
 };
 
-String.prototype.sample = function (this: string, wordCount = 0, separator: string | RegExp = " ") {
-	const words = this.split(separator);
-	if (wordCount === 0 || wordCount > words.length || wordCount < 0) {
-		return words.slice(0, Math.randomInt(this.length)).join(separator as string);
-	}
-	return words.slice(0, wordCount).join(separator as string);
+String.prototype.sample = function (this: string, wordCount = 1, separator: string | RegExp = " ") {
+	const words: Array<string> = [];
+	[...this.trim().split(separator)].forEach((word: string) => {
+		if (words.length < wordCount) {
+			words.push(word);
+		}
+	});
+	return words.join(separator as string);
 };
 
 String.prototype.size = function (this: string, separator: string | RegExp = " ") {

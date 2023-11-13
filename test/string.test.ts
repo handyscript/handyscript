@@ -12,7 +12,7 @@ describe("String methods", () => {
 	describe("toLocaleCapitalCase", () => {
 		it("should capitalize the first letter of every word in a string according to any locale-specific case mappings in effect at the time", () => {
 			expect("ßver ßee".toLocaleCapitalCase()).toBe("SSver SSee");
-			expect("ΣΣΣ".toLocaleCapitalCase("el")).toBe("Σσσ");
+			expect("ΣΣΣ".toLocaleCapitalCase("el")).toBe("Σσς");
 		});
 	});
 
@@ -65,9 +65,16 @@ describe("String methods", () => {
 
 	describe("sample", () => {
 		it("should return a sample of words from a string", () => {
-			expect("hello world".sample()).toMatch(/\w+\s\w+/);
-			expect("hello world".sample(1)).toMatch(/\w+/);
-			expect("hello world".sample(3)).toMatch(/\w+\s\w+\s\w+/);
+			const sample1 = " hello world".sample();
+			const sample2 = "hello world".sample(1);
+			const sample3 = "hello world".sample(2);
+			const sample4 = " hello world ".sample(3);
+
+			// Check if the samples contain words
+			expect(sample1.split(" ")).toHaveLength(1);
+			expect(sample2.split(" ")).toHaveLength(1);
+			expect(sample3.split(" ")).toHaveLength(2);
+			expect(sample4.split(" ")).toHaveLength(2);
 		});
 	});
 
