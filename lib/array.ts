@@ -1,4 +1,7 @@
 /// ------------------------------- HANDY ARRAYS © HandyScript 5m/21d/23y -------------------------------
+
+import "./math";
+
 /**
  * This file contains extensions to the built-in Array object in TypeScript.
  * It provides various sorting algorithms, array manipulation methods, and utility functions.
@@ -6,31 +9,6 @@
  */
 
 declare global {
-	/**
-	 * `SortAlgorithm` is a type that represents the sorting algorithms.
-	 */
-	type BinarySortAlgorithms =
-		| "bubble"
-		| "selection"
-		| "insertion"
-		| "merge"
-		| "quick"
-		| "heap"
-		| "radix" //it supports only numbers
-		| "counting" //it supports only numbers
-		| "bucket"
-		| "shell";
-
-	/**
-	 * `SortOrder` is a type that represents the sorting order.
-	 */
-	type SortOrder = "asc" | "desc";
-
-  /**
-   * `ComparableData` is a type that represents the comparable data.
-   */
-  type ComparableData = number | string | boolean | Date;
-
 	interface Array<T> {
 		/**
 		 * shuffles the elements in the given array in a random order.
@@ -109,7 +87,7 @@ declare global {
 		/**
 		 * removes all falsy values from an array.
 		 * @example
-		 * const arr = [0, 1, false, 2, "", 3, "a", "e" * 23, NaN, "s", 34];
+		 * const arr = [0, 1, false, 2, "", 3, "a", NaN, "s", 34];
 		 * arr.compact() // [1, 2, 3, "a", "s", 34]
 		 */
 		compact(): T[];
@@ -154,7 +132,7 @@ declare global {
 		 * return a random element or an array of random elements from the array based on the given quantity.
 		 * @param {number} quantity the quantity of the random elements (default: 1)
 		 */
-		sample(quantity?: number): T | T[];
+		sample(quantity?: number): T[];
 
 		/**
 		 * count the occurrences of a value in an array.
@@ -589,10 +567,13 @@ Array.prototype.copy = function () {
 	return [...this];
 };
 
-Array.prototype.sample = function (quantity = 1) {
+Array.prototype.sample = function (quantity = 1) : Array<unknown> {
 	if (this.length === 0) return this;
-	if (quantity <= 1 || quantity > this.length) return this[Math.randomInt(this.length)];
-	return this.sort(() => Math.random() - Math.random()).slice(0, quantity);
+	const result: unknown[] = [];
+	for (let i = 0; i < quantity; i++) {
+		result.push(this[Math.randomInt(this.length)]);
+	}
+	return result;
 };
 
 Array.prototype.count = function <T>(target: T) {

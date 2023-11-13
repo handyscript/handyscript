@@ -3,21 +3,6 @@
 import HashMap from "./hashmap";
 
 declare global {
-  type SchemaProperty = {
-    type: StringConstructor | NumberConstructor | BooleanConstructor | typeof Object;
-    required?: boolean;
-    regex?: RegExp;
-    properties?: SchemaProperty;
-  };
-
-  type Schema<T> = {[key in keyof T]: SchemaProperty | [SchemaProperty]} | [SchemaProperty] | SchemaProperty;
-
-  type JsonValue = string | number | boolean | null;
-  type JsonData = JsonValue | JsonObject | JsonArray;
-  type JsonArray = Array<JsonData>;
-  type JsonObject = { [key: string]: JsonData};
-  type FlattenedObject = { [key: string]: JsonValue | JsonObject };
-
 	interface JSON {
 		/**
 		 * Check if a JSON string is valid
