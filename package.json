@@ -29,8 +29,9 @@
     "README.md"
   ],
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "build": "tsc && webpack",
+    "lint": "eslint . --ext .ts --fix",
+    "test": "npm run lint && jest",
+    "build": "webpack",
     "watch": "tsc && webpack --watch"
   },
   "keywords": [
@@ -81,8 +82,10 @@
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
+    "copy-webpack-plugin": "^11.0.0",
     "eslint": "^8.53.0",
     "jest": "^29.7.0",
+    "terser-webpack-plugin": "^5.3.9",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
