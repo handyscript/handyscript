@@ -6,8 +6,3 @@
 
 # testing
 /coverage
-/test
-**/*.test.*
-
-# configs
-**/*.config.*

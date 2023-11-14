@@ -21,20 +21,20 @@ describe("Object methods", () => {
 		});
 	});
   
-  describe("deepMerge", () => {
-    it("should return a new `merged` object deep merged from the passed objects", () => {
-        const target = { a: { b: 1 } };
-        const source = { a: { c: 2 } };
-        const merged = Object.deepMerge({ ...target }, source);
+	describe("deepMerge", () => {
+		it("should return a new `merged` object deep merged from the passed objects", () => {
+			const target = { a: { b: 1 } };
+			const source = { a: { c: 2 } };
+			const merged = Object.deepMerge({ ...target }, source);
 
-        // Check if the original objects are unchanged
-        expect(target).toEqual({ a: { b: 1 } });
-        expect(source).toEqual({ a: { c: 2 } });
+			// Check if the original objects are unchanged
+			expect(target).toEqual({ a: { b: 1 } });
+			expect(source).toEqual({ a: { c: 2 } });
 
-        // Check the merged object
-        expect(merged).toEqual({ a: { b: 1, c: 2 } });
-    });
-  });
+			// Check the merged object
+			expect(merged).toEqual({ a: { b: 1, c: 2 } });
+		});
+	});
 
 	describe("forProperties", () => {
 		it("should loop through the object and call the callback function for each property", () => {
