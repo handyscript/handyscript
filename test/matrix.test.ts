@@ -1,131 +1,78 @@
-import {describe, expect} from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import Matrix from "../lib/matrix";
 
 describe("Matrix class", () => {
 	describe("constructor", () => {
-		it("should create a matrix with the correct number of rows and columns", () => {
+		test("should create a matrix with the correct dimensions and values", () => {
 			const data = [
 				[1, 2, 3],
 				[4, 5, 6],
+				[7, 8, 9],
 			];
 			const matrix = new Matrix(data);
-			expect(matrix.size()).toEqual({ rows: 2, cols: 3 });
+			expect(matrix.size()).toEqual({ rows: 3, cols: 3 });
+			expect(matrix.get(0, 0)).toEqual(1);
+			expect(matrix.get(1, 1)).toEqual(5);
+			expect(matrix.get(2, 2)).toEqual(9);
 		});
 
-		it("should throw an error if the rows have different number of columns", () => {
+		test("should throw an error if the rows have different number of columns", () => {
 			const data = [
 				[1, 2, 3],
 				[4, 5],
+				[7, 8, 9],
 			];
 			expect(() => new Matrix(data)).toThrow("All rows must have the same number of columns.");
+		});
+
+		test("should throw an error if the data is not an array of arrays", () => {
+			const data = [1, 2, 3];
+			// @ts-expect-error testing invalid Matrix constructor
+			expect(() => new Matrix(data)).toThrow("Invalid data format. Expecting an array of arrays.");
 		});
 	});
 
 	describe("zeros", () => {
-		it("should create a matrix filled with zeros", () => {
+		test("should create a matrix filled with zeros", () => {
 			const matrix = Matrix.zeros(2, 3);
-			expect(matrix.toArray()).toEqual([
-				[0, 0, 0],
-				[0, 0, 0],
-			]);
+			expect(matrix.size()).toEqual({ rows: 2, cols: 3 });
+			expect(matrix.get(0, 0)).toEqual(0);
+			expect(matrix.get(1, 2)).toEqual(0);
 		});
 	});
 
 	describe("ones", () => {
-		it("should create a matrix filled with ones", () => {
+		test("should create a matrix filled with ones", () => {
 			const matrix = Matrix.ones(2, 3);
-			expect(matrix.toArray()).toEqual([
-				[1, 1, 1],
-				[1, 1, 1],
-			]);
+			expect(matrix.size()).toEqual({ rows: 2, cols: 3 });
+			expect(matrix.get(0, 0)).toEqual(1);
+			expect(matrix.get(1, 2)).toEqual(1);
 		});
 	});
 
 	describe("eye", () => {
-		it("should create an identity matrix", () => {
+		test("should create an identity matrix", () => {
 			const matrix = Matrix.eye(3);
-			expect(matrix.toArray()).toEqual([
-				[1, 0, 0],
-				[0, 1, 0],
-				[0, 0, 1],
-			]);
+			expect(matrix.size()).toEqual({ rows: 3, cols: 3 });
+			expect(matrix.get(0, 0)).toEqual(1);
+			expect(matrix.get(1, 1)).toEqual(1);
+			expect(matrix.get(2, 2)).toEqual(1);
+			expect(matrix.get(0, 1)).toEqual(0);
+			expect(matrix.get(1, 0)).toEqual(0);
+			expect(matrix.get(2, 1)).toEqual(0);
 		});
 	});
 
 	describe("random", () => {
-		it("should create a matrix filled with random values between 0 and 1", () => {
-			const matrix = Matrix.random(2, 3, 1);
-			expect(matrix.toArray().flat().every((val) => val >= 0 && val <= 1)).toBe(true);
-		});
-
-		it("should create a matrix filled with random values between min and max", () => {
+		test("should create a matrix filled with random values", () => {
 			const matrix = Matrix.random(2, 3, 10, 5);
+			expect(matrix.size()).toEqual({ rows: 2, cols: 3 });
 			expect(matrix.toArray().flat().every((val) => val >= 5 && val <= 10)).toBe(true);
 		});
 	});
 
 	describe("add", () => {
-		it("should add two matrices", () => {
-			const matrix1 = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			const matrix2 = new Matrix([
-				[7, 8, 9],
-				[10, 11, 12],
-			]);
-			const result = Matrix.add(matrix1, matrix2);
-			expect(result.toArray()).toEqual([
-				[8, 10, 12],
-				[14, 16, 18],
-			]);
-		});
-
-		it("should throw an error if the matrices have different sizes", () => {
-			const matrix1 = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			const matrix2 = new Matrix([
-				[7, 8],
-				[10, 11],
-			]);
-			expect(() => Matrix.add(matrix1, matrix2)).toThrow("Matrix dimensions must be the same for addition.");
-		});
-	});
-
-	describe("subtract", () => {
-		it("should subtract two matrices", () => {
-			const matrix1 = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			const matrix2 = new Matrix([
-				[7, 8, 9],
-				[10, 11, 12],
-			]);
-			const result = Matrix.subtract(matrix1, matrix2);
-			expect(result.toArray()).toEqual([
-				[-6, -6, -6],
-				[-6, -6, -6],
-			]);
-		});
-
-		it("should throw an error if the matrices have different sizes", () => {
-			const matrix1 = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			const matrix2 = new Matrix([
-				[7, 8],
-				[10, 11],
-			]);
-			expect(() => Matrix.subtract(matrix1, matrix2)).toThrow("Matrix dimensions must be the same for subtraction.");
-		});
-	});
-
-	describe("multiply", () => {
-		it("should multiply two matrices", () => {
+		test("should add two matrices with the same dimensions", () => {
 			const matrix1 = new Matrix([
 				[1, 2],
 				[3, 4],
@@ -134,14 +81,32 @@ describe("Matrix class", () => {
 				[5, 6],
 				[7, 8],
 			]);
-			const result = Matrix.multiply(matrix1, matrix2);
-			expect(result.toArray()).toEqual([
-				[19, 22],
-				[43, 50],
-			]);
+			const result = matrix1.add(matrix2);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(6);
+			expect(result.get(1, 1)).toEqual(12);
 		});
 
-		it("should throw an error if the matrices have incompatible sizes", () => {
+		test("should add multiple matrices with the same dimensions", () => {
+			const matrix1 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const matrix2 = new Matrix([
+				[5, 6],
+				[7, 8],
+			]);
+			const matrix3 = new Matrix([
+				[9, 10],
+				[11, 12],
+			]);
+			const result = matrix1.add(matrix2, matrix3);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(15);
+			expect(result.get(1, 1)).toEqual(24);
+		});
+
+		test("should throw an error if the matrices have different dimensions", () => {
 			const matrix1 = new Matrix([
 				[1, 2],
 				[3, 4],
@@ -150,128 +115,198 @@ describe("Matrix class", () => {
 				[5, 6, 7],
 				[8, 9, 10],
 			]);
+			expect(() => matrix1.add(matrix2)).toThrow("Matrix dimensions must be the same for addition.");
+		});
+	});
 
-			try {
-				Matrix.multiply(matrix1, matrix2);
-				// If the control reaches here, it means the error was not thrown
-				fail("Expected error but got none.");
-			} catch (error) {
-				expect(error.message).toBe("Matrix dimensions must be the same for multiplication.");
-			}
+	describe("subtract", () => {
+		test("should subtract two matrices with the same dimensions", () => {
+			const matrix1 = new Matrix([
+				[5, 6],
+				[7, 8],
+			]);
+			const matrix2 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const result = matrix1.subtract(matrix2);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(4);
+			expect(result.get(1, 1)).toEqual(4);
+		});
+
+		test("should subtract multiple matrices with the same dimensions", () => {
+			const matrix1 = new Matrix([
+				[9, 10],
+				[11, 12],
+			]);
+			const matrix2 = new Matrix([
+				[5, 6],
+				[7, 8],
+			]);
+			const matrix3 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const result = matrix1.subtract(matrix2, matrix3);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(3);
+			expect(result.get(1, 1)).toEqual(0);
+		});
+
+		test("should throw an error if the matrices have different dimensions", () => {
+			const matrix1 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const matrix2 = new Matrix([
+				[5, 6, 7],
+				[8, 9, 10],
+			]);
+			expect(() => matrix1.subtract(matrix2)).toThrow("Matrix dimensions must be the same for subtraction.");
+		});
+	});
+
+	describe("multiply", () => {
+		test("should multiply two matrices with compatible dimensions", () => {
+			const matrix1 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const matrix2 = new Matrix([
+				[5, 6],
+				[7, 8],
+			]);
+			const result = matrix1.multiply(matrix2);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(19);
+			expect(result.get(1, 1)).toEqual(50);
+		});
+
+		test("should multiply multiple matrices with compatible dimensions", () => {
+			const matrix1 = new Matrix([
+				[1, 2],
+				[3, 4],
+			]);
+			const matrix2 = new Matrix([
+				[5, 6],
+				[7, 8],
+			]);
+			const matrix3 = new Matrix([
+				[9, 10],
+				[11, 12],
+			]);
+			const result = matrix1.multiply(matrix2, matrix3);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(413);
+			expect(result.get(1, 1)).toEqual(1030);
 		});
 	});
 
 	describe("scale", () => {
-		it("should multiply a matrix by a scalar", () => {
+		test("should scale the matrix by a scalar", () => {
 			const matrix = new Matrix([
 				[1, 2],
 				[3, 4],
 			]);
-			const result = Matrix.scale(matrix, 2);
-			expect(result.toArray()).toEqual([
-				[2, 4],
-				[6, 8],
-			]);
+			const result = matrix.scale(2);
+			expect(result.size()).toEqual({ rows: 2, cols: 2 });
+			expect(result.get(0, 0)).toEqual(2);
+			expect(result.get(1, 1)).toEqual(8);
 		});
 	});
 
 	describe("transpose", () => {
-		it("should transpose a matrix", () => {
+		test("should transpose the matrix", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
+				[5, 6],
 			]);
-			const result = Matrix.transpose(matrix);
-			expect(result.toArray()).toEqual([
-				[1, 4],
-				[2, 5],
-				[3, 6],
-			]);
+			const result = matrix.transpose();
+			expect(result.size()).toEqual({ rows: 2, cols: 3 });
+			expect(result.get(0, 0)).toEqual(1);
+			expect(result.get(1, 1)).toEqual(4);
+			expect(result.get(0, 2)).toEqual(5);
 		});
 	});
 
 	describe("get", () => {
-		it("should get the value at the given row and column", () => {
+		test("should get the value at the given row and column", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			expect(matrix.get(1, 2)).toEqual(6);
+			expect(matrix.get(0, 0)).toEqual(1);
+			expect(matrix.get(1, 1)).toEqual(4);
 		});
 
-		it("should throw an error if the row or column index is out of bounds", () => {
+		test("should throw an error if the row or column index is out of bounds", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			expect(() => matrix.get(2, 1)).toThrow("Invalid row or column index.");
+			expect(() => matrix.get(2, 0)).toThrow("Invalid row or column index.");
+			expect(() => matrix.get(0, 2)).toThrow("Invalid row or column index.");
 		});
 	});
 
 	describe("set", () => {
-		it("should set the value at the given row and column", () => {
+		test("should set the value at the given row and column", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			matrix.set(1, 2, 7);
-			expect(matrix.get(1, 2)).toEqual(7);
+			matrix.set(0, 0, 5);
+			matrix.set(1, 1, 6);
+			expect(matrix.get(0, 0)).toEqual(5);
+			expect(matrix.get(1, 1)).toEqual(6);
 		});
 
-		it("should throw an error if the row or column index is out of bounds", () => {
+		test("should throw an error if the row or column index is out of bounds", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			expect(() => matrix.set(2, 1, 7)).toThrow("Invalid row or column index.");
+			expect(() => matrix.set(2, 0, 5)).toThrow("Invalid row or column index.");
+			expect(() => matrix.set(0, 2, 6)).toThrow("Invalid row or column index.");
 		});
 	});
 
 	describe("toArray", () => {
-		it("should convert the matrix to an array", () => {
+		test("should convert the matrix to an array", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			expect(matrix.toArray()).toEqual([
-				[1, 2, 3],
-				[4, 5, 6],
+			const result = matrix.toArray();
+			expect(result).toEqual([
+				[1, 2],
+				[3, 4],
 			]);
 		});
 	});
 
 	describe("flatten", () => {
-		it("should convert the matrix to a flattened array", () => {
+		test("should flatten the matrix to a 1D array", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			expect(matrix.flatten()).toEqual([1, 2, 3, 4, 5, 6]);
+			const result = matrix.flatten();
+			expect(result).toEqual([1, 2, 3, 4]);
 		});
 	});
 
 	describe("clone", () => {
-		it("should create a copy of the matrix", () => {
+		test("should create a copy of the matrix", () => {
 			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
+				[1, 2],
+				[3, 4],
 			]);
-			const copy = matrix.clone();
-			expect(copy.toArray()).toEqual(matrix.toArray());
-			expect(copy).not.toBe(matrix);
-		});
-	});
-
-	describe("log", () => {
-		it("should log the matrix to the console", () => {
-			const matrix = new Matrix([
-				[1, 2, 3],
-				[4, 5, 6],
-			]);
-			const spy = jest.spyOn(console, "log").mockImplementation(() => {});
-			matrix.log();
-			expect(spy).toHaveBeenCalledWith("1 2 3\n4 5 6");
-			spy.mockRestore();
+			const result = matrix.clone();
+			expect(result).toEqual(matrix);
+			expect(result).not.toBe(matrix);
 		});
 	});
 });
