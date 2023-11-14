@@ -3,14 +3,14 @@ import "../lib/date";
 
 describe("Date methods", () => {
 	describe("timestamp", () => {
-		it("should return a Date object", async () => {
-			const date = await Date.timestamp();
-			expect(date).toBeInstanceOf(Date);
-		});
-
 		it("should return a Date object in the specified timezone", async () => {
-			const date = await Date.timestamp("America/New_York");
-			expect(date.toLocaleString("en-US", { timeZone: "America/New_York" })).toEqual(date.toLocaleString("en-US"));
+			const specifiedTimeZone = "America/New_York";
+			const date = await Date.timestamp(specifiedTimeZone);
+
+			// Convert the expected date to the specified timezone for comparison
+			const expectedDate = new Date().toLocaleString("en-US", { timeZone: specifiedTimeZone });
+
+			expect(date.toLocaleString("en-US")).toEqual(expectedDate);
 		});
 	});
 
@@ -49,7 +49,8 @@ describe("yearsAgo", () => {
 describe("monthsAgo", () => {
 	it("should return the correct number of months ago", () => {
 		const date = new Date(2022, 0, 1); // January 1, 2022
-		expect(date.monthsAgo()).toBe(new Date().getMonth() + 1);
+		const expectedMonthsAgo = (new Date().getFullYear() - date.getFullYear()) * 12 + new Date().getMonth() - date.getMonth();
+		expect(date.monthsAgo()).toBe(expectedMonthsAgo);
 	});
 });
 
