@@ -12,7 +12,7 @@ Only the latest [release](https://github.com/handyscript/handyscript/releases/la
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within `handyscript`, please send an email to one of the [AUTHORS](AUTHORS.md) Email Addresses or this email <vvhybe@hotmail.com>. with the subject `HandyScript vulnerability Report`. **Handy Script** does not have a bounty program, neither do we respond to bug bounties.
+If you discover a security vulnerability within `handyscript`, please send an email to one of the [AUTHORS](AUTHORS.md) Email Addresses or this email <support@handyscript.tech>. with the subject `HandyScript vulnerability Report`. **Handy Script** does not have a bounty program, neither do we respond to bug bounties.
 All security vulnerabilities will be promptly addressed.
 
 Please do not disclose publically any security vulnerabilities until it has been resolved.
