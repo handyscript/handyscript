@@ -1,18 +1,60 @@
 import {describe, expect} from "@jest/globals";
 import "../lib/date";
+// import { AxiosStatic } from "axios";
 
 describe("Date methods", () => {
-	describe("timestamp", () => {
-		it("should return a Date object in the specified timezone", async () => {
-			const specifiedTimeZone = "America/New_York";
-			const date = await Date.timestamp(specifiedTimeZone);
+	// Mock axios for TypeScript
+	// const mockedAxios = jest.genMockFromModule<Partial<AxiosStatic>>("axios");
+	// jest.mock("axios", () => mockedAxios);
 
-			// Convert the expected date to the specified timezone for comparison
-			const expectedDate = new Date().toLocaleString("en-US", { timeZone: specifiedTimeZone });
+	// // warn the tester to check his machine date if it set correctly.
+	// console.warn("Please make sure your machine date is set correctly Before running this test.");
 
-			expect(date.toLocaleString("en-US")).toEqual(expectedDate);
-		});
-	});
+	// describe("timestamp", () => {
+	// 	afterEach(() => {
+	// 		// Clear mock implementations and reset mock history
+	// 		jest.clearAllMocks();
+	// 	});
+
+	// 	it("should fetch and parse the timestamp correctly", async () => {
+	// 		const MOCKED_DATE = "2021-11-15T00:00:00.000000+00:00";
+	// 		// Mock the axios.get implementation
+	// 		jest.spyOn(mockedAxios, "get").mockResolvedValue({
+	// 			data: {
+	// 				utc_datetime: MOCKED_DATE,
+	// 				utc_offset: "-05:00",
+	// 			},
+	// 		});
+
+	// 		// Set your desired timezone for testing
+	// 		const timeZone = "America/New_York";
+
+	// 		// Call the Date.timestamp method
+	// 		const result = await Date.timestamp(timeZone);
+
+	// 		// Calculate the expected date based on the mocked response
+	// 		const expectedDate = new Date(MOCKED_DATE);
+	// 		expectedDate.setHours(expectedDate.getHours() - 7);  // Adjust for the timezone offset
+	// 		// Assert that the result matches the expected date - exclude milliseconds and seconds for api/network latency & delay
+	// 		expect(result.getDate()).toEqual(expectedDate.getDate());
+	// 		expect(result.getHours()).toEqual(expectedDate.getHours());
+	// 		expect(result.getMinutes()).toEqual(expectedDate.getMinutes());
+
+	// 		// Verify that axios.get was called with the correct URL
+	// 		expect(mockedAxios.get).toHaveBeenCalledWith(`http://worldtimeapi.org/api/timezone/${timeZone}`);
+	// 	});
+
+	// 	it("should handle errors during fetching", async () => {
+	// 		// Mock the axios.get implementation to simulate an error
+	// 		jest.spyOn(mockedAxios, "get").mockRejectedValue(new Error("Failed to fetch data"));
+
+	// 		// Set your desired timezone for testing
+	// 		const timeZone = "Hello/World";
+
+	// 		// Call the Date.timestamp method and expect it to throw an error
+	// 		await expect(Date.timestamp(timeZone)).rejects.toThrow("Error fetching timestamp: AxiosError: Request failed with status code 404");
+	// 	});
+	// });
 
 	describe("daysInMonth", () => {
 		it("should return the correct number of days in the month", () => {

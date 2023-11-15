@@ -51,17 +51,13 @@ Date.timestamp = async function (timeZone: Intl.DateTimeFormatOptions["timeZone"
 	try {
 		const response = await axios.get(`http://worldtimeapi.org/api/timezone/${timeZone}`);
 		const data = response.data;
-		console.table({
-			str_date: data.datetime,
-			date1: new Date(data.utc_datetime+data.utc_offset).getTimezoneOffset(),
-			date2: new Date().getTimezoneOffset(),
-		});
+		const tzOffset: number = data.utc_offset.split(":").map((x: string) => parseInt(x))[0];
+
 		// return the date object and usinf the `utc_datetime` property and set the timezone offset
-		return new Date(data.utc_datetime, { timeZone: data.utc_offset as number });
+		return new Date(new Date(data.utc_datetime).getTime() + tzOffset * 60 * 60 * 1000);
 	} catch (error) {
 		// Handle errors, you might want to log or throw an exception here
-		console.error("Error fetching timestamp:", error);
-		throw error;
+		throw new Error(`Error fetching timestamp: ${error}`);
 	}
 };
 
