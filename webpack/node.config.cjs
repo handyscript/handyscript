@@ -34,7 +34,9 @@ module.exports = {
   },
 	output: {
 		filename: "hs.min.cjs",
-		library: 'handyscript',
+		library:{
+			type: 'commonjs2',
+		},
 		path: path.join(__dirname, "../", "dist"),
 	},
 	plugins: [

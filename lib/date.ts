@@ -6,7 +6,7 @@ declare global {
      * Returns the accurate date based on the current timezone
      *@param timeZone The timezone to use like: `America/New_York`
      */
-    timestamp(timeZone?: string): Promise<Date>;
+    timestamp(timeZone?: Intl.DateTimeFormatOptions["timeZone"]): Promise<Date>;
   }
 
   interface Date {
@@ -47,9 +47,22 @@ declare global {
   }
 }
 
-Date.timestamp = async function (timeZone=Intl.DateTimeFormat().resolvedOptions().timeZone): Promise<Date> {
-	const { data } = await axios.get(`https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec?tz=${timeZone}`);
-	return new Date(data.fulldate);
+Date.timestamp = async function (timeZone: Intl.DateTimeFormatOptions["timeZone"] = Intl.DateTimeFormat().resolvedOptions().timeZone): Promise<Date> {
+	try {
+		const response = await axios.get(`http://worldtimeapi.org/api/timezone/${timeZone}`);
+		const data = response.data;
+		console.table({
+			str_date: data.datetime,
+			date1: new Date(data.utc_datetime+data.utc_offset).getTimezoneOffset(),
+			date2: new Date().getTimezoneOffset(),
+		});
+		// return the date object and usinf the `utc_datetime` property and set the timezone offset
+		return new Date(data.utc_datetime, { timeZone: data.utc_offset as number });
+	} catch (error) {
+		// Handle errors, you might want to log or throw an exception here
+		console.error("Error fetching timestamp:", error);
+		throw error;
+	}
 };
 
 Date.prototype.isLeapYear = function () {

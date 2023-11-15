@@ -6,8 +6,6 @@
 
 # testing
 /coverage
-/test
-**/*.test.*
 
-# configs
-**/*.config.*
+# webpack configs
+/webpack

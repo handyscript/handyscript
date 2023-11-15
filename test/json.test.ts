@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import {describe, expect} from "@jest/globals";
 import "../lib/json";
 

@@ -1,4 +1,5 @@
 /// ------------------------------- HANDY MATRIX © HandyScript 5m/28d/23y -------------------------------
+/* eslint-disable @typescript-eslint/no-this-alias */
 
 /**
  * implementation of `matrix` operations in typescript/javascript
@@ -9,7 +10,7 @@ export default class Matrix {
 	private readonly data: number[][];
 
 	constructor(data: number[][]) {
-		if (Array.isArray(data)) {
+		if (Array.isArray(data) && data.every((row) => Array.isArray(row))) {
 			// Copy the data array
 			this.data = [...data];
 
@@ -69,60 +70,75 @@ export default class Matrix {
 	}
 
 	/**
-   * add 2 matrices, `matrix1` + `matrix2`
+   * Addition of given matrices: `matrix1` + `matrix2` + `matrix3` + ...
    */
-	public static add(matrix1: Matrix, matrix2: Matrix): Matrix {
-		if (!Matrix.isSameSize(matrix1, matrix2)) {
-			throw new Error("Matrix dimensions must be the same for addition.");
-		}
+	add(...matrices: Matrix[]): Matrix {
+		matrices.forEach((matrix) => {
+			if (!Matrix.isSameSize(this, matrix)) {
+				throw new Error("Matrix dimensions must be the same for addition.");
+			}
+		});
 
-		const result: number[][] = matrix1.data.map((row: number[], i: number) =>
-			row.map((val: number, j: number) => val + matrix2.data[i][j])
+		const result: number[][] = this.data.map((row: number[], i: number) =>
+			row.map((val: number, j: number) =>
+				matrices.reduce((acc, matrix) => acc + matrix.data[i][j], val)
+			)
 		);
+
 		return new Matrix(result);
 	}
 
 	/**
-   * subtract 2 matrices, `matrix1` - `matrix2`
+   * Subtraction of given matrices: `matrix1` - `matrix2` - `matrix3` - ...
    */
-	public static subtract(matrix1: Matrix, matrix2: Matrix): Matrix {
-		if (!Matrix.isSameSize(matrix1, matrix2)) {
-			throw new Error("Matrix dimensions must be the same for subtraction.");
-		}
+	subtract(...matrices: Matrix[]): Matrix {
+		matrices.forEach((matrix) => {
+			if (!Matrix.isSameSize(this, matrix)) {
+				throw new Error("Matrix dimensions must be the same for subtraction.");
+			}
+		});
 
-		const result: number[][] = matrix1.data.map((row: number[], i: number) =>
-			row.map((val: number, j: number) => val - matrix2.data[i][j])
+		const result: number[][] = this.data.map((row: number[], i: number) =>
+			row.map((val: number, j: number) =>
+				matrices.reduce((acc, matrix) => acc - matrix.data[i][j], val)
+			)
 		);
+
 		return new Matrix(result);
 	}
 
 	/**
-   * multiply 2 matrices, `matrix1` * `matrix2`, complexity: `O(n^3)`
+   * Multiplication of matrices: `matrix1` * `matrix2`, complexity: `O(n^3)`
    */
-	public static multiply(matrix1: Matrix, matrix2: Matrix): Matrix {
-		if (matrix1.cols !== matrix2.rows) {
-			throw new Error("Matrix dimensions must be the same for multiplication.");
+	multiply(...matrices: Matrix[]): Matrix {
+		let result: Matrix = this;
+		for (const matrix of matrices) {
+			result = result.multiplyTwo(matrix);
 		}
+		return result;
+	}
 
-		const result: number[][] = new Array(matrix1.rows)
+	private multiplyTwo(matrix: Matrix): Matrix {
+		const result: number[][] = new Array(this.rows)
 			.fill(0)
-			.map(() => new Array(matrix2.cols).fill(0));
+			.map(() => new Array(matrix.cols).fill(0));
 
-		for (let i = 0; i < matrix1.rows; i++) {
-			for (let j = 0; j < matrix2.cols; j++) {
-				for (let k = 0; k < matrix1.cols; k++) {
-					result[i][j] += matrix1.data[i][k] * matrix2.data[k][j];
+		for (let i = 0; i < this.rows; i++) {
+			for (let j = 0; j < matrix.cols; j++) {
+				for (let k = 0; k < this.cols; k++) {
+					result[i][j] += this.data[i][k] * matrix.data[k][j];
 				}
 			}
 		}
+
 		return new Matrix(result);
 	}
 
 	/**
    * multiply a matrix by a scalar, `matrix` * `scalar`
    */
-	public static scale(matrix: Matrix, scalar: number): Matrix {
-		const result: number[][] = matrix.data.map((row: number[]) =>
+	scale(this: Matrix, scalar: number): Matrix {
+		const result: number[][] = this.data.map((row: number[]) =>
 			row.map((val: number) => val * scalar)
 		);
 		return new Matrix(result);
@@ -130,16 +146,15 @@ export default class Matrix {
 
 	/**
    * transpose a matrix by swapping rows and columns
-   * @param {Matrix} matrix - matrix to transpose
    */
-	public static transpose(matrix: Matrix): Matrix {
-		const result: number[][] = new Array(matrix.cols)
+	transpose(this: Matrix): Matrix {
+		const result: number[][] = new Array(this.cols)
 			.fill(0)
-			.map(() => new Array(matrix.rows).fill(0));
+			.map(() => new Array(this.rows).fill(0));
 
-		for (let i = 0; i < matrix.rows; i++) {
-			for (let j = 0; j < matrix.cols; j++) {
-				result[j][i] = matrix.data[i][j];
+		for (let i = 0; i < this.rows; i++) {
+			for (let j = 0; j < this.cols; j++) {
+				result[j][i] = this.data[i][j];
 			}
 		}
 		return new Matrix(result);

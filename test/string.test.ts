@@ -59,7 +59,7 @@ describe("String methods", () => {
 			expect("hello\fworld".escape()).toBe("helloworld");
 			expect("hello\vworld".escape()).toBe("helloworld");
 			expect("hello\bworld".escape()).toBe("helloworld");
-			expect('"hello"'.escape(true)).toBe("&quot;hello&quot;");
+			expect("\"hello\"".escape(true)).toBe("&quot;hello&quot;");
 		});
 	});
 

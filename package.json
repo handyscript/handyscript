@@ -31,8 +31,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
     "test": "npm run lint && jest",
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "tsc --project tsconfig.json && webpack",
+    "watch": "tsc --project tsconfig.json && webpack --watch"
   },
   "keywords": [
     "package",

@@ -1,6 +1,6 @@
 const path = require("path");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	target: "web",
@@ -18,7 +18,7 @@ module.exports = {
 					/static/,
 					/webpack/,
 					/\.config\./,
-          /\.test\./,
+					/\.test\./,
 				]
 			},
 		],
@@ -28,22 +28,25 @@ module.exports = {
 	},
 	optimization: {
 		minimize: true,
-    minimizer: [new TerserPlugin({
-      extractComments: false,
-    })],
-  },
+		minimizer: [new TerserPlugin({
+			extractComments: false,
+		})],
+	},
 	output: {
 		filename: "hs.min.js",
-		library: 'handyscript',
+		library: {
+      name: 'handyscript',
+      type: 'window',
+    },
 		path: path.join(__dirname, "../", "dist"),
 	},
 	plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'LICENSE', to: './' },
-        { from: 'AUTHORS.md', to: './' },
-        { from: 'README.md', to: './' },
-      ],
-    }),
-  ],
+		new CopyWebpackPlugin({
+			patterns: [
+				{ from: "LICENSE", to: "./" },
+				{ from: "AUTHORS.md", to: "./" },
+				{ from: "README.md", to: "./" },
+			],
+		}),
+	],
 };
