@@ -3,12 +3,12 @@
 /**
  * Check if a JSON string is valid
  */
-type SchemaProperty = {
+interface SchemaProperty {
   type: StringConstructor | NumberConstructor | BooleanConstructor | typeof Object;
   required?: boolean;
   regex?: RegExp;
   properties?: SchemaProperty;
-};
+}
 
 /**
  * Check if a JSON Schema is valid
@@ -33,9 +33,9 @@ type JsonArray = Array<JsonData>;
 /**
  * Represents a JSON object: values of type JsonData
  */
-type JsonObject = { [key: string]: JsonData};
+interface JsonObject { [key: string]: JsonData }
 
 /**
  * Represents a flattened JSON object: values of type JsonValue or JsonObject
  */
-type FlattenedObject = { [key: string]: JsonValue | JsonObject };
+interface FlattenedObject { [key: string]: JsonValue }

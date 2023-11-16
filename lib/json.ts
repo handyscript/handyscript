@@ -83,53 +83,76 @@ Object.assign(JSON, {
 		}
 	},
 
-	flatten: (json: JsonObject, prefix = ""): FlattenedObject => {
+	flatten: <T extends JsonObject>(obj: T, prefix: string = ""): FlattenedObject => {
 		const result: FlattenedObject = {};
-    
-		for (const key in json) {
-			if (Object.prototype.hasOwnProperty.call(json, key)) {
-				const newKey = prefix ? `${prefix}.${key}` : key;
 
-				if (typeof json[key] === "object" && !Array.isArray(json[key])) {
-					// If the value is a nested object, recursively flatten it
-					const nested = JSON.flatten(json[key] as JsonObject, newKey);
-					Object.assign(result, nested);
-				} else {
-					// Otherwise, add the key-value pair to the result
-					result[newKey] = json[key] as JsonValue;
+		function recurse(current: JsonData, property: string): void {
+			if (Array.isArray(current)) {
+				current.forEach((item, index) => {
+					const newKey = `${prefix}${property}[${index}]`;
+					recurse(item, newKey);
+				});
+			} else if (typeof current === "object" && current !== null) {
+				for (const key in current) {
+					const newKey = `${prefix}${property ? `${property}.` : ""}${key}`;
+					recurse(current[key], newKey);
 				}
+			} else {
+				result[`${prefix}${property}`] = current as JsonValue;
 			}
 		}
+
+		recurse(obj, "");
+
 		return result;
 	},
 
-	unflatten: (json: FlattenedObject): JsonObject => {
-		if (Object(json) !== json || Array.isArray(json)) return json;
-
+	unflatten: (flattened: FlattenedObject): JsonObject => {
 		const result: JsonObject = {};
 
-		for (const key in json) {
+		for (const key in flattened) {
+			const value = flattened[key];
 			const keys = key.split(".");
-			let cur = result;
+			let current: JsonObject = result;
 
-			for (let i = 0; i < keys.length - 1; i++) {
-				const key = keys[i];
-				cur[key] ??= Object(json) === json && !Array.isArray(json) ? {} : [];
-				cur = cur[key] as JsonObject;
-			}
+			for (let i = 0; i < keys.length; i++) {
+				const k = keys[i];
+				const isArray = /\[\d+\]$/.test(k);
 
-			if (typeof json[key as keyof typeof json] === "object") {
-				cur[keys[keys.length - 1]] = JSON.unflatten(json[key as keyof typeof json] as FlattenedObject) as JsonObject;
-			} else {
-				cur[keys[keys.length - 1]] = json[key as keyof typeof json];
+				if (isArray) {
+					const arrKey = k.slice(0, k.indexOf("["));
+					const index = parseInt(k.match(/\d+/)![0], 10);
+
+					// if (!Array.isArray(current[arrKey])) throw new Error(`Invalid key: ${arrKey} is not an array`);
+
+					if (!Array.isArray(current[arrKey]) || !current[arrKey]) current[arrKey] = [];
+
+					if (i === keys.length - 1) {
+						(current[arrKey] as JsonData[])![index] = value;
+					} else {
+						if (!(current[arrKey] as JsonData[])![index]) (current[arrKey] as JsonData[])![index] = {};
+						current = (current[arrKey] as JsonData[])![index] as JsonObject;
+					}
+				} else {
+					if (!current[k]) {
+						current[k] = {};
+					}
+
+					if (i === keys.length - 1) {
+						current[k] = value;
+					} else {
+						current = current[k] as JsonObject;
+					}
+				}
 			}
 		}
-		return result; 
+
+		return result;
 	},
 
 	merge: (...jsonData: JsonObject[]): JsonObject => {
 		const result: JsonObject = {};
-    
+
 		for (const json of jsonData) {
 			for (const key in json) {
 				if (Object.prototype.hasOwnProperty.call(json, key)) {
@@ -152,7 +175,7 @@ Object.assign(JSON, {
 
 	filter: (json: JsonObject, condition: (value: JsonValue) => boolean): JsonObject => {
 		const result: JsonObject = {};
-    
+
 		for (const key in json) {
 			if (Object.prototype.hasOwnProperty.call(json, key)){
 				const value = json[key];
