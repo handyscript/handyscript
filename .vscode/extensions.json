@@ -1,0 +1,42 @@
+{
+  "recommendations": [
+    // Code formatter
+    "esbenp.prettier-vscode",
+
+    // Documentation
+    "yzhang.markdown-all-in-one",
+    "DavidAnson.vscode-markdownlint",
+    "davidanson.vscode-markdownlint",
+    "aaron-bond.better-comments",
+    "cschlosser.doxdocgen",
+
+    // Syntax Intellisense
+    "dbaeumer.vscode-eslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "ms-vscode.vscode-typescript-next",
+    "ms-vscode.vscode-typescript-next-debug",
+    "christian-kohler.npm-intellisense",
+    "christian-kohler.path-intellisense",
+    "VisualStudioExptTeam.intellicode-api-usage-examples",
+    "wix.vscode-import-cost",
+
+    // Error Intellisense
+    "usernamehw.errorlens",
+    "yoavbls.pretty-ts-errors",
+
+    // Git
+    "eamodio.gitlens",
+
+    // Terminal / Code Env Runners / Debug
+    "formulahendry.code-runner",
+    "ritwickdey.LiveServer",
+
+    // Spell Checker
+    "streetsidesoftware.code-spell-checker",
+
+    // Confguration
+    "editorconfig.editorconfig",
+    "redhat.vscode-yaml",
+
+  ],
+}
