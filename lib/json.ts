@@ -107,43 +107,51 @@ Object.assign(JSON, {
 		return result;
 	},
 
-	unflatten: (flattened: FlattenedObject): JsonObject => {
+	unflatten(flattenedObject: FlattenedObject): JsonObject {
 		const result: JsonObject = {};
 
-		for (const key in flattened) {
-			const value = flattened[key];
+		function setNestedProperty(obj: JsonObject, key: string, value: JsonValue): void {
 			const keys = key.split(".");
-			let current: JsonObject = result;
+			let currentObj = obj;
 
-			for (let i = 0; i < keys.length; i++) {
-				const k = keys[i];
-				const isArray = /\[\d+\]$/.test(k);
+			keys.forEach((nestedKey, index) => {
+				const isArray = nestedKey.includes("[") && nestedKey.includes("]");
+				const arrayKeyMatch = nestedKey.match(/\[(.*?)\]/);
 
-				if (isArray) {
-					const arrKey = k.slice(0, k.indexOf("["));
-					const index = parseInt(k.match(/\d+/)![0], 10);
+				if (isArray && arrayKeyMatch) {
+					const arrayName = nestedKey.split("[")[0];
+					const arrayIndex = parseInt(arrayKeyMatch[1], 10);
+					// const currentObjArr = currentObj[arrayName] as JsonData[];
 
-					// if (!Array.isArray(current[arrKey])) throw new Error(`Invalid key: ${arrKey} is not an array`);
+					if (!currentObj[arrayName]) {
+						currentObj[arrayName] = [];
+					}
 
-					if (!Array.isArray(current[arrKey]) || !current[arrKey]) current[arrKey] = [];
-
-					if (i === keys.length - 1) {
-						(current[arrKey] as JsonData[])![index] = value;
+					if (index === keys.length - 1) {
+						(currentObj[arrayName] as JsonData[])[arrayIndex] = value;
 					} else {
-						if (!(current[arrKey] as JsonData[])![index]) (current[arrKey] as JsonData[])![index] = {};
-						current = (current[arrKey] as JsonData[])![index] as JsonObject;
+						if (!(currentObj[arrayName] as JsonData[])[arrayIndex]) {
+							(currentObj[arrayName] as JsonData[])[arrayIndex] = {};
+						}
+						currentObj = (currentObj[arrayName] as JsonData[])[arrayIndex] as JsonObject;
 					}
 				} else {
-					if (!current[k]) {
-						current[k] = {};
-					}
-
-					if (i === keys.length - 1) {
-						current[k] = value;
+					if (index === keys.length - 1) {
+						currentObj[nestedKey] = value;
 					} else {
-						current = current[k] as JsonObject;
+						if (!currentObj[nestedKey]) {
+							currentObj[nestedKey] = {};
+						}
+						currentObj = currentObj[nestedKey] as JsonObject;
 					}
 				}
+			});
+		}
+
+		for (const key in flattenedObject) {
+			if (Object.prototype.hasOwnProperty.call(flattenedObject, key)) {
+				const value = flattenedObject[key];
+				setNestedProperty(result, key, value);
 			}
 		}
 
