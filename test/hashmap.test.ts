@@ -1,4 +1,5 @@
 import {describe, expect} from "@jest/globals";
+// import "../lib/json";
 import HashMap from "../lib/hashmap";
 
 describe("HashMap", () => {
@@ -8,14 +9,17 @@ describe("HashMap", () => {
 		map = new HashMap({
 			name: "John",
 			age: 30,
-			city: "New York",
+			cars: [
+				{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+				{ name: "BMW", models: ["320", "X3", "X5"] },
+			],
 		});
 	});
 
 	describe("put", () => {
 		it("should add a key-value pair to the HashMap", () => {
-			map.put("country", "USA");
-			expect(map.get("country")).toEqual("USA");
+			map.put("name", "Jane");
+			expect(map.get("name")).toEqual("Jane");
 		});
 	});
 
@@ -91,19 +95,41 @@ describe("HashMap", () => {
 
 	describe("keys", () => {
 		it("should return an array of all the keys present in the HashMap", () => {
-			expect(map.keys()).toEqual(["name", "age", "city"]);
+			expect(map.keys()).toEqual([
+				"name",
+				"age",
+				"cars[0].name",
+				"cars[0].models[0]",
+				"cars[0].models[1]",
+				"cars[0].models[2]",
+				"cars[1].name",
+				"cars[1].models[0]",
+				"cars[1].models[1]",
+				"cars[1].models[2]"
+			]);
 		});
 	});
 
 	describe("values", () => {
 		it("should return an array of all the values present in the HashMap", () => {
-			expect(map.values()).toEqual(["John", 30, "New York"]);
+			expect(map.values()).toEqual([
+				"John",
+				30,
+				"Ford",
+				"Fiesta",
+				"Focus",
+				"Mustang",
+				"BMW",
+				"320",
+				"X3",
+				"X5"
+			]);
 		});
 	});
 
 	describe("size", () => {
 		it("should return the number of elements in the HashMap", () => {
-			expect(map.size()).toEqual(3);
+			expect(map.size()).toEqual(10);
 		});
 	});
 
@@ -133,68 +159,146 @@ describe("HashMap", () => {
 				keys.push(key);
 				values.push(value);
 			});
-			expect(keys).toEqual(["name", "age", "city"]);
-			expect(values).toEqual(["John", 30, "New York"]);
+			expect(keys).toEqual([
+				"name",
+				"age",
+				"cars[0].name",
+				"cars[0].models[0]",
+				"cars[0].models[1]",
+				"cars[0].models[2]",
+				"cars[1].name",
+				"cars[1].models[0]",
+				"cars[1].models[1]",
+				"cars[1].models[2]"
+			]);
+			expect(values).toEqual([
+				"John",
+				30,
+				"Ford",
+				"Fiesta",
+				"Focus",
+				"Mustang",
+				"BMW",
+				"320",
+				"X3",
+				"X5"
+			]);
 		});
 	});
 
 	describe("filter", () => {
 		it("should filter the HashMap", () => {
 			const filtered = map.filter((value) => typeof value === "string");
-			expect(filtered.toObject()).toEqual({ name: "John", city: "New York" });
+			expect(filtered.toObject()).toEqual({
+				name: "John",
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				]
+			});
 		});
 	});
 
 	describe("entries", () => {
 		it("should get the entries of the HashMap", () => {
 			expect(map.entries()).toEqual([
-				["name", "John"],
-				["age", 30],
-				["city", "New York"],
+				["name", "John" ],
+				["age", 30 ],
+				["cars[0].name", "Ford" ],
+				["cars[0].models[0]", "Fiesta" ],
+				["cars[0].models[1]", "Focus" ],
+				["cars[0].models[2]", "Mustang" ],
+				["cars[1].name", "BMW" ],
+				["cars[1].models[0]", "320" ],
+				["cars[1].models[1]", "X3" ],
+				["cars[1].models[2]", "X5" ]
+			]);
+		});
+	});
+
+	describe("toFlatEntries", () => {
+		it("should convert the HashMap entries to a flat array", () => {
+			expect(map.toFlatEntries()).toEqual([
+				"name", "John",
+				"age", 30,
+				"cars[0].name", "Ford",
+				"cars[0].models[0]", "Fiesta",
+				"cars[0].models[1]", "Focus",
+				"cars[0].models[2]", "Mustang",
+				"cars[1].name", "BMW",
+				"cars[1].models[0]", "320",
+				"cars[1].models[1]", "X3",
+				"cars[1].models[2]", "X5"
 			]);
 		});
 	});
 
 	describe("toObject", () => {
 		it("should convert the HashMap to an object", () => {
-			expect(map.toObject()).toEqual({ name: "John", age: 30, city: "New York" });
+			expect(map.toObject()).toEqual({
+				name: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				]
+			});
 		});
 	});
 
-	describe("toArray", () => {
-		it("should convert the HashMap to an array", () => {
-			expect(map.toArray()).toEqual([
-				["name", "John"],
-				["age", 30],
-				["city", "New York"],
-			]);
+	describe("toFlatObject", () => {
+		it("should convert the HashMap to a flat object", () => {
+			console.log(map.toFlatObject());
+			expect(map.toFlatObject()).toEqual({
+				name: "John",
+				age: 30,
+				"cars[0].name": "Ford",
+				"cars[0].models[0]": "Fiesta",
+				"cars[0].models[1]": "Focus",
+				"cars[0].models[2]": "Mustang",
+				"cars[1].name": "BMW",
+				"cars[1].models[0]": "320",
+				"cars[1].models[1]": "X3",
+				"cars[1].models[2]": "X5",
+			});
 		});
 	});
 
-	describe("toFlatArray", () => {
-		it("should convert the HashMap to a flat array", () => {
-			expect(map.toFlatArray()).toEqual(["name", "John", "age", 30, "city", "New York"]);
-		});
-	});
+	// describe("toJSON", () => {
+	// 	it("should convert the HashMap to a JSON string", () => {
+	// 		expect(map.toJSON()).toEqual('{"name":"John","age":30,"city":"New York"}');
+	// 	});
+	// });
+
 
 	describe("getKeyByValue", () => {
-		it("should get the first key of the associated value", () => {
-			expect(map.getKeyByValue("John")).toEqual("name");
+		it("should get the first key of the associated value (Case Sensitive)", () => {
+			expect(map.getKeyByValue("Ford")).toEqual("cars[0].name");
 		});
 
-		it("should return null if the value does not exist", () => {
-			expect(map.getKeyByValue("male")).toBeNull();
+		it("should get the first key of the associated value (Case Insensitive)", () => {
+			expect(map.getKeyByValue("ford", false)).toEqual("cars[0].name");
+		});
+
+		it("should return null if the value does not exist or it's a Case Sensitivity mismatch", () => {
+			expect(map.getKeyByValue("Ford")).toBeNull();
 		});
 	});
 
 	describe("getKeysByValue", () => {
-		it("should get all the keys of the associated value", () => {
+		it("should get all the keys of the associated value (Case Sensitive)", () => {
 			map.put("nickname", "Johnny");
 			map.put("fullname", "John Doe");
 			expect(map.getKeysByValue("John")).toEqual(["name"]);
 		});
 
-		it("should return an empty array if the value does not exist", () => {
+		it("should get all the keys of the associated value (Case Insensitive)", () => {
+			map.put("nickname", "john");
+			map.put("fullname", "John Doe");
+			expect(map.getKeysByValue("john", false)).toEqual(["name", "nickname"]);
+		});
+
+		it("should return an empty array if the value does not exist or it's a Case Sensitivity mismatch", () => {
 			expect(map.getKeysByValue("male")).toEqual([]);
 		});
 	});
@@ -202,12 +306,26 @@ describe("HashMap", () => {
 	describe("updateKeyByValue", () => {
 		it("should update the key of a value", () => {
 			map.updateKeyByValue("John", "firstName");
-			expect(map.toObject()).toEqual({ firstName: "John", age: 30, city: "New York" });
+			expect(map.toObject()).toEqual({
+				firstName: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				]
+			});
 		});
 
 		it("should not update the key if the value does not exist", () => {
 			map.updateKeyByValue("male", "gender");
-			expect(map.toObject()).toEqual({ name: "John", age: 30, city: "New York" });
+			expect(map.toObject()).toEqual({
+				name: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				]
+			});
 		});
 	});
 });

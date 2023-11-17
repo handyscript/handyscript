@@ -1,5 +1,7 @@
 /// ------------------------------- HANDY HASHMAP © HandyScript 5m/27d/23y -------------------------------
 
+import "../lib/json";
+
 /**
  * HashMap implementation in JavaScript
  */
@@ -140,14 +142,35 @@ export default class HashMap {
 	}
 
 	/**
-	 * Get the entries of the HashMap
+	 * Get the entries of the HashMap: `[[key1, value1], [key2, value2], ...]`
 	 */
 	entries(): [string, unknown][] {
 		return Array.from(this.map.entries());
 	}
 
 	/**
-	 * Convert the HashMap to an object
+	 * Convert the HashMap to a flat array: `[key1, value1, key2, value2, ...]`
+	 */
+	toFlatEntries(): [string, unknown] {
+		const arr: unknown[] = [];
+		this.forEach((value, key) => {
+			arr.push(key);
+			// if type of value is object, then convert it to a flat object
+			if (typeof value === "object") {
+				arr.push(JSON.flatten(value as JSONObject));
+			// if type of value is array, then convert it to a flat array
+			} else if (Array.isArray(value)) {
+				arr.push(JSON.flatten(value as JSONArray));
+			} else {
+				arr.push(value);
+			}
+		});
+		return arr as [string, unknown];
+	}
+
+	/**
+	 * Convert the HashMap to a javascript `object`
+	 * similar to the one returned by `JSON.unflatten()`
 	 */
 	toObject(): Record<string, unknown> {
 		const obj: Record<string, unknown> = {};
@@ -158,65 +181,56 @@ export default class HashMap {
 	}
 
 	/**
-	 * Convert the HashMap to an array
+	 * Convert the HashMap to a Flat object
+	 * similar to the one returned by `JSON.flatten()`
 	 */
-	toArray(): [string, unknown][] {
-		const arr: [string, unknown][] = [];
-		this.forEach((value, key) => {
-			arr.push([key, value]);
-		});
-		return arr;
+	toFlatObject(): Record<string, unknown> {
+		return JSON.flatten(this.toObject() as JSONObject) as Record<string, unknown>;
 	}
 
 	/**
-	 * Convert the HashMap to a flat array
+	 * get the first key of the associated value, returns `null` if no key is found
+	 * @param caseSensitive [default: true] whether to perform case sensitive search
 	 */
-	toFlatArray(): [string, unknown] {
-		const arr: unknown[] = [];
-		this.forEach((value, key) => {
-			arr.push(key);
-			arr.push(value);
-		});
-		return arr as [string, unknown];
-	}
-
-	/**
-	 * get the first key of the associated value
-	 * @param value The value whose key is to be returned
-	 */
-	getKeyByValue(value: unknown): string | null {
+	getKeyByValue(value: unknown, caseSensitive = true): string | null {
 		for (const [key, val] of this.map) {
-			if (val === value) {
-				return key;
+			if (caseSensitive) {
+				if (val === value) return key;
+			} else {
+				if (String(val).toLowerCase() === String(value).toLowerCase()) return key;
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * get all the keys of the associated value
-	 * @param value The value whose keys are to be returned
+	 * get all the keys that are sharing the same value, returns empty array `[]` if no key is found
+	 * @param caseSensitive [default: true] whether to perform case sensitive search
 	 */
-	getKeysByValue(value: unknown): string[] {
+	getKeysByValue(value: unknown, caseSensitive = true): string[] {
 		const keys: string[] = [];
 		for (const [key, val] of this.map) {
-			if (val === value) {
-				keys.push(key);
+			if (caseSensitive) {
+				if (val === value) keys.push(key);
+			} else {
+				if (String(val).toLowerCase() === String(value).toLowerCase()) keys.push(key);
 			}
 		}
 		return keys;
 	}
 
 	/**
-	 * update the key of a value
+	 * update the key of a value, and returns the old key, returns `null` if no key is found
 	 * @param value The value whose key is to be updated
 	 * @param newKey The new key to be updated
+	 * @param caseSensitive [default: true] whether to perform case sensitive search
 	 */
-	updateKeyByValue(value: unknown, newKey: string) {
-		const key = this.getKeyByValue(value);
+	updateKeyByValue(value: unknown, newKey: string, caseSensitive = true): string | null {
+		const key = this.getKeyByValue(value, caseSensitive);
 		if (key) {
 			this.remove(key);
 			this.put(newKey, value);
 		}
+		return key;
 	}
 }
