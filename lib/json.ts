@@ -12,7 +12,7 @@ declare global {
 		/**
 		 * the flatten function takes a JSON object and returns a new object with all the keys flattened.
 		 */
-		flatten(json: JSONObject, prefix: string): FlattenedObject;
+		flatten(json: JSONObject, prefix?: string): FlattenedObject;
 
 		/**
 		 * the unflatten function takes a JSON object with flattened keys and returns a new object with unflattened keys.
@@ -64,12 +64,12 @@ declare global {
 		 *
 		 * JSON.query(json, "cars[0].name") // { "name": "Ford" }
 		 */
-		query(json: JSONObject, query: string): JSONData;
+		query(jsonArray: JSONObject[], key: string, operator: JSONQueryOperations, value: JSONValue): JSONObject[];
 
 		/**
 		 * Convert a JSON object to a HashMap
 		 */
-		toHashmap(json: JSONObject): HashMap;
+		toHashMap(json: JSONObject): HashMap;
 	}
 }
 
@@ -178,8 +178,6 @@ Object.assign(JSON, {
 		}
 		return result;
 	},
-
-
 
 	filter: (json: JSONObject, condition: (value: JSONValue) => boolean): JSONObject => {
 		const result: JSONObject = {};
@@ -303,21 +301,60 @@ Object.assign(JSON, {
 		}
 	},
 
-	query: (json: JSONObject, query: string): JSONData => {
-		const keys = query.split(".");
-		let result: JSONObject = json;
-		for (const key of keys) {
-			if (key in result) {
-				result = result[key as keyof typeof result] as JSONObject;
-			} else {
-				return null;
-			}
+	query(jsonArray: JSONObject[], key: string, operator: JSONQueryOperations, value: JSONValue): JSONObject[] {
+		if (!Array.isArray(jsonArray) || !jsonArray.every((item) => typeof item === "object")) {
+			throw new Error("Invalid input: jsonArray must be an array of objects.");
 		}
-		return result;
+
+		return jsonArray.filter((json) => {
+			const keys = key.split(".");
+			let currentObj: JSONValue | JSONObject = json;
+
+			for (const nestedKey of keys) {
+				if (typeof currentObj === "object" && currentObj !== null && Object.prototype.hasOwnProperty.call(currentObj,nestedKey)) {
+					currentObj = currentObj[nestedKey] as JSONObject;
+				} else {
+					return false; // Key not found, condition is not met
+				}
+			}
+
+			// Evaluate the condition on the last nested object
+			const jsonValue = typeof currentObj === "string" ? (currentObj as string).toLowerCase() : currentObj;
+			const queryValue = typeof value === "string" ? (value as string).toLowerCase() : value;
+
+			switch (operator) {
+			case "=":
+				return jsonValue === queryValue;
+			case ">":
+				return parseFloat(jsonValue as string) > parseFloat(queryValue as string);
+			case "<":
+				return parseFloat(jsonValue as string) < parseFloat(queryValue as string);
+			case ">=":
+				return parseFloat(jsonValue as string) >= parseFloat(queryValue as string);
+			case "<=":
+				return parseFloat(jsonValue as string) <= parseFloat(queryValue as string);
+			case "&&":
+				return jsonValue && queryValue;
+			case "||":
+				return jsonValue || queryValue;
+			case "<>":
+				return jsonValue !== queryValue;
+			default:
+				throw new Error(`Unsupported operator: ${operator}`);
+			}
+		});
 	},
 
-	toHashmap: (json: JSONObject): HashMap => {
-		return new HashMap(json);
+	toHashMap: (json: JSONObject): HashMap => {
+		const hashMap = new HashMap();
+
+		const flattened = JSON.flatten(json);
+
+		Object.entries(flattened).forEach(([key, value]) => {
+			hashMap.put(key, value);
+		});
+
+		return hashMap;
 	},
 });
 
