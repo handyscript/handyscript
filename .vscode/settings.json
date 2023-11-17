@@ -1,63 +1,68 @@
 {
-    // Editor
-    "editor.tabSize": 2,
-    "editor.autoIndent": "advanced",
-    "editor.indentSize": "tabSize",
-    "editor.linkedEditing": true,
-    "editor.inlineSuggest.enabled": true,
-    "files.autoSave": "afterDelay",
-    "files.eol": "\n",
-    "files.trimTrailingWhitespace": true,
-    "files.watcherExclude": {
-        "**/build": true,
-        "**/node_modules": true,
-        "**/.git": true,
-        "**/dist": true,
-    },
-    "explorer.confirmDelete": true,
-    "explorer.confirmDragAndDrop": false,
+	// Editor
+	"editor.tabSize": 2,
+	"editor.autoIndent": "advanced",
+	"editor.indentSize": "tabSize",
+	"editor.linkedEditing": true,
+	"editor.inlineSuggest.enabled": true,
+	"files.autoSave": "afterDelay",
+	"files.eol": "\n",
+	"files.trimTrailingWhitespace": true,
+	"files.watcherExclude": {
+		"**/build": true,
+		"**/node_modules": true,
+		"**/.git": true,
+		"**/dist": true
+	},
+	"explorer.confirmDelete": true,
+	"explorer.confirmDragAndDrop": false,
 
-    // Emmet
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "typescript.updateImportsOnFileMove.enabled": "always",
+	// Emmet
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"typescript.updateImportsOnFileMove.enabled": "always",
 
-    // Git
-    "git.autofetch": true,
-    "git.enableSmartCommit": true,
-    "git.confirmSync": false,
-    "git.ignoreRebaseWarning": true,
-    "diffEditor.ignoreTrimWhitespace": false,
+	// Git
+	"git.autofetch": true,
+	"git.enableSmartCommit": true,
+	"git.confirmSync": false,
+	"git.ignoreRebaseWarning": true,
+	"diffEditor.ignoreTrimWhitespace": false,
 
-    // Terminal
-    "terminal.integrated.env.linux": {},
-    "terminal.integrated.env.windows": {},
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
+	// Terminal
+	"terminal.integrated.env.linux": {},
+	"terminal.integrated.env.windows": {},
+	"terminal.integrated.defaultProfile.windows": "PowerShell",
 
-    // Code formatter
-    "prettier.useTabs": true,
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "markdownlint.config": {
-        "MD033": false, // bypass no-inline-html
-    },
+	// Code formatter
+	"prettier.useTabs": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"markdownlint.config": {
+		"MD033": false // bypass no-inline-html
+	},
 
-    // Misc
-    "redhat.telemetry.enabled": true,
-    "debug.javascript.defaultRuntimeExecutable": {
-      "pwa-node": "node"
-    },
+	// Misc
+	"redhat.telemetry.enabled": true,
+	"debug.javascript.defaultRuntimeExecutable": {
+		"pwa-node": "node"
+	},
 
-    // Workspace Theme
-    "workbench.colorCustomizations": {
-      "statusBar.background": "#c4b450",
-      "statusBar.foreground": "#191a18"
-    }
-
+	// Workspace Theme
+	"workbench.colorCustomizations": {
+		"activityBar.background": "#111111",
+		"activityBar.foreground": "#c4b450",
+		"activityBarBadge.background": "#c4b450",
+		"activityBarBadge.foreground": "#191a18",
+		"activityBar.activeFocusBorder": "#c4b450",
+		"activityBar.activeBorder": "#c4b450",
+		"statusBar.background": "#c4b450",
+		"statusBar.foreground": "#191a18",
+	}
 }
