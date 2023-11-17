@@ -160,7 +160,10 @@ export default class HashMap {
 				arr.push(JSON.flatten(value as JSONObject));
 			// if type of value is array, then convert it to a flat array
 			} else if (Array.isArray(value)) {
-				arr.push(JSON.flatten(value as JSONArray));
+				value.forEach((val, index) => {
+					arr.push(`${key}[${index}]`);
+					arr.push(val);
+				});
 			} else {
 				arr.push(value);
 			}
