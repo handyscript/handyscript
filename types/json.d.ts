@@ -18,24 +18,26 @@ type Schema<T> = {[key in keyof T]: SchemaProperty | [SchemaProperty]} | [Schema
 /**
  * Represents a JSON value: string, number, boolean or null
  */
-type JsonValue = string | number | boolean | null;
+type JSONValue = string | number | boolean | null;
 
 /**
  * Represents a JSON data: value, object of values or array of values
  */
-type JsonData = JsonValue | JsonObject | JsonArray;
+type JSONData = JSONValue | JSONObject | JSONArray;
 
 /**
- * Represents a JSON array: array of type JsonData
+ * Represents a JSON array: array of type JSONData
  */
-type JsonArray = Array<JsonData>;
+type JSONArray = Array<JSONData>;
 
 /**
- * Represents a JSON object: values of type JsonData
+ * Represents a JSON object: values of type JSONData
  */
-interface JsonObject { [key: string]: JsonData }
+interface JSONObject { [key: string]: JSONData }
 
 /**
- * Represents a flattened JSON object: values of type JsonValue or JsonObject
+ * Represents a flattened JSON object: values of type JSONValue or JSONObject
  */
-interface FlattenedObject { [key: string]: JsonValue }
+interface FlattenedObject { [key: string]: JSONValue }
+
+interface JSONTransformMap { [key: string]: string }

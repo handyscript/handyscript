@@ -104,7 +104,7 @@ describe("JSON methods", () => {
 	});
 
 	describe("transform", () => {
-		it("should transform a JSON object using a mapping object", () => {
+		it("should transform (rename keys) a JSON object using a mapping object", () => {
 			const mapping = { name: "firstName", age: "ageInYears" };
 			const transformed = JSON.transform(json, mapping);
 			expect(transformed).toEqual({
@@ -113,6 +113,19 @@ describe("JSON methods", () => {
 				cars: [
 					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
 					{ name: "BMW", models: ["320", "X3", "X5"] },
+				],
+			});
+		});
+
+		it("should transform (rename keys) a JSON object using a mapping object in deeply/nested way", () => {
+			const mapping = { name: "firstName", age: "ageInYears" };
+			const transformed = JSON.transform(json, mapping, true);
+			expect(transformed).toEqual({
+				firstName: "John",
+				ageInYears: 30,
+				cars: [
+					{ firstName: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ firstName: "BMW", models: ["320", "X3", "X5"] },
 				],
 			});
 		});
