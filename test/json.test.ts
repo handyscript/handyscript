@@ -154,26 +154,71 @@ describe("JSON methods", () => {
 	});
 
 	describe("query", () => {
+		const jsons = [
+			{
+				name: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				],
+			},
+			{
+				name: "Doe",
+				age:  20,
+				cars: [
+					{ name: "Mercidec", models: ["Golf", "Focus", "Benz"] },
+					{ name: "Skuda", models: ["653", "DH2DS1", "F54EF5"] },
+				],
+			},
+			{
+				name: "Alex",
+				age:  14,
+				cars: [],
+			},
+		];
+
 		it("should search a JSON object using a query string", () => {
-			const result = JSON.query(json, "cars[0].name");
-			expect(result).toEqual({ name: "Ford" });
+			const result = JSON.query(jsons, "age", ">=", 20);
+			expect(result).toEqual([
+				{
+					name: "John",
+					age: 30,
+					cars: [
+						{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+						{ name: "BMW", models: ["320", "X3", "X5"] },
+					],
+				},
+				{
+					name: "Doe",
+					age:  20,
+					cars: [
+						{ name: "Mercidec", models: ["Golf", "Focus", "Benz"] },
+						{ name: "Skuda", models: ["653", "DH2DS1", "F54EF5"] },
+					],
+				},
+			]);
+		});
+
+		it("should throw an error if the jsons argument is not an array of json objects", () => {
+			expect(() => JSON.query("jsons", "age", ">=", 20)).toThrow("Invalid input: jsonArray must be an array of objects.");
 		});
 	});
 
-	describe("toHashmap", () => {
+	describe("toHashMap", () => {
 		it("should convert a JSON object to a HashMap", () => {
-			const hashmap = JSON.toHashmap(json);
+			const hashmap = JSON.toHashMap(json);
 			expect(hashmap).toEqual({
-				name: "John",
-				age: 30,
-				"cars.0.name": "Ford",
-				"cars.0.models.0": "Fiesta",
-				"cars.0.models.1": "Focus",
-				"cars.0.models.2": "Mustang",
-				"cars.1.name": "BMW",
-				"cars.1.models.0": "320",
-				"cars.1.models.1": "X3",
-				"cars.1.models.2": "X5",
+				"name": "John",
+				"age": 30,
+				"cars[0].name": "Ford",
+				"cars[0].models[0]": "Fiesta",
+				"cars[0].models[1]": "Focus",
+				"cars[0].models[2]": "Mustang",
+				"cars[1].name": "BMW",
+				"cars[1].models[0]": "320",
+				"cars[1].models[1]": "X3",
+				"cars[1].models[2]": "X5"
 			});
 		});
 	});
