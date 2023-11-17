@@ -40,4 +40,12 @@ interface JSONObject { [key: string]: JSONData }
  */
 interface FlattenedObject { [key: string]: JSONValue }
 
+/**
+ * Represents a Map to transform/rename keys of a JSON object
+ */
 interface JSONTransformMap { [key: string]: string }
+
+/**
+ * Represents a JSON query operations
+ */
+type JSONQueryOperations = "=" | ">" | "<" | ">=" | "<=" | "&&" | "||" | "<>";
