@@ -48,7 +48,7 @@ declare global {
 		/**
 		 * Validate a JSON object against a JSON schema
 		 */
-		validateSchema<T>(data: JSONData, schema: Schema<T>): boolean;
+		validateSchema(json: JSONObject, schema: Schema<JSONObject>): boolean;
 
 		/**
 		 * Search a JSON object using a query string
@@ -260,45 +260,72 @@ Object.assign(JSON, {
 		return transformedJson;
 	},
 
-	validateSchema: <T>(data: JSONData, schema: Schema<T>): boolean => {
-		function validateObject(data: JSONObject, objectSchema: SchemaProperty): boolean {
-			for (const key in objectSchema) {
-				if (Object.prototype.hasOwnProperty.call(objectSchema, key)) {
-					const propertySchema = objectSchema[key as keyof typeof objectSchema] as SchemaProperty;
+	validateSchema(data: JSONData, schema: Schema<JSONData>): boolean {
+		const validateProperty = (value: JSONData, propertySchema: SchemaProperty): boolean => {
+			if (propertySchema.type === String && typeof value !== "string") {
+				return false;
+			}
 
-					if (!validateProperty(data[key as keyof typeof data] as JSONValue, propertySchema)) return false;
+			if (propertySchema.type === Number && typeof value !== "number") {
+				return false;
+			}
+
+			if (propertySchema.type === Boolean && typeof value !== "boolean") {
+				return false;
+			}
+
+			if (propertySchema.type === Object) {
+				if (typeof value !== "object" || value === null || Array.isArray(value)) {
+					return false;
+				}
+
+				if (propertySchema.properties) {
+					return validateObject(value as JSONObject, propertySchema.properties);
+				}
+			}
+
+			if (propertySchema.regex && typeof value === "string") {
+				return propertySchema.regex.test(value);
+			}
+
+			return true;
+		};
+
+		const validateArray = (array: JSONArray, arraySchema: SchemaProperty[]): boolean => {
+			if (!Array.isArray(array)) {
+				return false;
+			}
+
+			for (let i = 0; i < array.length; i++) {
+				if (!validateProperty(array[i], arraySchema[0])) {
+					return false;
 				}
 			}
 
 			return true;
-		}
+		};
 
-		function validateProperty(value: JSONData, propertySchema: SchemaProperty): boolean {
-			if (propertySchema.required && (value === undefined || value === null)) return false;
+		const validateObject = (obj: JSONObject, objSchema: Schema<JSONData>): boolean => {
+			for (const key in objSchema) {
+				if (Object.prototype.hasOwnProperty.call(objSchema, key)) {
+					const propertySchema = objSchema[key as keyof typeof objSchema];
 
-			if (propertySchema.type === String && typeof value !== "string") return false;
-			if (propertySchema.type === Number && typeof value !== "number") return false;
-			if (propertySchema.type === Boolean && typeof value !== "boolean") return false;
-
-			if (propertySchema.type === Object && propertySchema.properties) {
-				if (!validateObject(value as JSONObject, propertySchema.properties)) return false;
-			}
-
-			if (propertySchema.regex && typeof value === "string") {
-				const regex = new RegExp(propertySchema.regex);
-				if (!regex.test(value)) return false;
+					if (Array.isArray(propertySchema)) {
+						if (!validateArray(obj[key] as JSONArray, propertySchema as SchemaProperty[])) {
+							return false;
+						}
+					} else {
+						if (!validateProperty(obj[key], propertySchema as SchemaProperty)) {
+							return false;
+						}
+					}
+				}
 			}
 
 			return true;
-		}
+		};
 
-		if (Array.isArray(schema)) {
-			if (!Array.isArray(data)) return false;
-			return data.every((item) => validateObject(item as JSONObject, schema[0] as SchemaProperty));
-		} else {
-			if (Array.isArray(data)) return false;
-			return validateObject(data as JSONObject, schema as unknown as SchemaProperty);
-		}
+		return validateObject(data as JSONObject, schema);
 	},
 
 	query(jsonArray: JSONObject[], key: string, operator: JSONQueryOperations, value: JSONValue): JSONObject[] {

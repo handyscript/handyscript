@@ -208,7 +208,7 @@ describe("JSON methods", () => {
 	describe("toHashMap", () => {
 		it("should convert a JSON object to a HashMap", () => {
 			const hashmap = JSON.toHashMap(json);
-			expect(hashmap).toEqual({
+			expect(hashmap.toObject()).toEqual({
 				"name": "John",
 				"age": 30,
 				"cars[0].name": "Ford",
