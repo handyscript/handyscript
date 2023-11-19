@@ -183,10 +183,6 @@ Number.prototype.toWords = function (): string {
 			remainder = n_umber % Math.TRILLION;
 			word = generateWords(Math.floor(n_umber / Math.TRILLION)) + ' trillion,';
 		} else {
-			console.log('heelo');
-			console.log(number);
-			console.log(typeof number);
-			console.log(number < 1000);
 			remainder = n_umber % Math.QUADRILLION;
 			word =
 				generateWords(Math.floor(n_umber / Math.QUADRILLION)) + ' quadrillion,';
