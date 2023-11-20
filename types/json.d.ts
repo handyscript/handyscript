@@ -1,13 +1,22 @@
 /// ------------------------------- HANDY JSON @TYPES © HandyScript 11m/12d/23y -------------------------------
 
 /**
- * Check if a JSON string is valid
+ * Check if a JSON property is valid
  */
 interface SchemaProperty {
-  type: StringConstructor | NumberConstructor | BooleanConstructor | typeof Object;
+  type?: StringConstructor | NumberConstructor | BooleanConstructor | typeof Object;
+  types?: Array<StringConstructor | NumberConstructor | BooleanConstructor>;
   required?: boolean;
   regex?: RegExp;
   properties?: SchemaProperty;
+  items?: SchemaProperty;
+}
+
+/**
+ * Check if a JSON object is valid
+ */
+interface SchemaObject {
+  [key: string]: SchemaProperty | [SchemaProperty];
 }
 
 /**

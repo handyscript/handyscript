@@ -1,5 +1,6 @@
 /// ------------------------------- HANDY JSON © HandyScript 6m/16d/23y -------------------------------
 
+import { JSONError, JSONValidationError } from "../errors/JsonError";
 import HashMap from "./hashmap";
 
 declare global {
@@ -41,7 +42,7 @@ declare global {
 		pluck(json: JSONObject[], key: string): JSONData[];
 
 		/**
-		 * Transform a JSON object by mapping keys to new keys
+		 * Transform a JSON object by mapping keys to new keys: `{ "oldKey": "newKey" }`
 		 */
 		transform(json: JSONObject, mapping: JSONTransformMap, nested?: boolean): JSONObject;
 
@@ -53,16 +54,13 @@ declare global {
 		/**
 		 * Search a JSON object using a query string
 		 * @example
-		 * const json = {
-		 * "name": "John",
-		 * "age": 30,
-		 * "cars": [
-		 *  { "name": "Ford", "models": ["Fiesta", "Focus", "Mustang"] },
-		 *  { "name": "BMW", "models": ["320", "X3", "X5"] },
-		 * ]
-		 * }
-		 *
-		 * JSON.query(json, "cars[0].name") // { "name": "Ford" }
+		 * const jsons = [
+		 * 	{ name: "John", age: 30 },
+		 * 	{ name: "Jane", age: 25 },
+		 * 	{ name: "Jack", age: 40 },
+		 * ];
+		 * JSON.query(jsons, "name", "=", "John"); // [{ name: "John", age: 30 }]
+		 * JSON.query(jsons, "age", ">", 30); // [{ name: "Jack", age: 40 }]
 		 */
 		query(jsonArray: JSONObject[], key: string, operator: JSONQueryOperations, value: JSONValue): JSONObject[];
 
@@ -261,63 +259,102 @@ Object.assign(JSON, {
 	},
 
 	validateSchema(data: JSONData, schema: Schema<JSONData>): boolean {
-		const validateProperty = (value: JSONData, propertySchema: SchemaProperty): boolean => {
-			if (propertySchema.type === String && typeof value !== "string") {
-				return false;
+		const validateProperty = (value: JSONData, propertySchema: SchemaProperty, path: string): boolean => {
+			if (propertySchema.type && typeof value !== propertySchema.type.name.toLowerCase()) {
+				throw new JSONValidationError(`JSON SCHEMA: Invalid type at '${path}', Expected: ${propertySchema.type.name}`);
 			}
 
-			if (propertySchema.type === Number && typeof value !== "number") {
-				return false;
+			if (propertySchema.types && !propertySchema.types.some(type => typeof value === type.name.toLowerCase())) {
+				throw new JSONValidationError(`JSON SCHEMA: Invalid type at '${path}', Expected: ${propertySchema.types.map(t => t.name).join(" or ")}`);
 			}
 
-			if (propertySchema.type === Boolean && typeof value !== "boolean") {
-				return false;
-			}
-
-			if (propertySchema.type === Object) {
-				if (typeof value !== "object" || value === null || Array.isArray(value)) {
-					return false;
-				}
-
-				if (propertySchema.properties) {
-					return validateObject(value as JSONObject, propertySchema.properties);
-				}
-			}
-
-			if (propertySchema.regex && typeof value === "string") {
-				return propertySchema.regex.test(value);
+			if (propertySchema.regex && typeof value === "string" && !propertySchema.regex.test(value)) {
+				throw new JSONValidationError(`JSON SCHEMA: Invalid value at '${path}', Does not match the specified pattern`);
 			}
 
 			return true;
 		};
 
-		const validateArray = (array: JSONArray, arraySchema: SchemaProperty[]): boolean => {
+		const validateArray = (array: JSONArray, arraySchema: SchemaProperty[], path: string): boolean => {
 			if (!Array.isArray(array)) {
-				return false;
+				throw new JSONValidationError(`JSON SCHEMA: Invalid type at '${path}', Expected: Array`);
+			}
+
+			if (arraySchema.length === 0) {
+				throw new JSONValidationError(`JSON SCHEMA: Invalid array schema at '${path}', Expected at least one item schema`);
 			}
 
 			for (let i = 0; i < array.length; i++) {
-				if (!validateProperty(array[i], arraySchema[0])) {
-					return false;
+				const itemPath = `${path}[${i}]`;
+				const itemSchema = arraySchema[i % arraySchema.length]; // Allow repeating the types
+
+				if (Array.isArray(itemSchema)) {
+					validateArray(array[i] as JSONArray, itemSchema as SchemaProperty[], itemPath);
+				} else if (itemSchema.type === Object) {
+					if (typeof array[i] !== "object" || array[i] === null || Array.isArray(array[i])) {
+						throw new JSONValidationError(`JSON SCHEMA: Invalid type at '${itemPath}', Expected: Object`);
+					}
+
+					if (itemSchema.properties) {
+						validateObject(array[i] as JSONObject, itemSchema.properties as SchemaObject, itemPath);
+					}
+				} else if (Array.isArray(itemSchema.type) && itemSchema.items) {
+					validateArray(array[i] as JSONArray, [itemSchema.items], itemPath);
+				} else {
+					validateProperty(array[i], itemSchema as SchemaProperty, itemPath);
 				}
 			}
 
 			return true;
 		};
 
-		const validateObject = (obj: JSONObject, objSchema: Schema<JSONData>): boolean => {
+		const validateObject = (obj: JSONObject, objSchema: SchemaObject, path: string): boolean => {
 			for (const key in objSchema) {
 				if (Object.prototype.hasOwnProperty.call(objSchema, key)) {
-					const propertySchema = objSchema[key as keyof typeof objSchema];
+					const propertySchema: SchemaProperty | [SchemaProperty] = objSchema[key];
+
+					if (propertySchema === undefined) {
+						// Extra property found that is not specified in the schema
+						throw new JSONValidationError(`JSON SCHEMA: Unexpected property at '${path}.${key}'`);
+					}
+
+					const propertyPath = `${path}.${key}`;
 
 					if (Array.isArray(propertySchema)) {
-						if (!validateArray(obj[key] as JSONArray, propertySchema as SchemaProperty[])) {
-							return false;
+						// Handle array schema
+						if (Number(propertySchema.length) === 0) {
+							throw new JSONValidationError(`JSON SCHEMA: Invalid array schema at '${propertyPath}', Expected at least one item schema`);
+						}
+
+						// Check if the property is required
+						const isRequired = propertySchema.some((item) => (item as SchemaProperty).required);
+
+						if (isRequired && obj[key] === undefined) {
+							// Required property is missing
+							throw new JSONValidationError(`JSON SCHEMA: Missing required property at '${propertyPath}'`);
+						}
+
+						// Validate array items
+						validateArray(obj[key] as JSONArray, propertySchema, propertyPath);
+					} else if (propertySchema.type === Object) {
+
+						// Handle object schema
+						if (typeof obj[key] !== "object" || obj[key] === null || Array.isArray(obj[key])) {
+							throw new JSONValidationError(`JSON SCHEMA: Invalid type at '${propertyPath}', Expected: Object`);
+						}
+
+						const objectSchema = propertySchema.properties as SchemaObject;
+						if (objectSchema) {
+							validateObject(obj[key] as JSONObject, objectSchema, propertyPath);
 						}
 					} else {
-						if (!validateProperty(obj[key], propertySchema as SchemaProperty)) {
-							return false;
+						// Handle non-array and non-object schema
+						if (propertySchema.required && obj[key] === undefined) {
+							// Required property is missing
+							throw new JSONValidationError(`JSON SCHEMA: Missing required property at '${propertyPath}'`);
 						}
+
+						validateProperty(obj[key], propertySchema, propertyPath);
 					}
 				}
 			}
@@ -325,12 +362,25 @@ Object.assign(JSON, {
 			return true;
 		};
 
-		return validateObject(data as JSONObject, schema);
+
+
+
+		try {
+			validateObject(data as JSONObject, schema as SchemaObject, "");
+			return true;
+		} catch (error) {
+			if (error instanceof JSONValidationError) {
+				console.error(error.message);
+				return false;
+			} else {
+				throw error; // re-throw unexpected errors
+			}
+		}
 	},
 
 	query(jsonArray: JSONObject[], key: string, operator: JSONQueryOperations, value: JSONValue): JSONObject[] {
 		if (!Array.isArray(jsonArray) || !jsonArray.every((item) => typeof item === "object")) {
-			throw new Error("Invalid input: jsonArray must be an array of objects.");
+			throw new JSONError("JSON INVALID INPUT: jsonArray must be an array of objects.");
 		}
 
 		return jsonArray.filter((json) => {
@@ -367,7 +417,7 @@ Object.assign(JSON, {
 			case "<>":
 				return jsonValue !== queryValue;
 			default:
-				throw new Error(`Unsupported operator: ${operator}`);
+				throw new JSONError(`JSON ERROR: Unsupported operator: '${operator}'`);
 			}
 		});
 	},

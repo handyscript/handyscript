@@ -2,6 +2,7 @@
 // @ts-nocheck
 import {describe, expect} from "@jest/globals";
 import "../lib/json";
+import { JSONValidationError } from "../errors/JsonError";
 
 describe("JSON methods", () => {
 	const json = {
@@ -132,24 +133,74 @@ describe("JSON methods", () => {
 	});
 
 	describe("validateSchema", () => {
-		it("should validate a JSON object against a JSON schema", () => {
-			const schema = {
-				name: { type: String },
-				age: { type: Number },
-				cars: [{ name: { type: String }, models: [{ type: String }] }],
+		// Valid JSON
+		test("Valid JSON & Schema 1", () => {
+			const validJson = {
+				name: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				],
 			};
-			const valid = JSON.validateSchema(json, schema);
-			expect(valid).toBe(true);
+			const schema = {
+				name: { type: String, required: true },
+				age: { type: Number },
+				cars: [{ name: { type: String, required: true }, models: [{ types: [String] }] }],
+			};
+			expect(JSON.validateSchema(validJson, schema)).toBe(true);
 		});
 
-		it("should return false if a JSON object does not match a JSON schema", () => {
-			const schema = {
-				name: { type: String },
-				age: { type: Number },
-				cars: [{ name: { type: String }, models: [{ type: Number }] }],
+		// Missing required property
+		test("Missing Required Property & Schema 1", () => {
+			const missingRequiredProperty = {
+				name: "John",
+				// Missing required property: age
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+				],
 			};
-			const invalid = JSON.validateSchema(json, schema);
-			expect(invalid).toBe(false);
+			const schema = {
+				name: { type: String, required: true },
+				age: { type: Number, required: true },
+				cars: [{ name: { type: String, required: true }, models: [{ types: [String] }] }],
+			};
+			try {
+				JSON.validateSchema(missingRequiredProperty, schema);
+				// If no error is thrown, the test should fail
+				expect(true).toBe(false);
+			} catch (error) {
+				expect(error).toBeInstanceOf(JSONValidationError);
+				expect(error.message).toBe("JSON SCHEMA: Missing required property at '.age'");
+			}
+		});
+
+		// Invalid property value
+		test("Invalid Property Value & Schema 1", () => {
+			const invalidPropertyValue = {
+				name: "John",
+				age: 30,
+				cars: [
+					{ name: "Ford", models: ["Fiesta", "Focus", "Mustang"] },
+					{ name: "BMW", models: ["320", "X3", "X5"] },
+					// Invalid property value: extraProperty
+				],
+				extraProperty: "Extra",
+			};
+			const schema = {
+				name: { type: String, required: true },
+				age: { type: Number },
+				cars: [{ name: { type: String, required: true }, models: [{ types: [String] }] }],
+			};
+			try {
+				JSON.validateSchema(invalidPropertyValue, schema);
+				// If no error is thrown, the test should fail
+				expect(true).toBe(false);
+			} catch (error) {
+				expect(error).toBeInstanceOf(JSONValidationError);
+				expect(error.message).toBe("JSON SCHEMA: Unexpected property at '.extraProperty'");
+			}
 		});
 	});
 
@@ -201,7 +252,11 @@ describe("JSON methods", () => {
 		});
 
 		it("should throw an error if the jsons argument is not an array of json objects", () => {
-			expect(() => JSON.query("jsons", "age", ">=", 20)).toThrow("Invalid input: jsonArray must be an array of objects.");
+			expect(() => JSON.query("jsons", "age", ">=", 20)).toThrowError("JSON INVALID INPUT: jsonArray must be an array of objects.");
+		});
+
+		it("should throw an error if the operator is not supported", () => {
+			expect(() => JSON.query(jsons, "age", "!", 20)).toThrowError("JSON ERROR: Unsupported operator: '!'");
 		});
 	});
 
