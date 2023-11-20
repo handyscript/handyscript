@@ -56,7 +56,6 @@
 
 	// Workspace Theme
 	"workbench.colorCustomizations": {
-		"activityBar.background": "#111111",
 		"activityBar.foreground": "#c4b450",
 		"activityBarBadge.background": "#c4b450",
 		"activityBarBadge.foreground": "#191a18",

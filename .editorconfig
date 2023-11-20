@@ -1,0 +1,26 @@
+# EditorConfig helps developers define and maintain consistent coding styles between different editors and IDEs
+
+# Top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+indent_style = tab
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Settings for JavaScript and TypeScript files
+[*.js]
+[*.ts]
+indent_style = tab
+
+# Ignore ESLint files
+.eslintignore
+
+# Ignore build and dist folders
+/dist/
+/build/
+/node_modules/
