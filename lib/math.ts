@@ -71,6 +71,41 @@ declare global {
 		B: number;
 
 		/**
+		 * TEN = 10 (1e1)
+		 */
+		TEN: number;
+
+		/**
+		 * HUNDRED = 100 (1e2)
+		 */
+		HUNDRED: number;
+
+		/**
+		 * THOUSAND = 1.000 (1e3)
+		 */
+		THOUSAND: number;
+
+		/**
+		 * MILLION = 1.000.000 (1e6)
+		 */
+		MILLION: number;
+
+		/**
+		 * BILLION = 1.000.000.000 (1e9)
+		 */
+		BILLION: number;
+
+		/**
+		 * TRILLION = 1.000.000.000.000 (1e12)
+		 */
+		TRILLION: number;
+
+		/**
+		 * QUADRILLION = 1.000.000.000.000.000 (1e15)
+		 */
+		QUADRILLION: number;
+
+		/**
 		 * returns a random number between `min` and `max` explicitly
 		 */
 		randomInt(max?: number, min?: number): number;
@@ -130,6 +165,14 @@ Object.assign(Math, {
 	THETA: 0.6434105463,
 	KAPPA: 0.764223653589220662990698731250092320971690526083222067341264027404987097155,
 
+	TEN: 10,
+	HUNDRED: 100,
+	THOUSAND: 1000,
+	MILLION: 1000000,
+	BILLION: 1000000000, //         1.000.000.000 (9)
+	TRILLION: 1000000000000, //     1.000.000.000.000 (12)
+	QUADRILLION: 1000000000000000, // 1.000.000.000.000.000 (15)
+
 	randomInt(max = Number.MAX_SAFE_INTEGER, min = 0) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
@@ -142,12 +185,18 @@ Object.assign(Math, {
 		return start * (1 - t) + end * t;
 	},
 
-	map(value: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number) {
+	map(
+		value: number,
+		inputMin: number,
+		inputMax: number,
+		outputMin: number,
+		outputMax: number
+	) {
 		const inputRange = inputMax - inputMin;
 		const outputRange = outputMax - outputMin;
 		const normalizedValue = (value - inputMin) / inputRange;
 		return outputMin + normalizedValue * outputRange;
-	},
+	}
 });
 
 export default Math;
