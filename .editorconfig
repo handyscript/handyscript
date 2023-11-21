@@ -12,6 +12,10 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+# Settings for Github actions
+[*.yml]
+indent_style = space
+
 # Settings for JavaScript and TypeScript files
 [*.js]
 [*.ts]
