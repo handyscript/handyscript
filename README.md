@@ -9,9 +9,16 @@ A set of useful javascript modules that makes the javascript development context
 </p>
 
 <p align="center">
-<img alt="NPM DOWNLOADS" src="https://img.shields.io/npm/dw/handyscript?color=5319e7&style=flat-square">
-<img alt="NPM LICENSE" src="https://img.shields.io/npm/l/handyscript?color=k&label=license&style=flat-square">
-<img alt="NPM VERSION" src="https://img.shields.io/npm/v/handyscript?color=ff6905&label=npm&style=flat-square">
+	<p align="center">
+		<img alt="NPM DOWNLOADS" src="https://img.shields.io/npm/dw/handyscript?color=5319e7&style=flat-square">
+		<img alt="NPM LICENSE" src="https://img.shields.io/npm/l/handyscript?color=k&label=license&style=flat-square">
+		<img alt="NPM VERSION" src="https://img.shields.io/npm/v/handyscript?color=ff6905&label=npm&style=flat-square">
+	</p>
+	<p align="center">
+		<a href="https://github.com/handyscript/handyscript/actions/workflows/unite-test.yml" target="_blank">
+			<img alt="JEST CI TEST" src="https://github.com/handyscript/handyscript/actions/workflows/unite-test.yml/badge.svg?branch=main">
+		</a>
+	</p>
 </p>
 
 ## Installation
