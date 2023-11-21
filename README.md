@@ -32,7 +32,7 @@ npm install handyscript
 Alternatively, you can use the **CDN** script to include the `hs.min.js` in your HTML file
 
 ```html
-<script src="https://unpkg.com/browse/handyscript@1.0.0/dist/hs.min.cjs"></script>
+<script src="https://unpkg.com/browse/handyscript@1.0.0/dist/hs.min.js"></script>
 ```
 
 Alternatively, you can use the **CDN** script to include the `hs.min.js` in your HTML file
@@ -44,7 +44,7 @@ Alternatively, you can use the **CDN** script to include the `hs.min.js` in your
 <script src="https://unpkg.com/handyscript@latest/dist/hs.min.js"></script>
 ```
 
-Otherwise, you can download the `hs.min.js` file from the [dist](./dist/hs.min.cjs) directory and include it in your HTML file, or [click here](https://cdn.jsdelivr.net/npm/handyscript@latest/dist/hs.min.cjs) to download it directly
+Otherwise, you can download the `hs.min.js` file from the [dist](./dist/hs.min.js) directory and include it in your HTML file, or [click here](https://cdn.jsdelivr.net/npm/handyscript@latest/dist/hs.min.js) to download it directly
 
 ```html
 <script src="path/to/hs.min.js"></script>
