@@ -45,7 +45,9 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"markdownlint.config": {
-		"MD033": false // bypass no-inline-html
+		"MD033": false, // bypass no-inline-html
+		"MD010": false, // bypass no-hard-tabs
+		"MD041": false, // bypass first-line-heading
 	},
 
 	// Misc
