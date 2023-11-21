@@ -15,7 +15,22 @@ jobs:
       - run: npm ci
       - run: npm test --if-present
 
-  publish-gpr:
+  npm-publish:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm semantic-release
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  gpr-publish:
     needs: build
     runs-on: ubuntu-latest
     permissions:
