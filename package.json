@@ -32,7 +32,7 @@
     "commit": "git-cz",
     "lint": "eslint . --ext .ts --fix",
     "test": "npm run lint && jest",
-    "build": "tsc --project tsconfig.json && webpack",
+    "build": "webpack",
     "watch": "tsc --project tsconfig.json && webpack --watch",
     "semantic-release": "semantic-release --branches main"
   },
