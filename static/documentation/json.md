@@ -73,7 +73,7 @@ JSON.flatten(json: JsonObject, prefix: string): FlattenedObject;
 
 - `json` - The JSON object to flatten should be a valid JSON object type of [JsonObject](#jsonobject).
 - `prefix` - The prefix to add to the keys of the flattened object.
-  
+
 **Returns:** - The flattened object, type of [FlattenedObject](#flattenedobject).
 
 **Example:**
@@ -89,7 +89,7 @@ const json = {
     country: "Morocco",
   },
 };
-console.log(JSON.flatten(json, "person")); 
+console.log(JSON.flatten(json, "person"));
 ```
 
 **Output:**
@@ -472,7 +472,7 @@ const data = {
     country: "Morocco",
   },
   hobbies: ["football", "basketball", "tennis"],
-};  
+};
 
 const schema = {
   name: { type: String, required: true },
@@ -600,7 +600,7 @@ type JsonValue = string | number | boolean | null;
 The `JsonObject` type is a type of JSON object.
 
 ```typescript
-type JsonObject = { 
+type JsonObject = {
   [key: string]: JsonData
 };
 ```
@@ -618,7 +618,7 @@ type JsonArray = Array<JsonData>;
 The `FlattenedObject` type is a type of flattened JSON object.
 
 ```typescript
-type FlattenedObject = { 
+type FlattenedObject = {
   [key: string]: JsonValue | JsonObject
 };
 ```
@@ -650,4 +650,4 @@ The `SchemaT` type is a type of JSON Schema.
 
 <p align="center"><b>© HandyScript JSON 6/16/23</b></p>
 
-This Markdown documentation is detailed and extensive to use the `JSON` module to its full potential, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
+This documentation provides a comprehensive guide to the Json module in HandyScript. The module extends the native JavaScript Json object, offering additional functionality and ease of use when working with JSON. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <contact@handyscript.tech>.

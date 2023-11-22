@@ -74,7 +74,7 @@ Array.prototype.selectionSort(this: ComparableData[], order?: SortOrder): Array<
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
 - `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
-  
+
 **Returns:** The sorted array.
 
 **Example:**
@@ -190,7 +190,7 @@ Array.prototype.countingSort(this: number[], order?: SortOrder): Array<number>;
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
 - `this` - The array to sort, must be an array of numbers.
-  
+
 **Returns:** The sorted array.
 
 **Example:**
@@ -238,7 +238,7 @@ Array.prototype.radixSort(this: number[], radix?: number, order?: SortOrder): Ar
 - `radix` - The radix to use for the sorting. Default is `10`.
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
 - `this` - The array to sort, must be an array of numbers.
-  
+
 **Returns:** The sorted array.
 
 **Example:**
@@ -262,7 +262,7 @@ Array.prototype.shellSort(this: ComparableData[], order?: SortOrder): Array<Comp
 
 - `order` - The order of the sorting [SortOrder](#sort-order). Can be either `asc` or `desc`. Default is `asc`.
 - `this` - The array to sort, must be an array of [Comparable Data](#comparable-data) type.
-  
+
 **Returns:** The sorted array.
 
 **Example:**
@@ -304,7 +304,7 @@ Array.prototype.chunk(size?: number): T[][]; // T is the type of the array
 **Parameters:**
 
 - `size` - The size of each chunk. Default is `1`.
-  
+
 **Returns:** The array of chunks.
 
 **Example:**
@@ -417,7 +417,7 @@ Array.prototype.sample(quantity?: number): T | T[]; // T is the type of the arra
 **Parameters:**
 
 - `quantity` - The quantity of random elements to return. Default is `1`.
-  
+
 **Returns:** The random element or an array of random elements.
 
 **Example:**
@@ -441,7 +441,7 @@ Array.prototype.count(target: T): number; // T is the type of the array
 **Parameters:**
 
 - `target` - The value to count its occurrences.
-  
+
 **Returns:** The number of occurrences.
 
 **Example:**
@@ -511,7 +511,7 @@ Array.prototype.binarySearch(this: ComparableData[], target: ComparableData, sor
 - `target` - The element to search for, should be type of [Comparable Data](#comparable-data).
 - `sortalgo` - The sorting algorithm to use from [Binary Sort Algorithms](#binary-sort-algorithms) to sort the array before proceeding in the search process. Default is `Array.prototype.sort()`.
 - `this` -  The array to search in, must be an array of [Comparable Data](#comparable-data) type.
-  
+
 **Returns:** The index of the element if found, otherwise `-1`.
 
 **Example:**
@@ -561,4 +561,4 @@ type BinarySortAlgorithms =
 
 <p align="center"><b>© HandyScript Array 5/21/23</b></p>
 
-This Markdown documentation includes sections for various sorting algorithms and array manipulation methods, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
+This documentation provides a comprehensive guide to the Array module in HandyScript. The module extends the native JavaScript Array object, offering additional functionality and ease of use when dealing with arrays. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <contact@handyscript.tech>.

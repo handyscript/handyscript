@@ -32,8 +32,8 @@ Date.prototype.timestamp(timeZone=Intl.DateTimeFormat().resolvedOptions().timeZo
 **Example:**
 
 ```javascript
-const date = new Date();  
-date.timestamp().then((timestamp) => {  
+const date = new Date();
+date.timestamp().then((timestamp) => {
   console.log(timestamp);  // 2021-09-25T18:00:00.000Z => Type of Date
 });
 ```
@@ -74,4 +74,4 @@ console.log(date.daysInYear());  // 365
 
 <p align="center"><b>© HandyScript Date 9/17/23</b></p>
 
-This Markdown documentation is detailed and extensive to use the `Date` module to its full potential, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
+This documentation provides a comprehensive guide to the Date module in HandyScript. The module extends the native JavaScript Date object, offering additional functionality and ease of use when dealing with dates. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <contact@handyscript.tech>.
