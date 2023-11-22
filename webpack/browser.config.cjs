@@ -1,5 +1,4 @@
 const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -40,13 +39,4 @@ module.exports = {
     },
 		path: path.join(__dirname, "../", "dist"),
 	},
-	plugins: [
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: "LICENSE", to: "./" },
-				{ from: "AUTHORS.md", to: "./" },
-				{ from: "README.md", to: "./" },
-			],
-		}),
-	],
 };
