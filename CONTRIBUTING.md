@@ -12,8 +12,10 @@ We appreciate your interest in contributing to Handy Script! Before you get star
 
 1. Ensure that your code follows the coding standards and conventions of the project.
 2. Write tests for your changes to ensure that existing functionality is not broken.
-3. Make sure your commit messages are clear and concise.
-4. Update the documentation if your changes affect the user interface or external behavior.
+3. Use [Commitizen](https://github.com/commitizen/cz-cli) for your commit messages. Install it by running `npm install -g commitizen` and then commit your changes using `git cz`.
+4. Make sure your commit messages are clear and concise.
+5. Update the documentation if your changes affect the user interface or external behavior.
+6. Run tests locally before submitting your changes. using `npm test`.
 
 ## Submitting a Pull Request
 
