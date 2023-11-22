@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/handyscript/handyscript.git"
   },
-  "license": "MIT",
+  "license": "CC BY-SA 4.0",
   "main": "dist/hs.min.cjs",
   "module": "dist/hs.min.js",
   "typings": "dist/index.d.ts",
@@ -25,6 +25,7 @@
   "files": [
     "dist",
     "index.ts",
+		"AUTHORS.md",
     "README.md",
     "SECURITY.md"
   ],
@@ -84,7 +85,6 @@
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
-    "copy-webpack-plugin": "^11.0.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.53.0",
     "jest": "^29.7.0",
