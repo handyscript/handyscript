@@ -66,7 +66,7 @@ Hashmap.prototype.get(key: string): unknown
 **Parameters:**
 
 - `key` - The key to get the value of.
-  
+
 **Returns:** `unknown` - The value of the given key.
 
 **Example:**
@@ -135,7 +135,7 @@ Hashmap.prototype.upsert(key: string, value: unknown): Hashmap
 
 - `key` - The key to update the value of.
 - `value` - The value to update the key to.
-  
+
 **Returns:** `Hashmap` - The `Hashmap` object with the upserted key-value pair.
 
 **Example:**
@@ -158,7 +158,7 @@ Hashmap.prototype.remove(key: string): boolean
 **Parameters:**
 
 - `key` - The key to remove the value of.
-  
+
 **Returns:** `boolean`  - returns `true` if an element in the `Hashmap` existed and has been removed, or `false` if the element does not exist.
 
 **Example:**
@@ -482,4 +482,4 @@ console.log(hashmap); // Hashmap { a: 1, e: 2, c: 3, d: 2 }
 
 <p align="center"><b>© HandyScript HashMap 5/27/23</b></p>
 
-This Markdown documentation is detailed and extensive to use the `HashMap` module to its full potential, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <vvhybe@hotmail.com>.
+This Markdown documentation is detailed and extensive to use the `HashMap` module to its full potential, along with their descriptions and TypeScript function signatures. The table of contents at the beginning [Back To Top](#table-of-contents) of the document allows for easy navigation. If you have any questions or suggestions, please contact us at <contact@handyscript.tech>.
