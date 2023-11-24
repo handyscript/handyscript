@@ -18,6 +18,9 @@ A set of useful javascript modules that makes the javascript development context
 		<a href="https://github.com/handyscript/handyscript/actions/workflows/unite-test.yml" target="_blank">
 			<img alt="JEST CI TEST" src="https://github.com/handyscript/handyscript/actions/workflows/unite-test.yml/badge.svg?branch=main">
 		</a>
+		<a href="https://socket.dev/npm/package/handyscript" target="_blank">
+			<img alt="Socket Badge" src="https://socket.dev/api/badge/npm/package/handyscript" />
+		</a>
 	</p>
 </p>
 
