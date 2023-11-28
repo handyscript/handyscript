@@ -4,7 +4,7 @@
   "type": "module",
   "author": "handyscript",
   "description": "A set of useful modules that makes the javascript development context easier",
-  "homepage": "https://github.com/handyscript/handyscript/wiki",
+  "homepage": "https://handyscript.tech",
   "repository": {
     "type": "git",
     "url": "https://github.com/handyscript/handyscript.git"
