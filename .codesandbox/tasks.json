@@ -1,0 +1,47 @@
+{
+  // These tasks will run in order when initializing your CodeSandbox project.
+  "setupTasks": [
+    {
+      "name": "Install Dependencies",
+      "command": "npm ci"
+    },
+    {
+      "command": "npm test",
+      "name": "Running Tests"
+    }
+  ],
+
+  // These tasks can be run from CodeSandbox. Running one will open a log in the app.
+  "tasks": {
+    "commit": {
+      "name": "commit",
+      "command": "npm run commit",
+      "runAtStart": false
+    },
+    "lint": {
+      "name": "lint",
+      "command": "npm run lint",
+      "runAtStart": false
+    },
+    "test": {
+      "name": "test",
+      "command": "npm run test",
+      "runAtStart": true
+    },
+    "build": {
+      "name": "build",
+      "command": "npm run build",
+      "runAtStart": false
+    },
+    "watch": {
+      "name": "watch",
+      "command": "npm run watch",
+      "runAtStart": true
+    },
+    "semantic-release": {
+      "name": "semantic-release",
+      "command": "npm run semantic-release",
+      "runAtStart": false
+    }
+  }
+}
